@@ -1,0 +1,14 @@
+#!/usr/bin/env sh
+# Resuelve el interprete Python disponible y ejecuta con sus dependencias:
+#   1) uv (si esta disponible): "uv run --with-requirements requirements.txt python
+#      ..." instala/cachea las deps al vuelo -- no hace falta pip install manual.
+#   2) python / python3 (fallback): asume que ya corriste
+#      "pip install -r requirements.txt".
+DIR="$(cd "$(dirname "$0")" && pwd)"
+if command -v uv >/dev/null 2>&1; then
+  exec uv run --with-requirements "$DIR/../requirements.txt" python "$@"
+elif command -v python >/dev/null 2>&1; then
+  exec python "$@"
+else
+  exec python3 "$@"
+fi

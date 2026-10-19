@@ -1,0 +1,19 @@
+#!/usr/bin/env sh
+# Resuelve y ejecuta el CLI de graphify (graphifyy==0.9.9), priorizando una
+# instalacion PERSISTENTE via "uv tool" -- el entorno queda configurado una
+# sola vez y sirve para cualquier proyecto futuro, sin re-resolver deps en
+# cada llamada (a diferencia de "uv run --with-requirements", que es efimero
+# por invocacion aunque uv cachee los paquetes).
+#   1) uv (si esta disponible): instala graphifyy como uv tool si todavia no
+#      esta, y lo ejecuta con "uv tool run" (reusa la instalacion persistente).
+#   2) python / python3 (fallback sin uv): pip install -r requirements.txt +
+#      "python -m graphify" (comportamiento previo).
+DIR="$(cd "$(dirname "$0")" && pwd)"
+PIN="graphifyy==0.9.9"
+
+if command -v uv >/dev/null 2>&1; then
+  uv tool list 2>/dev/null | grep -qx "graphifyy v0.9.9" || uv tool install --quiet "$PIN" >/dev/null 2>&1 || true
+  exec uv tool run --from "$PIN" graphify "$@"
+fi
+"$DIR/run-python" -c "import graphify" 2>/dev/null || "$DIR/run-python" -m pip install -q -r "$DIR/../requirements.txt"
+exec "$DIR/run-python" -m graphify "$@"

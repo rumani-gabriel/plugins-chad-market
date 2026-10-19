@@ -1,0 +1,29 @@
+{
+  "name": "plugins-chad-market",
+  "schema": 1,
+  "target": "opencode",
+  "plugins": [
+    {
+      "name": "lean-code",
+      "version": "0.1.0",
+      "source": "plugins/lean-code",
+      "description": "Escribir el minimo codigo que resuelve el problema: escalera de decision (YAGNI, reusar, stdlib, feature nativa, dependencia ya instalada, una linea) y auditoria retroactiva de un diff.",
+      "skills": ["lean-code"],
+      "commands": ["lean", "lean-audit"],
+      "requires": { "network": false, "api_keys": false, "runtime": ["git (solo para /lean-audit)"] }
+    },
+    {
+      "name": "graph-explorer",
+      "version": "0.1.0",
+      "source": "plugins/graph-explorer",
+      "description": "Convierte un repo en un grafo de conocimiento consultable (que conecta con que, caminos entre modulos) con Graphify en modo local: sin red, sin API key, sin LLM para extraer codigo.",
+      "skills": ["graph-explorer"],
+      "commands": ["graph-build", "graph-query"],
+      "requires": {
+        "network": "solo la primera vez, para instalar graphifyy==0.9.9 (uv tool o pip)",
+        "api_keys": false,
+        "runtime": ["python>=3.10", "uv (recomendado) o pip", "shell POSIX para bin/run-* (en Windows nativo usar los .cmd)"]
+      }
+    }
+  ]
+}

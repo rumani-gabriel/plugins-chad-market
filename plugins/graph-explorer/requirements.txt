@@ -1,0 +1,6 @@
+# Motor de grafo de conocimiento (open-source, MIT). Se usa como dependencia
+# pineada — NO se vendoriza el código en el repo.
+# Solo el core (extracción de código local + NetworkX). Los extras del proyecto
+# original (mcp, neo4j, falkordb, video, google, postgres) NO se instalan a
+# propósito: son la superficie de red/daemon que queremos evitar.
+graphifyy==0.9.9
