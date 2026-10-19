@@ -1,0 +1,8 @@
+#!/usr/bin/env sh
+# Resuelve el interprete Python disponible. Este plugin no tiene dependencias
+# de terceros (solo stdlib) -- no hace falta pip install para nada.
+if command -v python >/dev/null 2>&1; then
+  exec python "$@"
+else
+  exec python3 "$@"
+fi

@@ -34,6 +34,19 @@
       "commands": [],
       "requires": { "network": false, "api_keys": false, "runtime": ["node.js (sin dependencias npm, solo core)"] },
       "origin": "Extraido de walkinglabs/learn-harness-engineering (MIT) — solo la skill, no el curso completo."
+    },
+    {
+      "name": "fast-grep",
+      "version": "0.1.0",
+      "source": "plugins/fast-grep",
+      "description": "Busqueda de texto/regex acelerada en repos grandes sobre tgrep (Microsoft, MIT): indexado por trigramas, hasta 50x mas rapido que grep/ripgrep. 100% local, sin red (salvo la descarga inicial del binario), sin API key, sin telemetria. Binario resuelto con verificacion SHA256 antes de ejecutar nada.",
+      "skills": ["fast-grep"],
+      "commands": ["tgrep-index"],
+      "requires": {
+        "network": "solo la primera vez, para descargar el binario pineado de tgrep (microsoft/tgrep v1.0.10)",
+        "api_keys": false,
+        "runtime": ["python (solo stdlib)", "shell POSIX para bin/run-* (en Windows nativo usar los .cmd)"]
+      }
     }
   ],
   "external": [

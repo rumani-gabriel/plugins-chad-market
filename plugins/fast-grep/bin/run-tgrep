@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+# Resuelve (descargando y verificando por sha256 si hace falta) el binario
+# de tgrep y lo ejecuta con los argumentos recibidos. Ver tools/ensure_tgrep.py.
+DIR="$(cd "$(dirname "$0")" && pwd)"
+exec "$DIR/run-python" "$DIR/../tools/ensure_tgrep.py" "$@"
