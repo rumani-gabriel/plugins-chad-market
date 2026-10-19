@@ -22,6 +22,19 @@ python install.py <plugin> --project <DIR> --dry-run   # ver qué copiaría
 - **Frontmatter:** OpenCode **descarta en silencio** un comando cuyo frontmatter no es YAML válido (pasó con `argument-hint: [..]`). Si un comando no aparece, revisá el frontmatter primero.
 - **Nombres:** `name` de un `SKILL.md` debe coincidir con su carpeta y ser `^[a-z0-9]+(-[a-z0-9]+)*$`.
 
+## Backlog — candidatos todavía sin empaquetar
+
+`backlog.json` guarda herramientas investigadas pero **no instalables todavía**: cosas que llenan un hueco real para este lab (lente B: desarrollo/hacking/pentesting/cloud/Python) pero que necesitan un paso previo antes de vivir en `plugins/`.
+
+Cada entrada trae `repo`, `lens`, `status`, `verified` (estrellas/forks/licencia **con fecha de chequeo**, no confíes en un número sin `checked_at` reciente), `summary`, `caution` (el riesgo concreto, citado, no genérico) y `promote_when` (qué tiene que pasar para que deje de ser backlog). `status_values` en el propio archivo explica cada estado.
+
+**Regla dura: nada se instala solo desde acá.** Para promover una entrada:
+1. Releé `caution` y resolvé lo que pide `promote_when`.
+2. Si sigue en pie, empaquetala siguiendo "Agregar un plugin al market" (abajo) y movela de `backlog.json` a `catalog.json`.
+3. `needs_isolated_vm` no se promueve nunca al lab de trabajo diario — como mucho, a una VM descartable aparte, y eso lo decide un humano.
+
+Para sumar un hallazgo nuevo al backlog: una entrada con los mismos campos, `checked_at` de hoy, y un `status` honesto — si no estás seguro, `needs_review` o `needs_audit`, nunca `ready_to_package` por default.
+
 ## Agregar un plugin al market
 1. Carpeta `plugins/<nombre>/` con `skills/<skill>/SKILL.md`, `commands/*.md` y, si hace falta, `bin/`, `tools/`, `requirements.txt`. Sin `__pycache__`, sin binarios compilados y sin datos de ninguna organización (mails, URLs internas, nombres de equipos o clientes).
 2. Entrada en `catalog.json`: `name`, `version`, `source`, `description`, `skills`, `commands` y `requires`.

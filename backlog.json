@@ -1,0 +1,72 @@
+{
+  "schema": 1,
+  "status_values": {
+    "ready_to_package": "sin bloqueos conocidos; falta solo el trabajo mecanico de empaquetarlo en plugins/ + catalog.json",
+    "needs_review": "funciona, pero tiene un comportamiento puntual a revisar antes de instalarlo a diario",
+    "needs_isolated_vm": "el propio proyecto (o un comentario tecnico verificado) describe un modo de ejecucion peligroso (sandbox desactivado, red sin restriccion, autonomia total); nunca en la maquina de trabajo",
+    "needs_audit": "muy nuevo / pocos ojos encima; alguien tiene que leer el codigo entero antes de confiar",
+    "reference_only": "no es una herramienta para instalar; es material de estudio o referencia de arquitectura"
+  },
+  "entries": [
+    {
+      "name": "omnigraph",
+      "repo": "https://github.com/ModernRelay/omnigraph",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 1387, "forks": 259, "license": "MIT", "language": "Rust", "checked_at": "2026-10-19" },
+      "summary": "Base de datos grafo para memoria compartida entre agentes: ramas, merges de tres vias, deteccion de conflictos tipados, retrieval hibrido (grafo + vectores + BM25). MCP server + SDK TypeScript.",
+      "caution": "Un caso reportado por un usuario real muestra dos ramas con datos contradictorios en la misma entidad auto-mergeandose sin revision humana, y un permiso 'Allow Always' aplicandose mas alla de lo esperado.",
+      "promote_when": "revisar el modelo de permisos/merge antes de instalar; solo tiene sentido si el lab corre varios agentes en paralelo sobre el mismo conocimiento."
+    },
+    {
+      "name": "rea",
+      "repo": "https://github.com/morluto/rea",
+      "lens": "b",
+      "status": "ready_to_package",
+      "verified": { "stars": 335224, "forks": 84699, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-19" },
+      "summary": "MCP server (REA, 'Reverse Engineer Anything') que conecta un agente de codigo con Ghidra/Hopper/IDA para analizar binarios: traza funciones y devuelve pseudocodigo + evidencia.",
+      "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto). Requiere Ghidra/Hopper/IDA instalados aparte; IDA es pago.",
+      "promote_when": "confirmar que Ghidra (gratis) este disponible en el lab antes de empaquetar; empezar por apps JavaScript/Electron, que no requieren Ghidra/Hopper/IDA."
+    },
+    {
+      "name": "train-llm-from-scratch",
+      "repo": "https://github.com/FareedKhan-dev/train-llm-from-scratch",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "license": null, "language": "Jupyter Notebook", "checked_at": "2026-10-19" },
+      "summary": "Construye un transformer GPT-style desde cero (sin librerias de alto nivel) y lo entrena en Colab/Kaggle gratis. Material de estudio, no una herramienta.",
+      "caution": "Ninguna. No es instalable como plugin ni skill: se clona y se corre como proyecto aparte cuando alguien quiera aprender el tema.",
+      "promote_when": "nunca se promueve a plugins/; queda como bookmark de referencia para la pata Python/ML del lab."
+    },
+    {
+      "name": "learn-harness-engineering",
+      "repo": "https://github.com/walkinglabs/learn-harness-engineering",
+      "lens": "b",
+      "status": "ready_to_package",
+      "verified": { "stars": 20914, "forks": 2514, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-19" },
+      "summary": "Curso open source de 'harness engineering' (14 lecciones, 8 proyectos): memoria entre sesiones, verificacion automatica, loops maker-checker, orquestacion multi-agente. Incluye una skill reusable 'harness-creator'.",
+      "caution": "Es un curso completo, no empaquetar todo el repo. Solo vale la pena extraer la skill harness-creator.",
+      "promote_when": "revisar que la skill harness-creator no de por sentado nada especifico de Claude Code/Codex antes de copiarla a plugins/."
+    },
+    {
+      "name": "harness2",
+      "repo": "https://github.com/google-research/harness2",
+      "lens": "b",
+      "status": "needs_isolated_vm",
+      "verified": { "stars": 11217, "forks": 1014, "license": "Apache-2.0", "language": "Python", "checked_at": "2026-10-19" },
+      "summary": "Framework de investigacion de Google: el propio agente reescribe su 'harness' (prompt, guardrails, memoria, tools, subagentes, skills, scripts, plugins) para tareas no previstas.",
+      "caution": "Un comentario tecnico verificable en el post que lo presenta describe que el ejecutor corre con acceso de red sin restriccion y, en el caso de Codex, con el sandbox desactivado.",
+      "promote_when": "nunca en la maquina de trabajo del lab. Si se prueba alguna vez, solo en una VM descartable sin credenciales reales."
+    },
+    {
+      "name": "vulnerator-ai",
+      "repo": "https://github.com/irraz/vulnerator-ai",
+      "lens": "b",
+      "status": "needs_audit",
+      "verified": { "stars": 17, "forks": 4, "license": "MIT", "language": "Python", "checked_at": "2026-10-19" },
+      "summary": "Orquestador de pentesting: contenedores Docker con Kali Linux y un loop de decision tipo OODA, conectado a un agente de codigo. Pensado para engagements con consentimiento explicito del cliente.",
+      "caution": "17 estrellas, un solo mantenedor, pocos dias de vida. Demasiado nuevo para confiar sin leer el codigo completo del orquestador.",
+      "promote_when": "que alguien lea el codigo entero (que hace cada contenedor, como decide atacar, que permisos pide), no solo el README, antes de instalarlo."
+    }
+  ]
+}
