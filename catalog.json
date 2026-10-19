@@ -50,6 +50,26 @@
         "runtime": ["Node.js y npm", "opcional: Ghidra (gratis), Hopper o IDA (pago) para analisis de binarios nativos; el analisis estatico de JS/Electron no los necesita"]
       },
       "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto)."
+    },
+    {
+      "name": "cocoindex",
+      "description": "Motor de indexado incremental (Rust + bindings Python): declaras el target y solo recalcula lo que cambio (fuente o incluso el codigo de transformacion). Cubre indexado de codigo, PDF-a-RAG, extraccion de grafos de conocimiento, ingesta viva a vector DBs.",
+      "repo": "https://github.com/cocoindex-io/cocoindex",
+      "license": "Apache-2.0",
+      "install_command": "pip install -U cocoindex",
+      "note": "Es una libreria para construir pipelines propios (RAG, indexado), no una skill/comando para OpenCode. Se usa importandola en tu propio codigo Python.",
+      "requires": { "network": "depende de los sources/targets que configures (puede ser 100% local)", "api_keys": false, "runtime": ["python", "pip"] },
+      "caution": "Ninguna reportada hasta la fecha de chequeo (2026-10-19)."
+    },
+    {
+      "name": "kittentts",
+      "description": "Texto a voz liviano (hasta ~25 MB en su variante mas chica, 15M-80M parametros) que corre en CPU sin GPU. Clonado de voz con 5-30s de audio de referencia.",
+      "repo": "https://github.com/KittenML/KittenTTS",
+      "license": "Apache-2.0 (el codigo; los modelos de voz tienen licencias propias, revisar cada uno)",
+      "install_command": "pip install kittenml",
+      "note": "Fuera del foco actual del lab (dev/hacking/pentesting/cloud/Python) — se deja disponible igual por si en algun momento hace falta voz local (accesibilidad, demos, asistentes de voz offline).",
+      "requires": { "network": false, "api_keys": false, "runtime": ["python", "pip"] },
+      "caution": "Verificar la licencia del modelo de voz especifico que se descargue, es independiente de la del codigo."
     }
   ]
 }

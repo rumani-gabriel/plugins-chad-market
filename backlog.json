@@ -9,6 +9,26 @@
   },
   "entries": [
     {
+      "name": "rtk",
+      "repo": "https://github.com/rtk-ai/rtk",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 83974, "forks": 5336, "license": "Apache-2.0 (edicion oss) / BUSL-1.1 (otra edicion)", "language": "Rust", "checked_at": "2026-10-19" },
+      "summary": "Proxy de CLI (binario unico Rust, sin dependencias) que recorta la salida de comandos (git status, etc.) antes de que el agente la lea, para gastar menos tokens. Tambien puede recortar lecturas de archivo de Claude Code.",
+      "caution": "Un benchmark independiente de JetBrains sobre la version 0.43 encontro +7.6% mas costo a esfuerzo de razonamiento bajo y casi sin ahorro a esfuerzo alto; el issue #2805 del propio repo (abierto) reconoce el problema de como se contabiliza el ahorro. Ademas, el instalador por defecto puede traer la edicion BUSL-1.1 (no-OSS) en vez de la Apache-2.0 — hay que forzar RTK_EDITION=oss explicitamente.",
+      "promote_when": "correr una comparacion propia on/off midiendo tokens TOTALES facturados por tarea completada (no tamano de output), e instalar siempre con RTK_EDITION=oss."
+    },
+    {
+      "name": "okf-agent-memory",
+      "repo": "https://github.com/okf-memory/okf-agent-memory",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 827, "forks": 68, "license": "MIT", "language": "Go", "checked_at": "2026-10-19" },
+      "summary": "Memoria persistente de agentes como markdown versionado en el repo, buscable por MCP (BM25 embebido), con flag de 'escrito por agente' vs 'verificado por humano'. Binario unico Go, cero dependencias externas.",
+      "caution": "Un usuario reporto un test propio (48 corridas con grading ciego, Factory Droid): misma precision, ~5% mas costo en un repo chico. Repo joven (827 estrellas).",
+      "promote_when": "probarlo en un repo real del lab y confirmar que el costo extra se justifique por valor real de memoria entre sesiones, no asumirlo del README."
+    },
+    {
       "name": "omnigraph",
       "repo": "https://github.com/ModernRelay/omnigraph",
       "lens": "b",
