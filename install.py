@@ -19,6 +19,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent
 TOKEN = "${CLAUDE_PLUGIN_ROOT}"
+SKILL_TOKEN = "${SKILL_ROOT}"
 NOT_PAYLOAD = {"commands", "skills"}
 
 
@@ -37,20 +38,26 @@ def plan(entry, target):
             continue
         rel = f.relative_to(src)
         top = rel.parts[0]
+        # skill_root: carpeta propia de ESTA skill una vez instalada (skills/<nombre>/...),
+        # para que una skill con scripts/referencias internas pueda citar su propia ruta
+        # con ${SKILL_ROOT} sin importar si se instalo con --project o --global.
+        skill_root = target / "skills" / rel.parts[1] if top == "skills" and len(rel.parts) > 1 else None
         if top in ("skills", "commands"):
-            yield f, target / rel, f.suffix == ".md", payload
+            yield f, target / rel, f.suffix == ".md", payload, skill_root
         elif top not in NOT_PAYLOAD:
-            yield f, payload / rel, False, payload
+            yield f, payload / rel, False, payload, skill_root
 
 
 def install(entry, target, dry):
-    for f, dest, substitute, payload in plan(entry, target):
+    for f, dest, substitute, payload, skill_root in plan(entry, target):
         print(f"{'[dry] ' if dry else ''}{f.relative_to(ROOT).as_posix()} -> {dest}")
         if dry:
             continue
         dest.parent.mkdir(parents=True, exist_ok=True)
         if substitute:
             text = f.read_text(encoding="utf-8").replace(TOKEN, payload.as_posix())
+            if skill_root is not None:
+                text = text.replace(SKILL_TOKEN, skill_root.as_posix())
             # OpenCode descarta en silencio un comando cuyo frontmatter no es YAML valido;
             # argument-hint (clave de Claude Code) suele traer "[...]" sin comillas.
             text = re.sub(r"(?m)^argument-hint:\s*(.*)$",

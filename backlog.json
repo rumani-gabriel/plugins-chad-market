@@ -19,16 +19,6 @@
       "promote_when": "revisar el modelo de permisos/merge antes de instalar; solo tiene sentido si el lab corre varios agentes en paralelo sobre el mismo conocimiento."
     },
     {
-      "name": "rea",
-      "repo": "https://github.com/morluto/rea",
-      "lens": "b",
-      "status": "ready_to_package",
-      "verified": { "stars": 335224, "forks": 84699, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-19" },
-      "summary": "MCP server (REA, 'Reverse Engineer Anything') que conecta un agente de codigo con Ghidra/Hopper/IDA para analizar binarios: traza funciones y devuelve pseudocodigo + evidencia.",
-      "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto). Requiere Ghidra/Hopper/IDA instalados aparte; IDA es pago.",
-      "promote_when": "confirmar que Ghidra (gratis) este disponible en el lab antes de empaquetar; empezar por apps JavaScript/Electron, que no requieren Ghidra/Hopper/IDA."
-    },
-    {
       "name": "train-llm-from-scratch",
       "repo": "https://github.com/FareedKhan-dev/train-llm-from-scratch",
       "lens": "b",
@@ -37,16 +27,6 @@
       "summary": "Construye un transformer GPT-style desde cero (sin librerias de alto nivel) y lo entrena en Colab/Kaggle gratis. Material de estudio, no una herramienta.",
       "caution": "Ninguna. No es instalable como plugin ni skill: se clona y se corre como proyecto aparte cuando alguien quiera aprender el tema.",
       "promote_when": "nunca se promueve a plugins/; queda como bookmark de referencia para la pata Python/ML del lab."
-    },
-    {
-      "name": "learn-harness-engineering",
-      "repo": "https://github.com/walkinglabs/learn-harness-engineering",
-      "lens": "b",
-      "status": "ready_to_package",
-      "verified": { "stars": 20914, "forks": 2514, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-19" },
-      "summary": "Curso open source de 'harness engineering' (14 lecciones, 8 proyectos): memoria entre sesiones, verificacion automatica, loops maker-checker, orquestacion multi-agente. Incluye una skill reusable 'harness-creator'.",
-      "caution": "Es un curso completo, no empaquetar todo el repo. Solo vale la pena extraer la skill harness-creator.",
-      "promote_when": "revisar que la skill harness-creator no de por sentado nada especifico de Claude Code/Codex antes de copiarla a plugins/."
     },
     {
       "name": "harness2",

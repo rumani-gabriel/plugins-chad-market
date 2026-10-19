@@ -24,6 +24,32 @@
         "api_keys": false,
         "runtime": ["python>=3.10", "uv (recomendado) o pip", "shell POSIX para bin/run-* (en Windows nativo usar los .cmd)"]
       }
+    },
+    {
+      "name": "harness-creator",
+      "version": "1.0.0",
+      "source": "plugins/harness-creator",
+      "description": "Construye, audita y mejora el harness de un agente de codigo: AGENTS.md/CLAUDE.md, seguimiento de estado/features, verificacion, limites de alcance y traspaso de sesion. 5 subsistemas: instrucciones, estado, verificacion, alcance, ciclo de vida.",
+      "skills": ["harness-creator"],
+      "commands": [],
+      "requires": { "network": false, "api_keys": false, "runtime": ["node.js (sin dependencias npm, solo core)"] },
+      "origin": "Extraido de walkinglabs/learn-harness-engineering (MIT) — solo la skill, no el curso completo."
+    }
+  ],
+  "external": [
+    {
+      "name": "rea",
+      "description": "MCP server (REA, 'Reverse Engineer Anything') que conecta un agente de codigo con Ghidra/Hopper/IDA para analizar binarios: traza funciones, devuelve pseudocodigo + evidencia.",
+      "repo": "https://github.com/morluto/rea",
+      "license": "MIT",
+      "install_command": "npx rea-agents setup",
+      "note": "NO se vendoriza: el propio proyecto advierte que un repo con nombre parecido o un README copiado no establece que una descarga sea oficial. Instalar siempre desde el comando oficial (requiere Node.js), nunca desde una copia.",
+      "requires": {
+        "network": "si, para el instalador npx y para analisis que use servicios externos",
+        "api_keys": false,
+        "runtime": ["Node.js y npm", "opcional: Ghidra (gratis), Hopper o IDA (pago) para analisis de binarios nativos; el analisis estatico de JS/Electron no los necesita"]
+      },
+      "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto)."
     }
   ]
 }

@@ -21,6 +21,11 @@ python install.py <plugin> --project <DIR> --dry-run   # ver qué copiaría
 - **Permisos:** `bash` tiene que poder ejecutar `market/<plugin>/bin/*`. Si tu `opencode.json` deniega o deja en `ask` sin aprobar, el comando se corta.
 - **Frontmatter:** OpenCode **descarta en silencio** un comando cuyo frontmatter no es YAML válido (pasó con `argument-hint: [..]`). Si un comando no aparece, revisá el frontmatter primero.
 - **Nombres:** `name` de un `SKILL.md` debe coincidir con su carpeta y ser `^[a-z0-9]+(-[a-z0-9]+)*$`.
+- **`${SKILL_ROOT}`:** una skill que necesita citar su propia ruta (para invocar un script propio, por ejemplo) usa este token en su `SKILL.md`, no una ruta hardcodeada. `install.py` lo resuelve a `skills/<nombre>/` dentro de `target`, sea `--project` o `--global`.
+
+## Externos (`catalog.json` → `"external"`) — no se vendorizan
+
+Algunas herramientas **no se copian a este repo**: son paquetes npm/pip con su propio instalador oficial, y el propio proyecto suele advertir que un repo con nombre parecido o un README copiado no prueba que una descarga sea oficial (pasa con `rea`). Para estas, `catalog.json` trae `install_command`, `repo`, `license`, `requires` y `caution`, pero `install.py` **no las toca**: correr `install_command` vos mismo, siempre apuntando al repo/paquete oficial declarado, nunca una copia.
 
 ## Backlog — candidatos todavía sin empaquetar
 
