@@ -1,0 +1,28 @@
+{
+  "name": "rea",
+  "source": { "official": "paquete npm 'rea-agents' (npx rea-agents)", "repo": "https://github.com/morluto/rea", "license": "MIT" },
+  "version_pin": "6.7.0",
+  "prereqs": [
+    "Node.js y npm (version minima: ver docs/installation.md del proyecto)",
+    "opcional, para binarios nativos: Ghidra (gratis), Hopper o IDA (pago); el analisis estatico de JavaScript/Electron no los necesita"
+  ],
+  "steps": [
+    {
+      "why": "Plan de solo lectura: muestra que va a cambiar en tu config de OpenCode, sin aplicar nada",
+      "run": "npx -y rea-agents@6.7.0 setup --client opencode --dry-run",
+      "readonly": true,
+      "network": true
+    },
+    {
+      "why": "Aplica: registra el MCP server 'rea' en la config de OpenCode (entrada mcp.rea) y las instrucciones de workflow; hace backup de la config existente",
+      "run": "npx -y rea-agents@6.7.0 setup --client opencode",
+      "needs_human": true,
+      "network": true
+    }
+  ],
+  "verify": "npx -y rea-agents@6.7.0 doctor --client opencode --json",
+  "rollback": "npx -y rea-agents@6.7.0 uninstall",
+  "permissions": ["bash: npx *"],
+  "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto). Instalar solo desde el comando oficial: el proyecto advierte que un repo de nombre parecido o un README copiado no prueba que una descarga sea oficial.",
+  "verified_against": "docs/installation.md y docs/client-configuration.md de morluto/rea (2026-10-20). Los comandos NO se ejecutaron."
+}

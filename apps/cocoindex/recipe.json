@@ -1,0 +1,23 @@
+{
+  "name": "cocoindex",
+  "source": { "official": "paquete PyPI 'cocoindex'", "repo": "https://github.com/cocoindex-io/cocoindex", "license": "Apache-2.0" },
+  "version_pin": "1.0.25",
+  "prereqs": ["Python >=3.11 (segun PyPI)", "pip"],
+  "steps": [
+    {
+      "why": "Crear un entorno virtual aislado",
+      "run": "python -m venv .venv"
+    },
+    {
+      "why": "Instalar la version pineada dentro del entorno",
+      "run": ".venv/bin/python -m pip install cocoindex==1.0.25",
+      "run_windows": ".venv\\Scripts\\python -m pip install cocoindex==1.0.25",
+      "network": true
+    }
+  ],
+  "verify": ".venv/bin/python -c \"import cocoindex; print('ok')\"   (Windows: .venv\\Scripts\\python ...)",
+  "rollback": "borrar la carpeta .venv",
+  "permissions": ["bash: python *", "bash: .venv/*"],
+  "caution": "Es una libreria, no un servicio: se usa importandola en tu propio codigo Python. Segun los sources y targets que configures puede necesitar red; revisa la config antes de apuntarla a datos sensibles.",
+  "verified_against": "README de cocoindex-io/cocoindex y metadata de PyPI (1.0.25, Python >=3.11), 2026-10-20. Los comandos NO se ejecutaron."
+}

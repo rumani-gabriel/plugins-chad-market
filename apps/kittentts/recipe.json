@@ -1,0 +1,27 @@
+{
+  "name": "kittentts",
+  "source": { "official": "paquete PyPI 'kittenml'", "repo": "https://github.com/KittenML/KittenTTS", "license": "Apache-2.0 (el codigo; cada modelo de voz trae su propia licencia)" },
+  "version_pin": "0.9.4",
+  "prereqs": [
+    "Python >=3.10 (segun PyPI)",
+    "CPU con unos 6 GB de RAM, o GPU CUDA con unos 8 GB libres (segun el README)",
+    "unos 1 GB de disco para el modelo por defecto (947 MiB; 506 MiB con weights=\"emb4\")"
+  ],
+  "steps": [
+    {
+      "why": "Crear un entorno virtual aislado",
+      "run": "python -m venv .venv"
+    },
+    {
+      "why": "Instalar la version pineada dentro del entorno",
+      "run": ".venv/bin/python -m pip install kittenml==0.9.4",
+      "run_windows": ".venv\\Scripts\\python -m pip install kittenml==0.9.4",
+      "network": true
+    }
+  ],
+  "verify": ".venv/bin/python -c \"from kittenml import KittenTTS; print('ok')\"   (Windows: .venv\\Scripts\\python ...). Solo prueba el import: los pesos del modelo se descargan recien en el primer KittenTTS(...).generate(...)",
+  "rollback": "borrar la carpeta .venv y el cache de pesos que haya descargado el modelo",
+  "permissions": ["bash: python *", "bash: .venv/*"],
+  "caution": "Revisa la licencia del modelo de voz que descargues: es independiente de la del codigo. El control de emociones esta en beta segun el README. El tamano chico (~25 MB) que se cita en algunas publicaciones es de los modelos viejos 0.8; el modelo por defecto actual pesa ~1 GB.",
+  "verified_against": "README de KittenML/KittenTTS y metadata de PyPI (0.9.4, Python >=3.10, Apache 2.0), 2026-10-20. Los comandos NO se ejecutaron."
+}

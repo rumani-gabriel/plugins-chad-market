@@ -8,6 +8,9 @@
 Skills y comandos van a skills/ y commands/ (lo que OpenCode descubre solo); el
 resto del plugin (wrappers bin/, tools/) va a market/<plugin>/. Es solo copia de
 archivos: no ejecuta nada del plugin.
+
+Las entradas de catalog.json con kind "app" no se instalan con este script: tienen una
+receta en apps/<nombre>/recipe.json que se sigue paso a paso con tu herramienta bash.
 """
 import argparse
 import json
@@ -31,7 +34,7 @@ def target_dir(args):
 
 
 def plan(entry, target):
-    src = ROOT / entry["source"]
+    src = ROOT / entry["path"]
     payload = target / "market" / entry["name"]
     for f in sorted(src.rglob("*")):
         if not f.is_file():
@@ -78,11 +81,13 @@ def main():
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
-    catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))["plugins"]
-    names = [p["name"] for p in catalog]
-    chosen = catalog if args.plugin == "all" else [p for p in catalog if p["name"] == args.plugin]
+    catalog = json.loads((ROOT / "catalog.json").read_text(encoding="utf-8"))["entries"]
+    plugins = [p for p in catalog if p["kind"] == "plugin"]
+    chosen = plugins if args.plugin == "all" else [p for p in catalog if p["name"] == args.plugin]
     if not chosen:
-        sys.exit(f"plugin desconocido: {args.plugin}. Disponibles: {', '.join(names)}")
+        sys.exit(f"desconocido: {args.plugin}. Plugins instalables: {', '.join(p['name'] for p in plugins)}")
+    if chosen[0]["kind"] == "app":
+        sys.exit(f"'{args.plugin}' es una app, no se instala con este script. Seguí su receta: {chosen[0]['path']}/recipe.json")
 
     target = target_dir(args)
     for entry in chosen:

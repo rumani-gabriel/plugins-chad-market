@@ -1,0 +1,10 @@
+{
+  "mcp": {
+    "NOMBRE": {
+      "type": "remote",
+      "url": "https://HOST/mcp",
+      "enabled": true,
+      "headers": { "Authorization": "Bearer {env:NOMBRE_API_KEY}" }
+    }
+  }
+}

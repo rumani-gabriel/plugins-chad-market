@@ -1,0 +1,10 @@
+{
+  "mcp": {
+    "NOMBRE": {
+      "type": "local",
+      "command": ["npx", "-y", "PAQUETE@VERSION"],
+      "enabled": true,
+      "environment": {}
+    }
+  }
+}
