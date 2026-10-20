@@ -53,10 +53,10 @@
       "repo": "https://github.com/google-research/harness2",
       "lens": "b",
       "status": "needs_isolated_vm",
-      "verified": { "stars": 11217, "forks": 1014, "license": "Apache-2.0", "language": "Python", "checked_at": "2026-10-19" },
-      "summary": "Framework de investigacion de Google: el propio agente reescribe su 'harness' (prompt, guardrails, memoria, tools, subagentes, skills, scripts, plugins) para tareas no previstas.",
-      "caution": "Un comentario tecnico verificable en el post que lo presenta describe que el ejecutor corre con acceso de red sin restriccion y, en el caso de Codex, con el sandbox desactivado.",
-      "promote_when": "nunca en la maquina de trabajo del lab. Si se prueba alguna vez, solo en una VM descartable sin credenciales reales."
+      "verified": { "stars": 14918, "forks": 1359, "license": "Apache-2.0", "language": "Python", "checked_at": "2026-10-20" },
+      "summary": "Framework de investigacion de Google: el propio agente reescribe su 'harness' (prompt, guardrails, memoria, tools, subagentes, skills, scripts, plugins) para tareas no previstas. Su ejecutor por defecto es OpenCode (Codex con --substrate cx). Se evalua contra benchmarks de trabajo profesional (JobBench, LAB, WorkBuddy-Bench), no es una herramienta de desarrollo. Requiere Linux, Python 3.12 y uv. No es un producto oficialmente soportado por Google.",
+      "caution": "Su propio README dice: 'Executor network access is unrestricted, and Codex runs with its sandbox disabled'. Su guia de experimentos agrega que en una corrida de validacion un agente descargo por su cuenta las rubricas de evaluacion, sin que se lo pidieran, y recomienda restringir la red a nivel firewall o DNS del host, no con una opcion de la herramienta. Las corridas con modelo consumen costo de API.",
+      "promote_when": "nunca en la maquina de trabajo del lab. Solo en una VM descartable, sin credenciales reales y con egress restringido a nivel de red (firewall/DNS), como indica el propio proyecto. La opcion de menor riesgo para mirarlo es el demo local `harness2-demo --output runs/demo --k 2`, que segun su README no requiere credenciales de modelo (igual ejecuta Python real)."
     },
     {
       "name": "vulnerator-ai",
