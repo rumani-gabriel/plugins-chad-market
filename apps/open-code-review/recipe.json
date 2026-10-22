@@ -1,0 +1,53 @@
+{
+  "name": "open-code-review",
+  "source": { "official": "paquete npm '@alibaba-group/open-code-review' (comando ocr)", "repo": "https://github.com/alibaba/open-code-review", "license": "Apache-2.0" },
+  "version_pin": "1.13.3",
+  "prereqs": [
+    "Node.js y npm",
+    "Git >= 2.41 (el CLI lo usa para generar diffs y buscar codigo)",
+    "Un modelo: un endpoint/proveedor configurable, o el modo delegacion (el propio agente revisa con su modelo y no hace falta API key)"
+  ],
+  "steps": [
+    {
+      "why": "Instala el CLI 'ocr' con la version pineada. El paquete trae un binario nativo por plataforma (paquete @alibaba-group/ocr-<os>-<arch>)",
+      "run": "npm install -g @alibaba-group/open-code-review@1.13.3",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Evita que el CLI se actualice solo: por defecto, al correr, chequea npm cada ~18 min y ejecuta 'npm i -g' con la ultima version. Esta variable lo desactiva. Ponela en el entorno del shell que usa OpenCode.",
+      "run": "export OCR_NO_UPDATE=1",
+      "run_windows": "setx OCR_NO_UPDATE 1",
+      "network": false
+    },
+    {
+      "why": "Configura proveedor y modelo (interactivo; pide la API key o un endpoint propio) y prueba la conexion. Saltealo si vas a usar solo el modo delegacion",
+      "run": "ocr config provider && ocr config model && ocr llm test",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Solo lectura: muestra que archivos revisaria sin hacer ningun pedido al modelo",
+      "run": "ocr delegate preview",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Integracion con OpenCode: baja el plugin (un solo .ts) desde el TAG de la version pineada, no desde main. Registra las tools ocr_review y ocr_health y los comandos /ocr-review y /ocr-health",
+      "run": "mkdir -p .opencode/plugins && curl -fsSL https://raw.githubusercontent.com/alibaba/open-code-review/v1.13.3/plugins/open-code-review/opencode/open-code-review.ts -o .opencode/plugins/open-code-review.ts",
+      "run_windows": "New-Item -ItemType Directory -Force .opencode/plugins | Out-Null; Invoke-WebRequest https://raw.githubusercontent.com/alibaba/open-code-review/v1.13.3/plugins/open-code-review/opencode/open-code-review.ts -OutFile .opencode/plugins/open-code-review.ts",
+      "network": true
+    },
+    {
+      "why": "El plugin necesita su dependencia de runtime en el directorio .opencode (OpenCode 1.x). Sin esto el log del servidor dice 'Cannot find package'",
+      "run": "cd .opencode && (test -f package.json || npm init -y) && npm install @opencode-ai/plugin",
+      "needs_human": true,
+      "network": true
+    }
+  ],
+  "verify": "ocr version && ocr llm test   # y, dentro de OpenCode reiniciado: /ocr-health",
+  "rollback": "npm uninstall -g @alibaba-group/open-code-review && rm -f .opencode/plugins/open-code-review.ts",
+  "permissions": ["bash: npm *", "bash: ocr *", "bash: git *"],
+  "caution": "El codigo que se revisa viaja al proveedor de modelo que configures: usa un endpoint local o propio para repos sensibles. Los numeros de su README (mas precision y F1 que Claude Code con ~1/9 de los tokens) son de su propio benchmark (AACR-Bench) y el proyecto admite menor recall: encuentra menos defectos a cambio de menos ruido. No esta probado con un modelo local chico.",
+  "verified_against": "README del repo, plugins/open-code-review/opencode/README.md, scripts/install.js, scripts/update.js y bin/ocr.js de alibaba/open-code-review en el tag v1.13.3, y el registro npm (2026-10-22). Los comandos NO se ejecutaron."
+}

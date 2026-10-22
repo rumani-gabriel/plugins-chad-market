@@ -5,7 +5,8 @@
     "needs_review": "funciona, pero tiene un comportamiento puntual a revisar antes de instalarlo a diario",
     "needs_isolated_vm": "el propio proyecto (o un comentario tecnico verificado) describe un modo de ejecucion peligroso (sandbox desactivado, red sin restriccion, autonomia total); nunca en la maquina de trabajo",
     "needs_audit": "muy nuevo / pocos ojos encima; alguien tiene que leer el codigo entero antes de confiar",
-    "reference_only": "no es una herramienta para instalar; es material de estudio o referencia de arquitectura"
+    "reference_only": "no es una herramienta para instalar; es material de estudio o referencia de arquitectura",
+    "not_recommended": "investigado y descartado a proposito: el motivo esta en 'caution'. Queda registrado para no volver a evaluarlo desde cero"
   },
   "entries": [
     {
@@ -67,6 +68,36 @@
       "summary": "Orquestador de pentesting: contenedores Docker con Kali Linux y un loop de decision tipo OODA, conectado a un agente de codigo. Pensado para engagements con consentimiento explicito del cliente.",
       "caution": "17 estrellas, un solo mantenedor, pocos dias de vida. Demasiado nuevo para confiar sin leer el codigo completo del orquestador.",
       "promote_when": "que alguien lea el codigo entero (que hace cada contenedor, como decide atacar, que permisos pide), no solo el README, antes de instalarlo."
+    },
+    {
+      "name": "free-claude-code",
+      "repo": "https://github.com/Alishahryar1/free-claude-code",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 62620, "forks": 9793, "license": "AGPL-3.0-only (segun su archivo LICENSE; la API de GitHub lo muestra como NOASSERTION)", "language": "Python", "checked_at": "2026-10-22" },
+      "summary": "Proxy local que hace correr Claude Code, Codex y otros 9 agentes contra hasta 61 proveedores de modelos gratuitos o locales, con fallback automatico entre ellos.",
+      "caution": "Redundante: OpenCode ya trabaja de forma nativa con multiples proveedores y modelos locales. Ademas manda los prompts (y el codigo que contengan) a proveedores de terceros gratuitos, y un request fallido puede pasar por mas de un proveedor antes de resolverse. El '90% menos de tokens' y lo de 'ToS-friendly' son afirmaciones del propio proyecto, no verificadas. Licencia AGPL-3.0.",
+      "promote_when": "no se promueve. Si algun dia hiciera falta un ruteador de proveedores con fallback, ver primero la configuracion de proveedores de OpenCode."
+    },
+    {
+      "name": "addyosmani-agent-skills",
+      "repo": "https://github.com/addyosmani/agent-skills",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 109594, "forks": 11427, "license": "MIT", "language": "JavaScript", "checked_at": "2026-10-22" },
+      "summary": "Coleccion de skills de ingenieria de software para agentes (spec, TDD, code review, seguridad, CI/CD). Es de Addy Osmani, no de Anthropic como dice el post que lo difundio.",
+      "caution": "Todavia no se leyeron las skills una por una. Cada skill suma contexto: para un modelo local chico conviene elegir pocas, no instalar las 25.",
+      "promote_when": "leer las skills, elegir 3 o 4 que cubran huecos reales del lab (por ejemplo spec, TDD, revision, seguridad) y empaquetarlas con atribucion, conservando la licencia MIT."
+    },
+    {
+      "name": "wshobson-agents",
+      "repo": "https://github.com/wshobson/agents",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 41552, "forks": 4406, "license": "MIT", "language": "Python", "checked_at": "2026-10-22" },
+      "summary": "Coleccion de 94 plugins (202 agentes, 185 skills, 105 comandos) para varias herramientas; para OpenCode genera agentes, skills y comandos traduciendo los permisos (make install-opencode).",
+      "caution": "Instalarlo entero le suma muchisimo contexto a un modelo local chico. Su valor para este repo es como fuente de ideas y de como traducir permisos entre herramientas.",
+      "promote_when": "no se instala completo. Si el lab necesita un agente puntual (por ejemplo de un lenguaje o de seguridad), tomarlo de ahi como base y empaquetarlo como plugin propio."
     }
   ]
 }

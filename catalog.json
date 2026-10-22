@@ -88,6 +88,14 @@
       "summary": "Texto a voz local en Python (KittenTTS 2: 47 voces, clonado con 5-30 s de audio). Pesa ~1 GB.",
       "tags": ["voice", "tts", "python", "local-ai"],
       "verified": "docs"
+    },
+    {
+      "name": "open-code-review",
+      "kind": "app",
+      "path": "apps/open-code-review",
+      "summary": "Code review con IA (Alibaba, Apache-2.0): seleccion de archivos y reglas deterministica + agente con contexto del repo + pasada aparte para descartar falsos positivos. Plugin nativo para OpenCode (/ocr-review).",
+      "tags": ["code-review", "security", "review", "opencode-plugin"],
+      "verified": "docs"
     }
   ]
 }
