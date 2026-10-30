@@ -1,47 +1,60 @@
 {
   "name": "voicestudio",
-  "source": { "official": "imagen Docker ghcr.io/debpalash/voicestudio (tag fijo)", "repo": "https://github.com/debpalash/VoiceStudio", "license": "AGPL-3.0-only (la aplicacion). Los pesos de los modelos tienen licencia propia: el modelo por defecto, OmniVoice, declara pesos CC-BY-NC (no comercial)" },
+  "source": { "official": "release oficial v0.5.7 en GitHub (instalador de Windows) y, como alternativa, la imagen Docker ghcr.io/debpalash/voicestudio con tag fijo", "repo": "https://github.com/debpalash/VoiceStudio", "license": "AGPL-3.0-only (la aplicacion). Los pesos de los modelos tienen licencia propia: el modelo por defecto, OmniVoice, declara pesos CC-BY-NC (no comercial)" },
   "version_pin": "0.5.7",
+  "target_environment": "Windows 10/11 x64 con una NVIDIA RTX 3060 de 12 GB (el lab). Con NVIDIA usa CUDA automaticamente.",
   "prereqs": [
-    "Docker. En Windows: Docker Desktop con WSL2",
-    "Opcional, para GPU NVIDIA: NVIDIA Container Toolkit en el host. Sin GPU funciona en CPU, mas lento",
-    "Espacio y red para la primera corrida: baja ~2.4 GB de pesos desde Hugging Face"
+    "Windows 10 u 11, x64",
+    "Controlador NVIDIA instalado (verificable con nvidia-smi). Sin controlador NVIDIA corre en CPU, mas lento",
+    "~10 GB libres (la app, su entorno de Python con PyTorch para CUDA y los pesos). Si C: esta justo, apuntar OMNIVOICE_ENGINES_DIR y OMNIVOICE_DATA_DIR a otro disco antes de abrirlo",
+    "Red en la primera corrida: la app baja Python, FFmpeg y ~2.4 GB de pesos desde Hugging Face"
   ],
   "steps": [
     {
-      "why": "Solo lectura: confirma que Docker responde antes de bajar nada",
-      "run": "docker version --format '{{.Server.Version}}'",
+      "why": "Solo lectura: confirma que el controlador de la GPU responde y cuanta VRAM hay libre ANTES de levantar el modelo de lenguaje local (la tarjeta de 12 GB se comparte)",
+      "run_windows": "nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used --format=csv",
       "readonly": true,
       "network": false
     },
     {
-      "why": "Baja la imagen con la version fija (no uses :latest, que es la rama main en movimiento, ni el instalador curl|sh / irm|iex de la web del proyecto: aca se usa la imagen oficial con tag)",
-      "run": "docker pull ghcr.io/debpalash/voicestudio:0.5.7",
+      "why": "Baja el instalador oficial de la version fija (~212 MB) a una carpeta nueva y vacia, no a una con scripts",
+      "run_windows": "New-Item -ItemType Directory -Force $env:USERPROFILE\\Downloads\\voicestudio-0.5.7 | Out-Null; Invoke-WebRequest -Uri https://github.com/debpalash/VoiceStudio/releases/download/v0.5.7/VoiceStudio-0.5.7-win-x64.exe -OutFile $env:USERPROFILE\\Downloads\\voicestudio-0.5.7\\VoiceStudio-0.5.7-win-x64.exe",
       "needs_human": true,
       "network": true
     },
     {
-      "why": "Levanta el servicio SOLO en loopback (127.0.0.1) y con la analitica apagada. El backend viene sin autenticacion en loopback; su superficie de administracion es de clase RCE, por eso no se publica el puerto hacia la red. Agrega --gpus all antes de la imagen si hay GPU NVIDIA",
-      "run": "docker run -d --name voicestudio -p 127.0.0.1:3900:3900 -e OMNIVOICE_ANALYTICS_DISABLED=1 -v voicestudio-data:/app/omnivoice_data ghcr.io/debpalash/voicestudio:0.5.7",
-      "needs_human": true,
-      "network": true
-    },
-    {
-      "why": "La primera corrida baja ~2.4 GB de pesos desde Hugging Face. Mirá los logs y revisa la licencia de los pesos antes de usar el audio generado en algo que no sea investigacion interna",
-      "run": "docker logs --tail 40 voicestudio",
+      "why": "Verifica la integridad: el hash debe ser igual al de SHA256SUMS.txt del release (este valor se tomo de ese archivo el 2026-10-30). Prueba que la descarga no se corrompio, no quien la construyo. Si no coincide, borrar el archivo y NO ejecutarlo",
+      "run_windows": "(Get-FileHash -Algorithm SHA256 $env:USERPROFILE\\Downloads\\voicestudio-0.5.7\\VoiceStudio-0.5.7-win-x64.exe).Hash.ToLower() -eq '76c6385d404ae9f11b9e47d42996432ea4cd6c065afb06718c4842b39020cd80'",
       "readonly": true,
       "network": false
     },
     {
-      "why": "Conecta OpenCode al servidor MCP de VoiceStudio (herramientas: generate_speech, transcribe, clone_voice, design_voice, list_voices, check_health, entre otras). Agrega esta entrada a la clave 'mcp' de opencode.json, con la barra final en la URL",
-      "edit_config": "{\"mcp\": {\"voicestudio\": {\"type\": \"remote\", \"url\": \"http://127.0.0.1:3900/mcp/\", \"enabled\": true}}}",
+      "why": "Instala para el usuario actual (sin administrador). No uses el instalador irm|iex de la web del proyecto: aca se usa el .exe fijo y verificado. Un humano corre el asistente y elige la carpeta",
+      "run_windows": "Start-Process $env:USERPROFILE\\Downloads\\voicestudio-0.5.7\\VoiceStudio-0.5.7-win-x64.exe",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Primer arranque: la app arma su entorno (Python, FFmpeg, PyTorch para CUDA) y pregunta antes de bajar cada modelo. En la pregunta de analitica, rechazar. Antes de usar el audio generado en algo que no sea investigacion interna, revisar la licencia de los pesos",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Conecta OpenCode al servidor MCP de VoiceStudio. El servidor esta montado en el backend, asi que la app tiene que estar abierta. Agregar esta entrada a la clave 'mcp' de opencode.json, con la barra final en la URL. Herramientas: generate_speech, transcribe, clone_voice, design_voice, list_voices, check_health, entre otras",
+      "edit_config": "{\"mcp\": {\"voicestudio\": {\"type\": \"remote\", \"url\": \"http://localhost:3900/mcp/\", \"enabled\": true}}}",
       "needs_human": true,
       "network": false
     }
   ],
-  "verify": "curl -sI http://127.0.0.1:3900/ (debe responder 200) y, en OpenCode, `opencode mcp list` con la herramienta check_health del servidor",
-  "rollback": "docker rm -f voicestudio && docker volume rm voicestudio-data && docker rmi ghcr.io/debpalash/voicestudio:0.5.7",
-  "permissions": ["bash: docker *", "bash: curl *"],
-  "caution": "Licencia AGPL-3.0: si lo modificas y lo ofreces a otros por red tenes que publicar tu codigo. Los pesos NO se relicencian: el modelo por defecto tiene pesos CC-BY-NC (no comercial) y otros motores tienen terminos propios; el repo no da una autorizacion comercial. Clonar una voz exige consentimiento de quien habla. Si alguna vez se expone fuera de loopback hay que definir OMNIVOICE_API_KEY (desde una variable de entorno, nunca escrita en un archivo del repo). Si se usan los parametros de rutas del MCP (transcribe/clone_voice por ruta), limitarlos con OMNIVOICE_MCP_BASE_PATH. La GPU y el sistema operativo del lab no estan confirmados: con ROCm o ARM64 las etiquetas de imagen cambian (ver docs/install/docker.md del proyecto).",
-  "verified_against": "README, LICENSE-NOTICE.md, docs/install/docker.md, docs/mcp.md y docs/api-auth.md de debpalash/VoiceStudio (2026-10-30), y el tag 0.5.7 verificado en GHCR. Los comandos NO se ejecutaron."
+  "vram_note": "El proyecto no publica cifras de VRAM para la 3060 de 12 GB (su tabla de benchmarks esta vacia). Si el modelo de lenguaje local y la voz compiten por los 12 GB: probar medir con nvidia-smi, elegir motores livianos (KittenTTS, Supertonic-3, PocketTTS) y un Whisper chico, o forzar la voz a CPU con la variable OMNIVOICE_TORCH_VARIANT=cpu (documentada en docs/install/windows.md).",
+  "verify": "nvidia-smi mientras genera voz (debe mostrar uso de la GPU), `curl.exe -sI http://localhost:3900/` con la app abierta (debe responder 200) y, en OpenCode, `opencode mcp list` y la herramienta check_health del servidor",
+  "rollback": "Desinstalar VoiceStudio desde Configuracion > Aplicaciones, borrar la carpeta de datos y de motores (OMNIVOICE_DATA_DIR / OMNIVOICE_ENGINES_DIR, o la que eligio el asistente) y borrar la entrada 'voicestudio' de opencode.json",
+  "alternative_docker": {
+    "when": "solo si se prefiere aislar el servicio o correrlo sin ventana. En Windows requiere Docker Desktop con WSL2 (revisar la licencia de Docker Desktop segun el tamano de la organizacion) y es una ruta menos directa que el instalador nativo",
+    "run": "docker pull ghcr.io/debpalash/voicestudio:0.5.7 && docker run -d --name voicestudio --gpus all -p 127.0.0.1:3900:3900 -e OMNIVOICE_ANALYTICS_DISABLED=1 -v voicestudio-data:/app/omnivoice_data ghcr.io/debpalash/voicestudio:0.5.7",
+    "note": "El tag 0.5.7 se verifico en GHCR (2026-10-30). Publicar el puerto solo en 127.0.0.1: el backend no tiene autenticacion en loopback y su superficie de administracion es de clase RCE."
+  },
+  "permissions": ["powershell: nvidia-smi *", "powershell: Invoke-WebRequest *", "powershell: Get-FileHash *", "powershell: Start-Process *", "bash: curl *"],
+  "caution": "Licencia AGPL-3.0: si lo modificas y lo ofreces a otros por red tenes que publicar tu codigo. Los pesos NO se relicencian: el modelo por defecto tiene pesos CC-BY-NC (no comercial) y otros motores tienen terminos propios; el repo no da una autorizacion comercial. Clonar una voz exige consentimiento de quien habla. El backend viene sin autenticacion en loopback: no exponerlo a la red; si alguna vez se expone, definir OMNIVOICE_API_KEY desde una variable de entorno, nunca escrita en un archivo del repo. Si se usan las rutas del MCP (transcribe/clone_voice por ruta), limitarlas con OMNIVOICE_MCP_BASE_PATH.",
+  "verified_against": "README, LICENSE-NOTICE.md, docs/install/windows.md, docs/install/docker.md, docs/mcp.md, docs/api-auth.md y docs/benchmarks.md de debpalash/VoiceStudio, el release v0.5.7 (instalador y SHA256SUMS.txt) y el tag 0.5.7 en GHCR (2026-10-30). Los comandos NO se ejecutaron."
 }

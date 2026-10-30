@@ -101,7 +101,7 @@
       "name": "voicestudio",
       "kind": "app",
       "path": "apps/voicestudio",
-      "summary": "Voz local para el agente (hablar y escuchar): sintesis y clonado de voz, transcripcion y doblaje, con servidor MCP. Corre en Docker en loopback, sin nube. Licencia AGPL-3.0; los pesos del modelo por defecto son no comerciales.",
+      "summary": "Voz local para el agente (hablar y escuchar): sintesis y clonado de voz, transcripcion y doblaje, con servidor MCP. Instalador nativo de Windows con CUDA (verificado por hash) y alternativa en Docker; todo local, sin nube. Licencia AGPL-3.0; los pesos del modelo por defecto son no comerciales.",
       "tags": ["voice", "tts", "stt", "local-ai", "mcp", "jarvis"],
       "verified": "docs"
     }
