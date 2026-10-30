@@ -96,6 +96,14 @@
       "summary": "Code review con IA (Alibaba, Apache-2.0): seleccion de archivos y reglas deterministica + agente con contexto del repo + pasada aparte para descartar falsos positivos. Plugin nativo para OpenCode (/ocr-review).",
       "tags": ["code-review", "security", "review", "opencode-plugin"],
       "verified": "docs"
+    },
+    {
+      "name": "voicestudio",
+      "kind": "app",
+      "path": "apps/voicestudio",
+      "summary": "Voz local para el agente (hablar y escuchar): sintesis y clonado de voz, transcripcion y doblaje, con servidor MCP. Corre en Docker en loopback, sin nube. Licencia AGPL-3.0; los pesos del modelo por defecto son no comerciales.",
+      "tags": ["voice", "tts", "stt", "local-ai", "mcp", "jarvis"],
+      "verified": "docs"
     }
   ]
 }

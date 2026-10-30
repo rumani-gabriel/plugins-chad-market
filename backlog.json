@@ -98,6 +98,36 @@
       "summary": "Coleccion de 94 plugins (202 agentes, 185 skills, 105 comandos) para varias herramientas; para OpenCode genera agentes, skills y comandos traduciendo los permisos (make install-opencode).",
       "caution": "Instalarlo entero le suma muchisimo contexto a un modelo local chico. Su valor para este repo es como fuente de ideas y de como traducir permisos entre herramientas.",
       "promote_when": "no se instala completo. Si el lab necesita un agente puntual (por ejemplo de un lenguaje o de seguridad), tomarlo de ahi como base y empaquetarlo como plugin propio."
+    },
+    {
+      "name": "agent-beacon",
+      "repo": "https://github.com/Asymptote-Labs/agent-beacon",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 2959, "forks": 263, "license": "MIT", "language": "Go", "checked_at": "2026-10-30" },
+      "summary": "Capa de memoria entre agentes: captura el historial de sesiones de Claude Code, Cursor, Codex, OpenCode y otros 20+ y lo convierte en conocimiento reutilizable (correcciones, patrones de depuracion), consultable por MCP o Agent Skills. Por defecto escribe telemetria local en JSONL.",
+      "caution": "El asistente de instalacion interactivo inicia sesion en beacon.sh y preselecciona Beacon Cloud (envio a un servicio alojado); hay que elegir Local de forma explicita, o instalar por paquete sin cuenta. El historial de sesion incluye prompts, comandos y codigo: en el lab puede contener datos de pruebas de intrusion. Un comentario publico dice que la evaluacion de que guardar usa un modelo alojado (Jev) con clave de API, no verificado en el README. Instalacion en Linux por curl|bash (con checksums); preferir bajar el paquete y verificarlo.",
+      "promote_when": "instalar solo en modo Local (sin Beacon Cloud), confirmar si su paso de evaluacion puede correr offline con un modelo local, y probar que OpenCode quede capturado sin mandar nada fuera. Si algun dia se evalua para un grupo de trabajo, compararlo antes con una herramienta manual de lecciones compartidas."
+    },
+    {
+      "name": "cubeloop",
+      "repo": "https://github.com/cubeplexai/cubeloop",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 85, "forks": 18, "license": "MIT", "language": "Python", "checked_at": "2026-10-30" },
+      "summary": "Framework de agentes en Python, async, con un bucle lineal facil de seguir en vez de grafos; herramientas como funciones tipadas, checkpoints en SQLite/Postgres/MySQL, un proveedor falso para tests sin llamar a la API y trazas OpenTelemetry. Trae proveedores de Anthropic y OpenAI y un protocolo para sumar otros.",
+      "caution": "85 estrellas y pocos meses de vida. No trae proveedor para modelos locales (habria que escribirlo). Un comentario publico advierte que un fallo entre un efecto de una herramienta y el guardado del checkpoint podria repetir la llamada al reanudar; no verificado.",
+      "promote_when": "no se promueve. Sirve de referencia si se arma un agente propio de voz (escuchar, pensar, hablar) con un bucle legible; en ese caso leer su codigo y escribir el proveedor local."
+    },
+    {
+      "name": "call-md",
+      "repo": "https://github.com/video-db/call.md",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 1988, "forks": 239, "license": null, "language": "TypeScript", "checked_at": "2026-10-30" },
+      "summary": "Asistente de reuniones de IA (aplicacion de escritorio): transcripcion en vivo, sugerencias, metricas de conversacion, resumenes y webhooks. Integracion con MCP.",
+      "caution": "El repositorio no tiene archivo de licencia (la API de GitHub no detecta ninguna), asi que no hay derecho de uso claro. El propio autor del post aclara que el audio se envia a VideoDB para transcribir en tiempo real y para las funciones de IA: no es local. No sirve para un lab aislado.",
+      "promote_when": "no se promueve. Para transcribir localmente en el lab, ver la receta voicestudio del catalogo."
     }
   ]
 }
