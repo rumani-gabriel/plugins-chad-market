@@ -1,0 +1,86 @@
+{
+  "schema": 1,
+  "purpose": "Modelos que corren EN LOCAL, anotados para investigarlos y probarlos desde el laboratorio. Cada entrada es una pista verificada, no una instalacion: nada se descarga sin que lo pidan.",
+  "lab": {
+    "os": "Windows",
+    "gpu": "NVIDIA RTX 3060, 12 GB de VRAM",
+    "nota": "La VRAM se comparte entre el modelo de lenguaje local, la voz y cualquier otro modelo que se cargue a la vez."
+  },
+  "status_values": {
+    "to_test": "los datos publicados dicen que entra y sirve; falta correrlo en el lab y medir",
+    "to_research": "hay una pista interesante pero faltan datos (formatos, memoria real, licencia o calidad en el idioma que se necesita)",
+    "not_for_lab": "investigado y descartado para el lab (el motivo esta en la entrada)"
+  },
+  "how_to_read_fit": "estimate_weights_gb = parametros x 2 bytes (BF16) segun lo publicado en la ficha del modelo. Es una ESTIMACION del peso de los parametros, sin activaciones ni cache de contexto; no esta medida en la 3060. Medir con nvidia-smi.",
+  "entries": [
+    {
+      "name": "LFM3-Audio-2B",
+      "repo": "https://huggingface.co/LiquidAI/LFM3-Audio-2B",
+      "family": "Liquid AI LFM3 (coleccion https://huggingface.co/collections/LiquidAI/lfm3)",
+      "modality": "audio y texto de entrada; texto, voz o ambos de salida",
+      "status": "to_test",
+      "verified": { "params": "2.0 B", "license": "LFM Open License v1.0 (ver license_note)", "context": "32K tokens", "downloads": 3550, "created": "2026-09-08", "checked_at": "2026-10-30" },
+      "runs_with": "BF16 con vLLM, SGLang o Transformers; GGUF con llama.cpp (CPU y GPU); ONNX Runtime; MLX (Apple). La ficha usa trust_remote_code",
+      "estimate_weights_gb": 4.0,
+      "what_it_does": "Un solo modelo compacto para conversar por voz con respuesta en streaming, transcribir (ASR), sintetizar voz y traducir en 18 idiomas (incluido espanol), entender audio y convertir pedidos hablados en llamadas a herramientas. La conversacion por voz hoy solo en ingles, segun la ficha.",
+      "why_for_the_lab": "Candidato a reemplazar la cadena separada de reconocer voz, pensar y hablar por un modelo unico para el agente tipo Jarvis, local y en una sola tarjeta. Compararlo contra la receta voicestudio (voz) y un modelo de lenguaje aparte.",
+      "caveats": "La propia ficha dice que no se recomienda para programar con agentes ni razonamiento complejo de varios pasos por su tamano. La conversacion por voz es solo en ingles. No hay cifras propias de calidad en espanol verificadas.",
+      "license_note": "La licencia permite uso sin costo mientras la entidad legal (con sus afiliadas) NO supere USD 10 millones de ingresos anuales; por encima de ese umbral el uso comercial no esta licenciado. El uso solo de investigacion o no comercial no es 'uso comercial', pero conviene confirmarlo antes de usarlo en nada que se venda.",
+      "to_test": ["correrlo en GGUF con llama.cpp y medir VRAM y latencia en la 3060", "probar ASR en espanol con audio propio del lab", "probar llamada a herramientas por voz contra OpenCode (MCP)", "comparar contra voicestudio"]
+    },
+    {
+      "name": "LFM3-Omni-2B",
+      "repo": "https://huggingface.co/LiquidAI/LFM3-Omni-2B",
+      "family": "Liquid AI LFM3",
+      "modality": "texto, imagen, video y audio de entrada; texto y voz de salida",
+      "status": "to_research",
+      "verified": { "params": "2.17 B", "license": "LFM Open License v1.0 (mismo umbral de USD 10 M)", "downloads": 3080, "created": "2026-10-21", "checked_at": "2026-10-30" },
+      "runs_with": "no se leyeron los formatos de esta ficha; ver la ficha (usa codigo propio, trust_remote_code)",
+      "estimate_weights_gb": 4.3,
+      "what_it_does": "Modelo omni de extremo a extremo: entiende texto, imagenes, video y audio y responde en texto o voz. La ficha dice que reemplaza a un ASR, un modelo de vision y lenguaje, un LLM y un TTS separados.",
+      "why_for_the_lab": "Version con vision del mismo experimento: un modelo para escuchar, mirar y hablar. Util si el agente tiene que 'ver' una captura o un video de una prueba.",
+      "caveats": "Salio hace pocos dias; falta ver formatos cuantizados y su calidad real.",
+      "to_test": ["ver si hay GGUF u ONNX utilizable en Windows", "medir VRAM con una imagen y con audio", "decidir si se prefiere sobre LFM3-Audio-2B"]
+    },
+    {
+      "name": "LFM3-1.7B",
+      "repo": "https://huggingface.co/LiquidAI/LFM3-1.7B",
+      "family": "Liquid AI LFM3",
+      "modality": "texto",
+      "status": "to_test",
+      "verified": { "params": "1.73 B", "license": "LFM Open License v1.0 (mismo umbral de USD 10 M)", "context": "256K tokens", "downloads": 23694, "created": "2026-10-23", "checked_at": "2026-10-30" },
+      "runs_with": "segun la ficha, a 4 bits ocupa cerca de 1 GB de memoria; post-entrenado para entornos de agentes (Hermes Agent, Pi, OpenClaw). No se verifico compatibilidad con OpenCode",
+      "estimate_weights_gb": 3.5,
+      "what_it_does": "Modelo de texto chico pensado para agentes locales y para especializarlo con un ajuste fino en una sola GPU.",
+      "why_for_the_lab": "Cabe de sobra en la 3060 junto con otros modelos; sirve como cerebro liviano mientras la voz usa el resto de la VRAM. Probar si sostiene tareas de herramientas de OpenCode.",
+      "caveats": "Es chico: para analisis de seguridad o razonamiento largo probablemente haga falta un modelo mayor. Calidad en espanol no verificada.",
+      "to_test": ["cargarlo en llama.cpp u otro motor compatible con OpenCode", "medir tareas con herramientas (leer archivos, correr comandos) contra un modelo mas grande", "medir cuanta VRAM deja libre"]
+    },
+    {
+      "name": "LFM3-VL-2B y d1-Omni-2B",
+      "repo": "https://huggingface.co/collections/LiquidAI/lfm3",
+      "family": "Liquid AI LFM3",
+      "modality": "VL: imagen y texto. d1-Omni: modelo de decision para texto, imagen y audio",
+      "status": "to_research",
+      "verified": { "params": "VL ~2 B (por el nombre; no se leyo su ficha). d1-Omni-2B: 2.17 B", "license": "LFM Open License v1.0 (d1-Omni-2B; VL se asume la misma, sin verificar)", "checked_at": "2026-10-30" },
+      "what_it_does": "d1-Omni-2B devuelve respuestas calibradas en un solo paso, sin generar tokens: clasificar, extraer texto, numeros y fechas, ubicar objetos y estimar cantidades. Segun la ficha, 5.8 ms por decision en una H100.",
+      "why_for_the_lab": "Un modelo de decision rapido podria usarse para clasificar o filtrar (por ejemplo ordenar hallazgos) sin gastar un modelo generativo. Falta leer las fichas completas.",
+      "caveats": "No se leyeron los detalles de VL; las cifras de d1-Omni son de GPUs de centro de datos, no de la 3060.",
+      "to_test": ["leer las fichas completas", "probar d1-Omni-2B en la 3060 si hay una ruta para correrlo en Windows"]
+    },
+    {
+      "name": "baidu/Unlimited-OCR",
+      "repo": "https://huggingface.co/baidu/Unlimited-OCR",
+      "family": "Baidu",
+      "modality": "imagenes y PDF de entrada, texto estructurado de salida",
+      "status": "to_test",
+      "verified": { "params": "3.34 B (BF16)", "license": "MIT", "downloads": 3759379, "likes": 4932, "created": "2026-06-19", "checked_at": "2026-10-30" },
+      "runs_with": "Transformers en GPU NVIDIA (probado con Python 3.12, CUDA 12.9, torch 2.10) y vLLM (imagen Docker oficial vllm/vllm-openai:unlimited-ocr). El post original dice que tambien corre con SGLang, Ollama y LM Studio: la ficha no lo menciona, no esta verificado. Usa trust_remote_code",
+      "estimate_weights_gb": 6.7,
+      "what_it_does": "OCR de documentos largos que mantiene el contexto entre paginas (lectura de PDF de varias paginas como un solo documento), extrae texto, tablas y formulas, multi-idioma.",
+      "why_for_the_lab": "Leer informes, manuales y capturas escaneadas en local, sin subir el documento a ningun servicio. Pesos de ~6.7 GB: entran en 12 GB, pero cargan la tarjeta si hay otro modelo cargado.",
+      "caveats": "El codigo del repo se ejecuta al cargar el modelo (trust_remote_code): fijar una revision concreta y leer ese codigo antes de correrlo. Con documentos de cientos de paginas no hay datos de precision ni de memoria.",
+      "to_test": ["correrlo con Transformers en la 3060 con un PDF corto y medir VRAM", "probar un PDF largo y ver si la memoria alcanza", "revisar el codigo remoto en una revision fija"]
+    }
+  ]
+}

@@ -128,6 +128,26 @@
       "summary": "Asistente de reuniones de IA (aplicacion de escritorio): transcripcion en vivo, sugerencias, metricas de conversacion, resumenes y webhooks. Integracion con MCP.",
       "caution": "El repositorio no tiene archivo de licencia (la API de GitHub no detecta ninguna), asi que no hay derecho de uso claro. El propio autor del post aclara que el audio se envia a VideoDB para transcribir en tiempo real y para las funciones de IA: no es local. No sirve para un lab aislado.",
       "promote_when": "no se promueve. Para transcribir localmente en el lab, ver la receta voicestudio del catalogo."
+    },
+    {
+      "name": "skill-recorder",
+      "repo": "https://github.com/microsoft/skill-recorder",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 5571, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-30" },
+      "summary": "Aplicacion de escritorio que graba tu sesion de trabajo en pantalla y, con el SDK de GitHub Copilot, la convierte en una skill o automatizacion reutilizable (intencion y pasos ordenados). Prefiere herramientas nativas como la CLI de gh en vez de repetir clics.",
+      "caution": "La grabacion queda local, pero segun el post que la difundio Copilot lee cuadros de la pantalla en la nube de GitHub: capturas de pantalla fuera de la maquina. Para un laboratorio aislado no sirve, y una pantalla puede mostrar datos de pruebas.",
+      "promote_when": "no se promueve. Si algun dia hiciera falta aprender una tarea a partir de una grabacion, la alternativa es escribir la skill a mano con los planos de blueprints/."
+    },
+    {
+      "name": "openduet",
+      "repo": "https://github.com/CopilotKit/OpenDuet",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 1633, "license": "MIT", "language": "TypeScript", "created": "2026-10-21", "checked_at": "2026-10-30" },
+      "summary": "Plantilla de agente proactivo autoalojado (web, movil, Slack y Teams): resumen diario, trabaja en su propia computadora con navegador y shell, y pide aprobacion humana antes de enviar, pagar, firmar o borrar. Construido sobre OpenBot y CopilotKit.",
+      "caution": "Su README dice que esta en desarrollo temprano y que requiere un proyecto gratuito de CopilotKit Intelligence para los hilos y la memoria: una dependencia de un servicio alojado, contraria a lo local. Lee Gmail, calendario y Slack. 1633 estrellas y 10 dias de vida al momento de revisarlo.",
+      "promote_when": "revisar si la parte de hilos y memoria puede correr sin el servicio alojado y con un modelo local, y leer como implementa las aprobaciones humanas (patron util aunque no se use el producto)."
     }
   ]
 }
