@@ -1,0 +1,72 @@
+{
+  "name": "llama-cpp",
+  "source": { "official": "release oficial de ggml-org/llama.cpp (binarios de Windows con CUDA) y un modelo GGUF oficial de Qwen en Hugging Face", "repo": "https://github.com/ggml-org/llama.cpp", "license": "MIT (llama.cpp). El modelo por defecto, Qwen3-30B-A3B, es Apache-2.0" },
+  "version_pin": "b12040",
+  "target_environment": "Windows 10/11 x64 con NVIDIA RTX 3060 de 12 GB de VRAM y 64 GB de RAM (el lab). La 3060 es de arquitectura Ampere: sirve el build CUDA 12.4.",
+  "purpose": "Es el cerebro local del agente: un servidor con API compatible con OpenAI en 127.0.0.1 al que OpenCode se conecta como proveedor. Corre un modelo MoE mediano dejando los expertos en la RAM y en la GPU solo lo que el resto necesita.",
+  "prereqs": [
+    "Controlador NVIDIA instalado (verificable con nvidia-smi). El zip 'cudart' trae las DLL de CUDA, asi que no hace falta instalar el toolkit",
+    "~21 GB libres para el modelo (18.6 GB) mas ~640 MB de binarios",
+    "Red solo para bajar los archivos; despues corre sin red",
+    "Cerrar antes lo que ocupe VRAM (otros modelos, VoiceStudio) para medir limpio"
+  ],
+  "steps": [
+    {
+      "why": "Solo lectura: confirma GPU, VRAM libre y RAM antes de bajar nada",
+      "run_windows": "nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used --format=csv; [math]::Round((Get-CimInstance Win32_ComputerSystem).TotalPhysicalMemory/1GB)",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Baja los binarios del build fijo b12040 (267 MB) y las DLL de CUDA (373 MB) a una carpeta nueva y vacia",
+      "run_windows": "$d = \"$env:USERPROFILE\\llama-cpp\\dl\"; New-Item -ItemType Directory -Force $d | Out-Null; $u = 'https://github.com/ggml-org/llama.cpp/releases/download/b12040'; curl.exe -L -o \"$d\\llama-b12040-bin-win-cuda-12.4-x64.zip\" \"$u/llama-b12040-bin-win-cuda-12.4-x64.zip\"; curl.exe -L -o \"$d\\cudart-llama-bin-win-cuda-12.4-x64.zip\" \"$u/cudart-llama-bin-win-cuda-12.4-x64.zip\"",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Verifica la integridad contra los digest que publica el release (tomados el 2026-11-02). Si alguno da False, borrar el archivo y NO descomprimirlo",
+      "run_windows": "$d = \"$env:USERPROFILE\\llama-cpp\\dl\"; (Get-FileHash -Algorithm SHA256 \"$d\\llama-b12040-bin-win-cuda-12.4-x64.zip\").Hash.ToLower() -eq '71472d2206a8e1618e3902f598dec77fe7aee74c5b75159e3d46cbb749361a62'; (Get-FileHash -Algorithm SHA256 \"$d\\cudart-llama-bin-win-cuda-12.4-x64.zip\").Hash.ToLower() -eq '8c79a9b226de4b3cacfd1f83d24f962d0773be79f1e7b75c6af4ded7e32ae1d6'",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Descomprime los dos zips en la misma carpeta (los binarios y las DLL de CUDA tienen que quedar juntos)",
+      "run_windows": "$d = \"$env:USERPROFILE\\llama-cpp\"; Expand-Archive -Force \"$d\\dl\\llama-b12040-bin-win-cuda-12.4-x64.zip\" \"$d\\b12040\"; Expand-Archive -Force \"$d\\dl\\cudart-llama-bin-win-cuda-12.4-x64.zip\" \"$d\\b12040\"",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Baja el modelo GGUF oficial (18.6 GB, Apache-2.0) con reanudacion (-C -) y verifica su SHA256 (tomado de Hugging Face el 2026-11-02, revision e4d4bafd). Si no coincide, borrarlo",
+      "run_windows": "$m = \"$env:USERPROFILE\\llama-cpp\\models\"; New-Item -ItemType Directory -Force $m | Out-Null; curl.exe -L -C - -o \"$m\\Qwen3-30B-A3B-Q4_K_M.gguf\" 'https://huggingface.co/Qwen/Qwen3-30B-A3B-GGUF/resolve/e4d4bafdfb96a411a163846265362aceb0b9c63a/Qwen3-30B-A3B-Q4_K_M.gguf'; (Get-FileHash -Algorithm SHA256 \"$m\\Qwen3-30B-A3B-Q4_K_M.gguf\").Hash.ToLower() -eq '0d003f6662faee786ed5da3e31b29c978de5ae5d275c8794c606a7f3c01aa8f5'",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Levanta el servidor SOLO en 127.0.0.1. --cpu-moe deja todos los expertos MoE en la RAM y en la GPU queda el resto, asi que arranca con poca VRAM; despues se afina bajando a --n-cpu-moe N (cuantas capas de expertos quedan en la CPU) mientras sobre VRAM. --alias fija el nombre del modelo en la API. --jinja (activado por defecto) permite las llamadas a herramientas",
+      "run_windows": "& \"$env:USERPROFILE\\llama-cpp\\b12040\\llama-server.exe\" -m \"$env:USERPROFILE\\llama-cpp\\models\\Qwen3-30B-A3B-Q4_K_M.gguf\" --alias qwen3-30b-a3b --host 127.0.0.1 --port 8080 -ngl all --cpu-moe -c 32768 -fa on --jinja",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Mira en el log de arranque la linea 'Chat format': si dice un formato propio del modelo (por ejemplo Hermes) las llamadas a herramientas son nativas; si dice 'Generic', gastan mas tokens y andan peor. Anota la VRAM y la RAM usadas con nvidia-smi y el Administrador de tareas",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Conecta OpenCode: copia el proveedor de blueprints/provider/provider-local.json a la clave 'provider' de opencode.json y elegi el modelo local. El id debe ser el que devuelve /v1/models (aca, el alias qwen3-30b-a3b)",
+      "edit_config": "blueprints/provider/provider-local.json",
+      "needs_human": true,
+      "network": false
+    }
+  ],
+  "verify": "curl.exe -s http://127.0.0.1:8080/v1/models (debe listar qwen3-30b-a3b) y curl.exe -s http://127.0.0.1:8080/v1/chat/completions -H 'Content-Type: application/json' -d '{\"model\":\"qwen3-30b-a3b\",\"messages\":[{\"role\":\"user\",\"content\":\"hola\"}],\"max_tokens\":32}'. Despues, en OpenCode, /models y una tarea corta que use una herramienta (leer un archivo).",
+  "measure": "Antes de dar la receta por buena, anotar con el servidor cargado: VRAM usada (nvidia-smi), RAM usada, tokens por segundo (el log del servidor imprime la velocidad de cada respuesta) y cuanto contexto sostiene sin degradarse. Probar bajar --n-cpu-moe de a pasos mientras la VRAM lo permita y ver cuanto sube la velocidad. El dato de VRAM libre decide si entra la voz (voicestudio o LFM3-Audio-2B) al mismo tiempo.",
+  "rollback": "Cerrar el servidor (Ctrl+C) y borrar la carpeta %USERPROFILE%\\llama-cpp; sacar el proveedor de opencode.json",
+  "alternatives": {
+    "mas_liviano": "gpt-oss-20b en MXFP4 (12.1 GB, Apache-2.0, ggml-org/gpt-oss-20b-GGUF, archivo gpt-oss-20b-MXFP4.gguf, sha256 27cd6c432c7672cb812a92f611cf3ba7bbc35928262bb1e1253ff4ee6ae35901): entra mas facil en la VRAM y deja lugar a la voz. La documentacion de llama.cpp lo lista con llamadas a herramientas nativas (formato Harmony).",
+    "mas_nuevo": "Qwen3.6-35B-A3B cuantizado (por ejemplo UD-Q4_K_M, 22.1 GB, Apache-2.0). El repositorio oficial de Qwen no ofrece un GGUF accesible: el mas usado es el de unsloth (tercero), asi que verificar su procedencia y hash antes de adoptarlo."
+  },
+  "permissions": ["powershell: nvidia-smi *", "powershell: curl.exe *", "powershell: Get-FileHash *", "powershell: Expand-Archive *", "powershell: llama-server.exe *"],
+  "caution": "El servidor escucha en 127.0.0.1 y no tiene autenticacion: no lo expongas a la red; si alguna vez hiciera falta, usar --api-key con la clave en una variable de entorno, nunca escrita en un archivo del repo. Los builds de llama.cpp salen cada pocas horas (bNNNNN): fijar siempre el tag. Los numeros de memoria de esta receta son estimaciones hasta medirlos en el lab. Un modelo chico puede fallar en las llamadas a herramientas de OpenCode: probar antes de confiarle tareas largas.",
+  "verified_against": "README del servidor y docs/function-calling.md de ggml-org/llama.cpp (rama master), los assets y digests del release b12040 (2026-11-02), la ficha y el arbol de archivos de Qwen/Qwen3-30B-A3B-GGUF y de ggml-org/gpt-oss-20b-GGUF en Hugging Face (hash SHA256 de cada archivo), y la documentacion de proveedores de OpenCode (ejemplo de llama.cpp). Los comandos NO se ejecutaron."
+}

@@ -104,6 +104,14 @@
       "summary": "Voz local para el agente (hablar y escuchar): sintesis y clonado de voz, transcripcion y doblaje, con servidor MCP. Instalador nativo de Windows con CUDA (verificado por hash) y alternativa en Docker; todo local, sin nube. Licencia AGPL-3.0; los pesos del modelo por defecto son no comerciales.",
       "tags": ["voice", "tts", "stt", "local-ai", "mcp", "jarvis"],
       "verified": "docs"
+    },
+    {
+      "name": "llama-cpp",
+      "kind": "app",
+      "path": "apps/llama-cpp",
+      "summary": "El cerebro local del agente: servidor con API compatible con OpenAI (llama.cpp) que corre un modelo MoE mediano (Qwen3-30B-A3B) dejando los expertos en la RAM y poco en la GPU. Binarios de Windows con CUDA fijados por build y modelo verificado por hash, todo local. Incluye el proveedor para OpenCode.",
+      "tags": ["llm", "local-ai", "opencode-provider", "moe", "gpu"],
+      "verified": "docs"
     }
   ]
 }

@@ -46,11 +46,12 @@ Si el catálogo no cubre la necesidad, seguí `blueprints/BUILDING.md`: elegís 
 - **BOM:** un `SKILL.md` guardado con BOM (UTF-8 con marca de orden de bytes) se ignora sin aviso. Guardá siempre UTF-8 sin BOM; en Windows PowerShell 5.1 `Set-Content -Encoding UTF8` lo agrega.
 
 ## Modelos locales para investigar
-`models.json` guarda **modelos que corren en local** que alguien marcó para probar en este laboratorio (hoy: Windows con una NVIDIA RTX 3060 de 12 GB, memoria compartida entre todo lo que se cargue). Cada entrada trae lo verificado (parámetros, licencia, formatos, fuente), una **estimación** de cuánto pesan los parámetros (no medida), el estado y qué probar.
+`models.json` guarda **modelos que corren en local** que alguien marcó para probar en este laboratorio (hoy: Windows con una NVIDIA RTX 3060 de 12 GB y 64 GB de RAM; la VRAM se comparte entre todo lo que se cargue). Cada entrada trae lo verificado (parámetros, licencia, formatos, fuente), una **estimación** de cuánto pesan los parámetros (no medida), el estado y qué probar.
 - Es una lista de pistas, **no una instalación**: no descargues ni cargues un modelo sin que te lo pidan. Un modelo es varios GB y la tarjeta es de todos.
 - Antes de usar uno: leé su licencia (varias tienen un tope de ingresos o prohíben el uso comercial) y, si la ficha usa `trust_remote_code`, fijá una revisión y leé ese código primero.
 - Para investigar uno: medí con `nvidia-smi` antes y después de cargarlo, probalo con tareas reales del laboratorio y anotá el resultado en su entrada (`status` y `verified`, con fecha). Si resulta bueno, convertilo en una receta de app (`apps/`).
 - Un modelo de voz es la pieza que falta para que el agente hable y escuche: mirá también la app `voicestudio` y `kittentts` del catálogo.
+- El **cerebro local** del agente es la app `llama-cpp`: un servidor compatible con OpenAI en `127.0.0.1` que corre un modelo MoE con los expertos en la RAM, y el plano `blueprints/provider/provider-local.json` lo conecta a OpenCode como proveedor. Medí VRAM, RAM y tokens por segundo con el modelo cargado y anotalo en su entrada de `models.json`: ese dato decide si entra la voz al mismo tiempo.
 
 ## Backlog — lo que todavía no se puede tomar
 `backlog.json` guarda herramientas investigadas que **hoy están bloqueadas** por un motivo concreto. Cada entrada trae `repo`, `status`, `verified` (estrellas/forks/licencia **con fecha de chequeo**), `summary`, `caution` y `promote_when` (qué tiene que pasar para desbloquearla). `status_values` en el propio archivo explica cada estado.

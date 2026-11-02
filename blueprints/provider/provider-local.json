@@ -1,0 +1,22 @@
+{
+  "$comment": "Plano: un modelo local como proveedor de OpenCode (servidor con API compatible con OpenAI). Copiar la clave 'provider' al opencode.json del proyecto o al global. Cambiar NOMBRE por un identificador corto, el puerto por el del servidor y el id del modelo por el que devuelve GET /v1/models (con llama-server, el valor de --alias). 'limit' tiene que coincidir con el contexto con que se levanto el servidor (-c).",
+  "$schema": "https://opencode.ai/config.json",
+  "provider": {
+    "NOMBRE": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "NOMBRE (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:8080/v1"
+      },
+      "models": {
+        "ID-DEL-MODELO": {
+          "name": "ID-DEL-MODELO (local)",
+          "limit": {
+            "context": 32768,
+            "output": 8192
+          }
+        }
+      }
+    }
+  }
+}
