@@ -148,6 +148,26 @@
       "summary": "Plantilla de agente proactivo autoalojado (web, movil, Slack y Teams): resumen diario, trabaja en su propia computadora con navegador y shell, y pide aprobacion humana antes de enviar, pagar, firmar o borrar. Construido sobre OpenBot y CopilotKit.",
       "caution": "Su README dice que esta en desarrollo temprano y que requiere un proyecto gratuito de CopilotKit Intelligence para los hilos y la memoria: una dependencia de un servicio alojado, contraria a lo local. Lee Gmail, calendario y Slack. 1633 estrellas y 10 dias de vida al momento de revisarlo.",
       "promote_when": "revisar si la parte de hilos y memoria puede correr sin el servicio alojado y con un modelo local, y leer como implementa las aprobaciones humanas (patron util aunque no se use el producto)."
+    },
+    {
+      "name": "open-ontologies",
+      "repo": "https://github.com/fabio-rovai/open-ontologies",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 2763, "forks": 306, "license": "MIT", "language": "Rust", "created": "2026-03-09", "checked_at": "2026-11-02" },
+      "summary": "Binario unico en Rust (servidor MCP) para planificar un cambio en una ontologia (OWL/RDF), ver sus consecuencias antes de aplicarlo y generar un certificado que otra persona re-verifica sin red con un verificador en Lean 4. Corre local, sin servidor propio al que llamar.",
+      "caution": "Los numeros del post (901 consecuencias de un cambio de una linea, 259 hechos probados y 1 falsificado rechazado) estan en su README, no son inventados; un comentario publico dice que un analisis con otra IA encontro que algunos chequeos son mas debiles de lo que suenan: no verificado. Es una herramienta para ontologias formales: hoy el lab no tiene un hueco que cubra. Instalar por curl del binario del release o por Docker; en Windows nativo hay una guia aparte (docs/windows.md).",
+      "promote_when": "solo si el lab necesita modelar conocimiento (por ejemplo un entorno de pruebas) como ontologia con cambios verificables. Antes, leer docs/windows.md y fijar la version del release."
+    },
+    {
+      "name": "nvidia-auto-ontology",
+      "repo": "https://github.com/NVIDIA/auto-ontology",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 719, "forks": 90, "license": "Apache-2.0", "language": "Python", "created": "2026-04-27", "checked_at": "2026-11-02" },
+      "summary": "Capa semantica sobre bases relacionales (terminos, metricas, joins) construida desde metadata e historial de consultas, expuesta por MCP, CLI y API; valida los joins de una consulta generada por IA contra esa capa antes de ejecutarla. Se conecta a Databricks, Postgres, Snowflake o DuckDB.",
+      "caution": "No es local por defecto: usa endpoints NVIDIA NIM (el catalogo alojado de NVIDIA con clave de API o NIMs propios) para el modelo, los embeddings y el reranker. Es una pila pesada (Next.js, FastAPI, Postgres con pgvector, opcional Vault). Cuando no hay claves foraneas declaradas, un modelo las infiere, asi que el chequeo descansa en suposiciones; segun el post las respuestas tardan decenas de segundos. El proyecto no acepta contribuciones externas.",
+      "promote_when": "no se promueve para el lab (no hay un hueco real). Queda como referencia de la idea 'validar un join contra una capa de significado antes de ejecutarlo'. Si algun dia se probara, confirmar antes si los endpoints configurables aceptan un servidor local compatible con OpenAI en lugar de NIM."
     }
   ]
 }
