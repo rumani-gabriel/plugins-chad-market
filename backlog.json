@@ -168,6 +168,56 @@
       "summary": "Capa semantica sobre bases relacionales (terminos, metricas, joins) construida desde metadata e historial de consultas, expuesta por MCP, CLI y API; valida los joins de una consulta generada por IA contra esa capa antes de ejecutarla. Se conecta a Databricks, Postgres, Snowflake o DuckDB.",
       "caution": "No es local por defecto: usa endpoints NVIDIA NIM (el catalogo alojado de NVIDIA con clave de API o NIMs propios) para el modelo, los embeddings y el reranker. Es una pila pesada (Next.js, FastAPI, Postgres con pgvector, opcional Vault). Cuando no hay claves foraneas declaradas, un modelo las infiere, asi que el chequeo descansa en suposiciones; segun el post las respuestas tardan decenas de segundos. El proyecto no acepta contribuciones externas.",
       "promote_when": "no se promueve para el lab (no hay un hueco real). Queda como referencia de la idea 'validar un join contra una capa de significado antes de ejecutarlo'. Si algun dia se probara, confirmar antes si los endpoints configurables aceptan un servidor local compatible con OpenAI en lugar de NIM."
+    },
+    {
+      "name": "freetoken",
+      "repo": "https://github.com/FlashML-org/FreeToken",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 15845, "license": "Apache-2.0", "language": "Python", "checked_at": "2026-11-02" },
+      "summary": "Motor de inferencia para modelos MoE (mezcla de expertos) grandes en hardware de consumo: los pesos que no son expertos quedan en la GPU y los expertos en la RAM del equipo, y se traen por PCIe segun hagan falta; carga safetensors directo (sin convertir a GGUF) y expone una API compatible con OpenAI y Anthropic en localhost. Su README lista OpenCode entre los agentes compatibles y soporte nativo de las GPU NVIDIA RTX serie 30, 40 y 50. Los autores del paper incluyen a Stoica, Zaharia, Keutzer y Han (UC Berkeley y otros).",
+      "caution": "La guia de instalacion por consola exige Linux x86_64, controlador NVIDIA r580 o mayor (CUDA 13) y un toolkit con nvcc: NO sirve tal cual en el Windows del lab. En Windows solo se menciona una aplicacion de escritorio que se baja de flashml.ai (no de GitHub): falta verificar su procedencia (hash o firma) y que usa por debajo. El README no publica cifras de velocidad ('blistering speeds'); un comentario del post dice que midiendo en segundos por token seria inusable: anecdota, no verificada. Como los expertos viven en la RAM, el rendimiento y lo que entra depende de cuanta RAM tenga el equipo (dato que falta del lab) y del ancho de banda de PCIe.",
+      "promote_when": "saber cuanta RAM tiene el lab, leer la documentacion y el instalador de Windows de flashml.ai y verificar su procedencia, y medir en la 3060 de 12 GB un modelo MoE chico (por ejemplo Qwen3.6-35B-A3B) con tokens por segundo y RAM usada, contra llama.cpp. Si resulta, escribir la receta con la ruta de Windows que funcione."
+    },
+    {
+      "name": "context-mode",
+      "repo": "https://github.com/mksglu/context-mode",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 33237, "license": "Elastic License 2.0 (fuente disponible, no es open source segun la OSI)", "language": "TypeScript", "checked_at": "2026-11-02" },
+      "summary": "Reduce lo que el agente gasta de contexto leyendo salidas de herramientas: ejecuta las herramientas en un subproceso aislado, guarda los datos crudos en SQLite con busqueda de texto y le devuelve al modelo solo un resumen; ademas registra en SQLite las ediciones y decisiones para retomar tras una compactacion. Funciona por MCP e incluye un plugin de TypeScript con hooks para OpenCode (Node 22.5 o mayor, o Bun).",
+      "caution": "Las cifras (98 por ciento menos en una salida de ejemplo, 84 por ciento menos de bytes en tareas grandes en la v2) son del propio autor, sin una evaluacion independiente verificada. Hay una v2 en preview. Tiene un comando que abre un panel alojado (context-mode.com/insight): no usarlo en el lab. La licencia ELv2 permite el uso interno pero restringe ofrecerlo como servicio. Categoria parecida a rtk, que tuvo un benchmark independiente con resultado de mas costo en algunos casos: no asumir ahorro sin medirlo.",
+      "promote_when": "correr una comparacion propia con y sin el plugin en OpenCode, midiendo tokens totales por tarea terminada y que la calidad no baje (el modelo lee menos datos crudos), con el panel alojado apagado. Fijar la version."
+    },
+    {
+      "name": "llm-wiki",
+      "repo": "https://github.com/nashsu/llm_wiki",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 21309, "license": "GPL-3.0", "language": "TypeScript (aplicacion de escritorio con Tauri)", "checked_at": "2026-11-02" },
+      "summary": "Aplicacion de escritorio (Windows, macOS y Linux) que lee tus documentos (PDF, Office, EPUB, imagenes, paginas web) y arma una wiki de paginas enlazadas con un grafo de conocimiento, con cada pagina citando su archivo de origen; la mantiene al agregar documentos. Compatible con Obsidian, con API HTTP local (127.0.0.1) y servidor MCP para que un agente la consulte. Soporta proveedores en la nube y Ollama como modelo local. Basado en el patron de 'LLM Wiki' de Karpathy.",
+      "caution": "GPL-3.0: sin problema para uso interno, pero obliga si se redistribuye una version modificada. Las funciones opcionales (busqueda web con Tavily o SerpApi, MinerU en la nube) mandan datos fuera: dejarlas apagadas en el lab y usar solo Ollama local. La calidad de las paginas depende del modelo: con modelos chicos puede alucinar al escribirlas (pregunta de un comentario, sin respuesta verificada).",
+      "promote_when": "probarla con un conjunto chico de documentos del lab usando solo un modelo local por Ollama, con todas las funciones en la nube apagadas, y comprobar que el servidor MCP le sirve a OpenCode. Si funciona, escribir la receta."
+    },
+    {
+      "name": "qvac",
+      "repo": "https://github.com/tetherto/qvac",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 744, "license": "Apache-2.0", "language": "TypeScript", "checked_at": "2026-11-02" },
+      "summary": "SDK de Tether para IA local que junta en una sola interfaz tareas como chat con modelos GGUF, embeddings y RAG, voz a texto, texto a voz, traduccion, OCR, vision y generacion de imagenes; el post dice que corre en Windows, macOS, Linux, iOS y Android, sin claves de API una vez bajados los modelos.",
+      "caution": "El post que lo difundio es patrocinado por QVAC (lo dice al final): las cifras de sus modelos propios (MedPsy-4B, AfriSLM) son marketing del vendedor, no verificadas. No se verifico si usa la GPU NVIDIA en Windows ni que formatos acepta para voz. Se solapa con voicestudio y con los modelos de Liquid AI de models.json.",
+      "promote_when": "leer su documentacion sobre Windows y GPU NVIDIA y compararlo con voicestudio para voz; solo vale la pena si cubre algo que esos no cubren (por ejemplo un solo SDK para varias tareas)."
+    },
+    {
+      "name": "helix-foundry",
+      "repo": "https://github.com/HelixDB/helix-foundry",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 1990, "license": "Apache-2.0", "language": "Go", "checked_at": "2026-11-02" },
+      "summary": "Espacio de trabajo para armar una ontologia de la empresa: conecta bases de datos, herramientas y documentos, un agente propone los tipos y los carga en HelixDB como un grafo que se explora con respuestas citadas; los tipos solo cambian al aprobar una version. Se levanta con docker compose, alojado o local, con modelos de Anthropic u OpenAI, u Ollama local.",
+      "caution": "No es una herramienta del lab: resuelve ontologias de datos de una empresa. Su README menciona Postgres y MySQL como fuentes; no menciona Databricks. En modo local con Ollama depende de un modelo que llame herramientas bien. Ver tambien nvidia-auto-ontology y open-ontologies: la misma familia.",
+      "promote_when": "no se promueve para el lab. Queda como referencia del patron 'los datos sincronizan siempre y el significado cambia solo con una aprobacion'."
     }
   ]
 }

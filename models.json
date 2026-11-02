@@ -81,6 +81,18 @@
       "why_for_the_lab": "Leer informes, manuales y capturas escaneadas en local, sin subir el documento a ningun servicio. Pesos de ~6.7 GB: entran en 12 GB, pero cargan la tarjeta si hay otro modelo cargado.",
       "caveats": "El codigo del repo se ejecuta al cargar el modelo (trust_remote_code): fijar una revision concreta y leer ese codigo antes de correrlo. Con documentos de cientos de paginas no hay datos de precision ni de memoria.",
       "to_test": ["correrlo con Transformers en la 3060 con un PDF corto y medir VRAM", "probar un PDF largo y ver si la memoria alcanza", "revisar el codigo remoto en una revision fija"]
+    },
+    {
+      "name": "Modelos MoE medianos (candidatos para el motor FreeToken)",
+      "repo": "https://github.com/FlashML-org/FreeToken/blob/main/docs/models.md",
+      "family": "Qwen3.6-35B-A3B, Qwen3-30B-A3B, openai/gpt-oss-20b, google/gemma-4-26B-A4B-it (los que figuran como 'conocidos' en la lista de modelos de FreeToken)",
+      "modality": "texto (y, en algunos, imagen)",
+      "status": "to_research",
+      "verified": { "checked_at": "2026-11-02", "nota": "Solo se verifico que FreeToken los lista como compatibles y que su README dice que un portatil de 8 GB de VRAM corre Qwen3.6-35B. NO se leyeron las fichas de cada modelo: parametros, licencia y tamanos cuantizados estan por verificar." },
+      "runs_with": "motor FreeToken (ver su entrada en backlog.json); su ruta de Windows no esta verificada",
+      "why_for_the_lab": "Un MoE tiene muchos parametros pero activa pocos por token (el sufijo A3B indica ~3B activos): puede dar un modelo mas capaz que uno denso chico en la misma tarjeta si hay RAM de sobra. Es el camino para un cerebro mas grande que lo que entra en 12 GB de VRAM.",
+      "caveats": "Depende de la RAM del equipo (dato que falta) y de que exista una ruta usable en Windows. Sin cifras de velocidad publicadas.",
+      "to_test": ["averiguar la RAM del lab", "leer las fichas y licencias de cada modelo antes de bajar nada", "medir tokens por segundo y RAM con uno chico (por ejemplo Qwen3.6-35B-A3B) y compararlo con llama.cpp", "probarlo con OpenCode por la API local"]
     }
   ]
 }
