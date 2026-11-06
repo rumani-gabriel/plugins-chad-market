@@ -164,7 +164,7 @@
       "repo": "https://github.com/NVIDIA/auto-ontology",
       "lens": "b",
       "status": "reference_only",
-      "verified": { "stars": 719, "forks": 90, "license": "Apache-2.0", "language": "Python", "created": "2026-04-27", "checked_at": "2026-11-02" },
+      "verified": { "stars": 8517, "forks": 689, "license": "Apache-2.0", "language": "Python", "created": "2026-04-27", "checked_at": "2026-11-06" },
       "summary": "Capa semantica sobre bases relacionales (terminos, metricas, joins) construida desde metadata e historial de consultas, expuesta por MCP, CLI y API; valida los joins de una consulta generada por IA contra esa capa antes de ejecutarla. Se conecta a Databricks, Postgres, Snowflake o DuckDB.",
       "caution": "No es local por defecto: usa endpoints NVIDIA NIM (el catalogo alojado de NVIDIA con clave de API o NIMs propios) para el modelo, los embeddings y el reranker. Es una pila pesada (Next.js, FastAPI, Postgres con pgvector, opcional Vault). Cuando no hay claves foraneas declaradas, un modelo las infiere, asi que el chequeo descansa en suposiciones; segun el post las respuestas tardan decenas de segundos. El proyecto no acepta contribuciones externas.",
       "promote_when": "no se promueve para el lab (no hay un hueco real). Queda como referencia de la idea 'validar un join contra una capa de significado antes de ejecutarlo'. Si algun dia se probara, confirmar antes si los endpoints configurables aceptan un servidor local compatible con OpenAI en lugar de NIM."
@@ -218,6 +218,24 @@
       "summary": "Espacio de trabajo para armar una ontologia de la empresa: conecta bases de datos, herramientas y documentos, un agente propone los tipos y los carga en HelixDB como un grafo que se explora con respuestas citadas; los tipos solo cambian al aprobar una version. Se levanta con docker compose, alojado o local, con modelos de Anthropic u OpenAI, u Ollama local.",
       "caution": "No es una herramienta del lab: resuelve ontologias de datos de una empresa. Su README menciona Postgres y MySQL como fuentes; no menciona Databricks. En modo local con Ollama depende de un modelo que llame herramientas bien. Ver tambien nvidia-auto-ontology y open-ontologies: la misma familia.",
       "promote_when": "no se promueve para el lab. Queda como referencia del patron 'los datos sincronizan siempre y el significado cambia solo con una aprobacion'."
+    },
+    {
+      "name": "floorplan",
+      "repo": "https://github.com/haydenschmitty/floorplan",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 3047,
+        "forks": 233,
+        "license": "MIT",
+        "language": "JavaScript",
+        "version": "0.6.3",
+        "commit": "70be3f40f9c2e061290b76027f180d9ff892edd6",
+        "checked_at": "2026-11-06"
+      },
+      "summary": "Skill de Claude Code y Codex que dibuja un mapa interactivo del codigo: scripts en Node sin dependencias siguen imports y empatan llamadas HTTP del frontend con los endpoints (tambien entre repos), y el modelo nombra cada parte en lenguaje llano. Incluye chequeo de salud (claves en el codigo, reglas abiertas de Firebase o Supabase) y marca lo que cambio el agente. El mapa es un HTML autocontenido y funciona sin conexion.",
+      "caution": "Repo de 9 dias con 3.000 estrellas: muy nuevo. Declara cero hooks, cero MCP y cero dependencias, pero tiene una unica conexion externa: un aviso de lista de espera de 'Floorplan Cloud' a los dos minutos (apagar con FLOORPLAN_NO_PROMPTS=1). Preguntar al mapa lanza 'claude -p' o 'codex exec': no hay ruta para OpenCode. Los nombres en lenguaje llano los escribe el modelo; con un modelo local chico la calidad es desconocida. Un comentario critico senala que la descripcion se conserva si solo cambia el cuerpo de una funcion, asi que el mapa puede quedar desactualizado sin avisar. Se solapa con graph-explorer (grafo local sin red).",
+      "promote_when": "probarlo en OpenCode con Qwen local sobre un repo propio: copiar la skill, correr los scripts de escaneo (solo Node) y juzgar si los nombres son utiles y si el mapa sigue coherente tras un cambio. Si aporta algo que graph-explorer no da (empate de llamadas HTTP entre repos, chequeo de salud), escribir la receta con la version fijada y FLOORPLAN_NO_PROMPTS=1."
     }
   ]
 }
