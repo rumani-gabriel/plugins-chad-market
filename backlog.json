@@ -256,6 +256,26 @@
       "summary": "Estudio de voz local en una app de escritorio (Tauri): clonado de voz con 8 motores TTS (Qwen3-TTS, Chatterbox, Kokoro, LuxTTS y otros, 23 idiomas), dictado con tecla global y Whisper, un LLM Qwen3 local (0.6B, 1.7B o 4B) y un servidor MCP en http://127.0.0.1:17493/mcp con la herramienta voicebox_speak, mas REST (/speak, /transcribe, /generate). En Windows usa CUDA y baja el binario CUDA desde la propia app. Cubre las dos mitades de la voz de Jarvis (escuchar y hablar) con licencia MIT.",
       "caution": "Las cifras del post (primer repo en tendencia, 2,6 M de descargas) no las verifique; lo verificado son 60.433 estrellas y MIT. La ultima release en GitHub es la v0.5.0 (abril) pero el CHANGELOG ya lista la 0.6.0 (2026-10-04), que renombra las herramientas MCP de voicebox.speak a voicebox_speak: hay que confirmar que version baja el instalador de su web antes de fijar un pin y un sha256. Un comentario del post dice que se cuelga seguido: sin evidencia propia. Comparte VRAM con el modelo de lenguaje del agente (TTS + Whisper + el Qwen3 empaquetado, aunque tiene descarga por modelo). Agregaron un motor OmniVoice con pesos no comerciales; usar los motores Apache-2.0. El dictado con tecla global es para una persona, no una escucha continua del agente. Clonar voces de terceros sin consentimiento: solo voces propias. No se probo que OpenCode se conecte a su MCP.",
       "promote_when": "en la PC del lab: instalar desde su sitio oficial, confirmar version y sha256, medir VRAM con Qwen3-30B-A3B en llama.cpp y los motores Qwen3-TTS 0.6B o Kokoro, probar voicebox_speak desde OpenCode como MCP remoto, y compararlo con voicestudio (AGPL, pesos CC-BY-NC). Si anda y le gana por licencia o VRAM, escribir apps/voicebox con recetas Windows."
+    },
+    {
+      "name": "txtai",
+      "repo": "https://github.com/neuml/txtai",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 13293,
+        "forks": 991,
+        "license": "Apache-2.0",
+        "language": "Python",
+        "created": "2020-08-09",
+        "last_push": "2026-11-10",
+        "version": "9.14.0 (PyPI y GitHub, 2026-10-06)",
+        "python": ">=3.11",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Libreria y servidor Python con una base de embeddings que junta indices densos y dispersos, grafo y SQL en un solo almacen, local y sin servicios remotos. Su API web puede exponer un endpoint /mcp (via FastApiMCP) con los endpoints habilitados como herramientas. Soporta llama.cpp y Hugging Face como modelos, agentes sobre smolagents y archivos agents.md y skill.md. Para el lab seria la memoria o el indice de busqueda local que el agente consulta en vez de releer archivos.",
+      "caution": "Es un framework general, no una herramienta lista para el agente: hay que escribir la configuracion (que carpeta indexar, que modelo de embeddings, que endpoints exponer). Todos los endpoints habilitados pasan a ser herramientas MCP: con un Qwen local chico conviene exponer solo search. Un comentario del post pregunta por trazabilidad de que indice respondio y por escala; sin respuesta. Baja modelos de Hugging Face la primera vez (la VRAM la comparte con el modelo del agente: probar embeddings en CPU). Se solapa con cocoindex (indexado incremental) y fast-grep. Las cifras del post son descriptivas, no hay benchmarks de ahorro de tokens.",
+      "promote_when": "armar una prueba minima en la PC del lab: pip install txtai==9.14.0 en un venv, indexar una carpeta chica (por ejemplo el propio repo) con un modelo de embeddings chico en CPU, levantar la API con mcp activado y solo el endpoint search, conectarla a OpenCode y comparar tokens y aciertos contra que el agente lea archivos con grep. Si gana, escribir apps/txtai con esa configuracion."
     }
   ]
 }
