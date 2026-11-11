@@ -309,6 +309,22 @@
       "summary": "Investigacion de Stanford: un codificador congelado (Qwen3-Embedding-4B) guarda cada documento una vez y 16 ranuras de memoria lo leen y entregan 16 embeddings que entran al modelo de lenguaje congelado (Qwen3-8B) como si fueran una imagen. Solo se entrena el modulo de memoria.",
       "caution": "Es investigacion temprana, no una herramienta: sus cifras (hasta 4.212 veces menos tokens, 27 veces mas rapido, 44.6% contra 30.9% en PersonaMem-v2, 18.6% a 24.2% en TextWorld) son de los autores y los propios autores reconocen que falla con detalles finos y que no generaliza a otros dominios ni a otros modelos. El modulo esta entrenado para un Qwen3-8B especifico y mete embeddings directamente en el modelo: no funciona detras de llama-server ni de OpenCode, hay que usar su codigo en PyTorch. No sirve con modelos alojados como Claude. Comentarios del post piden pruebas de borrado y correccion de memoria, que no vi publicadas.",
       "promote_when": "no se promueve. Queda como referencia de la idea 'memoria como embeddings que el modelo lee directamente'. Revisar si una version posterior se integra en llama.cpp o acepta otros modelos."
+    },
+    {
+      "name": "freellmapi",
+      "repo": "https://github.com/tashfeenahmed/freellmapi",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 50571,
+        "license": "MIT",
+        "created": "2026-04-21",
+        "last_push": "2026-11-11",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Enrutador local con un solo endpoint /v1 compatible con OpenAI que reparte las peticiones entre los cupos gratuitos de 34 proveedores (635 endpoints segun su README) y salta al siguiente cuando uno se agota. Guarda las claves cifradas, soporta llamadas a herramientas y trae un servidor MCP en /mcp.",
+      "caution": "No es local: cada prompt sale a proveedores externos de nivel gratuito, cuyos terminos sobre uso de datos no revise uno por uno; el propio repo dice 'personal experimentation only' y el post, que para produccion se use una API paga. Solo con codigo y datos sin ninguna sensibilidad. El router baja un catalogo firmado de freellmapi.co dos veces por dia (los instalados gratis reciben el snapshot mensual, 30 dias despues; hay version premium) y su instalacion recomendada es un script 'curl | bash' con Docker: usar la imagen con version fija o el instalador de Releases, y leer antes. Los modelos gratuitos varian mucho en capacidad y en soporte de herramientas: con failover automatico el mismo agente puede cambiar de modelo a mitad de una tarea. Un comentario estima que tras curar a mano quedan menos de mil millones de tokens utiles al mes.",
+      "promote_when": "solo si el lab necesita un modelo mas fuerte que el local para trabajo sin datos sensibles. Probar en una carpeta de pruebas con un proveedor elegido a mano (no el router completo), fijando la version y desactivando la sincronizacion del catalogo si el proyecto lo permite, y medir cuantas tareas de OpenCode termina contra Qwen3.6-35B-A3B local."
     }
   ]
 }
