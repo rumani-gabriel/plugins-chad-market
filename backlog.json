@@ -325,6 +325,43 @@
       "summary": "Enrutador local con un solo endpoint /v1 compatible con OpenAI que reparte las peticiones entre los cupos gratuitos de 34 proveedores (635 endpoints segun su README) y salta al siguiente cuando uno se agota. Guarda las claves cifradas, soporta llamadas a herramientas y trae un servidor MCP en /mcp.",
       "caution": "No es local: cada prompt sale a proveedores externos de nivel gratuito, cuyos terminos sobre uso de datos no revise uno por uno; el propio repo dice 'personal experimentation only' y el post, que para produccion se use una API paga. Solo con codigo y datos sin ninguna sensibilidad. El router baja un catalogo firmado de freellmapi.co dos veces por dia (los instalados gratis reciben el snapshot mensual, 30 dias despues; hay version premium) y su instalacion recomendada es un script 'curl | bash' con Docker: usar la imagen con version fija o el instalador de Releases, y leer antes. Los modelos gratuitos varian mucho en capacidad y en soporte de herramientas: con failover automatico el mismo agente puede cambiar de modelo a mitad de una tarea. Un comentario estima que tras curar a mano quedan menos de mil millones de tokens utiles al mes.",
       "promote_when": "solo si el lab necesita un modelo mas fuerte que el local para trabajo sin datos sensibles. Probar en una carpeta de pruebas con un proveedor elegido a mano (no el router completo), fijando la version y desactivando la sincronizacion del catalogo si el proyecto lo permite, y medir cuantas tareas de OpenCode termina contra Qwen3.6-35B-A3B local."
+    },
+    {
+      "name": "pi-coding-agent",
+      "repo": "https://github.com/earendil-works/pi",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 121410,
+        "forks": 15645,
+        "license": "MIT",
+        "created": "2025-08-09",
+        "last_push": "2026-11-11",
+        "npm": "@earendil-works/pi-coding-agent 1.5.2 (2026-11-10)",
+        "nota": "el repo se mudo de badlogic/pi-mono a earendil-works/pi",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Arnes de agente de programacion minimalista y extensible (alternativa a OpenCode). Segun su documentacion: se conecta de forma directa al servidor router de llama.cpp (comando /llama para cargar, descargar y elegir modelos GGUF), soporta servidores compatibles como Ollama, LM Studio y vLLM por models.json, MCP por stdio o HTTP, skills (incluye ~/.agents/skills) y extensiones. Sus 'modelos virtuales' permiten registrar un modelo unico (por ejemplo hybrid/auto) cuyo router elige para cada peticion un modelo fisico: uno local para lo simple y uno remoto para lo dificil, con un clasificador que puede ser el propio Qwen via llama.cpp.",
+      "caution": "No probado. Es un cambio de arnes, no un complemento: el lab hoy usa OpenCode y habria que migrar o convivir con los dos. Trae sin subagentes ni modo plan por defecto. El instalador oficial es 'curl | sh' / 'irm | iex'; la alternativa con npm no fija dependencias transitivas (usar --ignore-scripts y version fija). El router local es mas util cuanto mas rapido responda el modelo; en una 3060 con el modelo en la RAM la clasificacion podria sumar latencia (un comentario del post pregunta si cambiar de modelo a mitad de tarea tira por tierra el cache KV: sin respuesta). Mandar tareas a modelos alojados saca el codigo de la maquina: solo con codigo sin datos sensibles.",
+      "promote_when": "en la PC del lab: instalar con npm fijando la version, conectarlo al llama-server o router de la receta apps/llama-cpp, correr las mismas tareas que en OpenCode con Qwen local y contar cuantas termina. Despues probar un modelo virtual local/remoto. Si rinde mejor con Qwen local que OpenCode, escribir apps/pi."
+    },
+    {
+      "name": "auto-ontology-mcp",
+      "repo": "https://github.com/gogoymh/auto-ontology-mcp",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 355,
+        "license": "Apache-2.0",
+        "created": "2026-11-06",
+        "last_push": "2026-11-11",
+        "python": "3.12+",
+        "nota": "no lo encontre en PyPI con ese nombre; el post habla de uvx (instalar desde el repo)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Servidor MCP que reimplementa la capa semantica de NVIDIA Auto Ontology sin su pila alojada: todos los pasos de lenguaje (leer, extraer, nombrar, juzgar, escribir SQL) los hace el modelo del cliente MCP, asi que no necesita clave ni endpoint de NIM; lo determinista (extraccion de esquema, perfilado, validacion, ejecucion de solo lectura) corre en archivos SQLite locales. Sirve para preguntar a una base de datos con SQL validado contra la ontologia, y como base de conocimiento personal con registros tipados (fecha, comercio, total y la fuente).",
+      "caution": "Repo de 5 dias: muy inmaduro. Bases soportadas: SQLite, PostgreSQL, MySQL y DuckDB; las pruebas corren solo contra SQLite y PostgreSQL 17, y no menciona Databricks. La calidad depende del modelo del cliente: con un Qwen local chico no se sabe. El post es de un autor que difunde proyectos nuevos y la comparacion con LLM Wiki es del propio README. Algunas funciones abren un tunel para ChatGPT: no usarlas.",
+      "promote_when": "probarlo en el lab con una base SQLite o DuckDB de prueba y el Qwen local como cliente, para ver si registra y consulta datos tipados sin alucinar. Si anda, evaluarlo como memoria estructurada del agente (registros que se suman con SQL en lugar de releer prosa)."
     }
   ]
 }
