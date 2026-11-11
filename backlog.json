@@ -276,6 +276,39 @@
       "summary": "Libreria y servidor Python con una base de embeddings que junta indices densos y dispersos, grafo y SQL en un solo almacen, local y sin servicios remotos. Su API web puede exponer un endpoint /mcp (via FastApiMCP) con los endpoints habilitados como herramientas. Soporta llama.cpp y Hugging Face como modelos, agentes sobre smolagents y archivos agents.md y skill.md. Para el lab seria la memoria o el indice de busqueda local que el agente consulta en vez de releer archivos.",
       "caution": "Es un framework general, no una herramienta lista para el agente: hay que escribir la configuracion (que carpeta indexar, que modelo de embeddings, que endpoints exponer). Todos los endpoints habilitados pasan a ser herramientas MCP: con un Qwen local chico conviene exponer solo search. Un comentario del post pregunta por trazabilidad de que indice respondio y por escala; sin respuesta. Baja modelos de Hugging Face la primera vez (la VRAM la comparte con el modelo del agente: probar embeddings en CPU). Se solapa con cocoindex (indexado incremental) y fast-grep. Las cifras del post son descriptivas, no hay benchmarks de ahorro de tokens.",
       "promote_when": "armar una prueba minima en la PC del lab: pip install txtai==9.14.0 en un venv, indexar una carpeta chica (por ejemplo el propio repo) con un modelo de embeddings chico en CPU, levantar la API con mcp activado y solo el endpoint search, conectarla a OpenCode y comparar tokens y aciertos contra que el agente lea archivos con grep. Si gana, escribir apps/txtai con esa configuracion."
+    },
+    {
+      "name": "aidlc-workflows",
+      "repo": "https://github.com/awslabs/aidlc-workflows",
+      "lens": "ambas",
+      "status": "needs_review",
+      "verified": {
+        "stars": 6024,
+        "forks": 1076,
+        "license": "MIT-0",
+        "created": "2025-11-13",
+        "last_push": "2026-11-11",
+        "version": "v2.11.3 (2026-11-04)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Proceso de AWS para agentes de programacion: 5 fases y 33 etapas con puertas de aprobacion humana, 14 agentes, 11 perfiles de trabajo, registro de auditoria de 134 eventos, estado persistente, reglas aprendidas y una huella del codigo aprobado que un chequeo de CI usa para detectar cambios posteriores. Corre en Claude Code, Kiro, Codex, Cursor y OpenCode (1.18.29 o superior).",
+      "caution": "Instalacion oficial con 'curl | sh' o 'irm | iex' que baja un ejecutable nativo 'aidlc': no usarlo tal cual; la alternativa es copiar archivos a mano (requiere Bun). Es un proceso pesado: 14 subagentes y un skill grande cargado en cada /aidlc consumen mucho contexto, justo lo que un modelo local chico no tiene; su guia recomienda un modelo de razonamiento potente (Claude Opus 4.8). Un comentario senala que las reglas aprendidas se acumulan sin caducar ni verificarse contra el codigo actual. Un blog de terceros ya replica la idea en capas. Se solapa con sdd-architect del equipo.",
+      "promote_when": "leer docs/guide/18-install-and-lifecycle.md y la instalacion manual, medir cuantos tokens consume solo el arranque de /aidlc en OpenCode con el modelo local, y decidir si el flujo completo es viable con un Qwen o solo el perfil Express. Antes de adoptar nada, tomar prestadas las ideas puntuales: huella del codigo revisado verificada en CI, y reglas que caducan."
+    },
+    {
+      "name": "memorilla",
+      "repo": "https://github.com/snap-stanford/memorilla",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "license": "Apache-2.0 (modelo en Hugging Face)",
+        "paper": "arXiv 2610.21375 (CC BY 4.0), taller COLM 2026",
+        "model": "memorilla/Memorilla-Qwen3-8B (109 descargas, 18 likes, 2026-10-08; modulo de memoria de 194 M de parametros, ~0.39 GB por punto de control)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Investigacion de Stanford: un codificador congelado (Qwen3-Embedding-4B) guarda cada documento una vez y 16 ranuras de memoria lo leen y entregan 16 embeddings que entran al modelo de lenguaje congelado (Qwen3-8B) como si fueran una imagen. Solo se entrena el modulo de memoria.",
+      "caution": "Es investigacion temprana, no una herramienta: sus cifras (hasta 4.212 veces menos tokens, 27 veces mas rapido, 44.6% contra 30.9% en PersonaMem-v2, 18.6% a 24.2% en TextWorld) son de los autores y los propios autores reconocen que falla con detalles finos y que no generaliza a otros dominios ni a otros modelos. El modulo esta entrenado para un Qwen3-8B especifico y mete embeddings directamente en el modelo: no funciona detras de llama-server ni de OpenCode, hay que usar su codigo en PyTorch. No sirve con modelos alojados como Claude. Comentarios del post piden pruebas de borrado y correccion de memoria, que no vi publicadas.",
+      "promote_when": "no se promueve. Queda como referencia de la idea 'memoria como embeddings que el modelo lee directamente'. Revisar si una version posterior se integra en llama.cpp o acepta otros modelos."
     }
   ]
 }

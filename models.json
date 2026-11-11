@@ -121,6 +121,80 @@
       "why_for_the_lab": "Un MoE tiene muchos parametros pero activa pocos por token (el sufijo A3B indica ~3B activos): puede dar un modelo mas capaz que uno denso chico en la misma tarjeta si hay RAM de sobra. Es el camino para un cerebro mas grande que lo que entra en 12 GB de VRAM.",
       "caveats": "Depende de la RAM del equipo (dato que falta) y de que exista una ruta usable en Windows. Sin cifras de velocidad publicadas.",
       "to_test": ["averiguar la RAM del lab", "leer las fichas y licencias de cada modelo antes de bajar nada", "medir tokens por segundo y RAM con uno chico (por ejemplo Qwen3.6-35B-A3B) y compararlo con llama.cpp", "probarlo con OpenCode por la API local"]
+    },
+    {
+      "name": "Qwen3-Coder-Next (GGUF oficial)",
+      "repo": "https://huggingface.co/Qwen/Qwen3-Coder-Next-GGUF",
+      "family": "Qwen3 Coder (Alibaba)",
+      "modality": "texto (codigo y agentes)",
+      "status": "to_test",
+      "verified": {
+        "params": "80 B totales, 3 B activos por token, 512 expertos (10 activos), contexto 256K",
+        "license": "Apache-2.0",
+        "gguf_q4_k_m": "48.4 GB en 4 archivos (15.5+14.9+14.5+3.5); Q5_K_M 56.7 GB; Q6_K 65.4 GB; Q8_0 84.8 GB",
+        "downloads_gguf": 70502,
+        "published": "2026-02-02",
+        "checked_at": "2026-11-11"
+      },
+      "runs_with": "llama.cpp (llama-server) con GGUF y los expertos en RAM (--cpu-moe o --n-cpu-moe). Plantilla de llamadas a herramientas: verificar en el log 'Chat format'.",
+      "estimate_weights_gb": 159.3,
+      "what_it_does": "Modelo MoE de Alibaba hecho para agentes de programacion: su ficha lo presenta integrado con Claude Code, Cline, Kilo y otros arneses. Es la opcion que mas se acerca a un modelo de nivel Sonnet que todavia entra en 64 GB.",
+      "why_for_the_lab": "Con solo 3 B activos, la velocidad depende sobre todo del ancho de banda de la RAM y no de la VRAM de 12 GB. Es el candidato a reemplazar a Qwen3-30B-A3B si se busca mas calidad en tareas de programacion.",
+      "caveats": "A Q4_K_M ocupa 48.4 GB y Windows mas el contexto tambien usan RAM: entra justo en 64 GB, hay que medirlo (Q5 en adelante probablemente no entra). No hay mediciones propias de velocidad. Las comparaciones con Sonnet o Opus de blogs no son independientes y ningun resultado encontrado lo compara en tareas de agente contra Claude: no se lo puede tratar como equivalente.",
+      "to_test": [
+        "bajar solo Q4_K_M, correrlo con --cpu-moe y anotar RAM usada, VRAM y tokens por segundo con 32K de contexto",
+        "probar las mismas tareas de OpenCode contra Qwen3-30B-A3B y Qwen3.6-35B-A3B y contar cuantas termina sin ayuda",
+        "mirar 'Chat format' en el log para confirmar llamadas a herramientas"
+      ]
+    },
+    {
+      "name": "Qwen3.6-35B-A3B",
+      "repo": "https://huggingface.co/Qwen/Qwen3.6-35B-A3B",
+      "family": "Qwen3.6 (Alibaba)",
+      "modality": "texto (y vision segun la ficha)",
+      "status": "to_test",
+      "verified": {
+        "params": "35.9 B totales (safetensors), ~3 B activos por token",
+        "license": "Apache-2.0",
+        "downloads": 4112863,
+        "published": "2026-04-15",
+        "last_modified": "2026-11-07",
+        "gguf": "no hay GGUF oficial en la organizacion Qwen; los mas usados son de terceros (unsloth/Qwen3.6-35B-A3B-GGUF, 1.6 M de descargas; hay otras variantes con MTP)",
+        "checked_at": "2026-11-11"
+      },
+      "runs_with": "llama.cpp con un GGUF de terceros y los expertos en RAM (--cpu-moe).",
+      "estimate_weights_gb": 71.9,
+      "what_it_does": "Sucesor de Qwen3-30B-A3B en la misma forma (MoE con 3 B activos). Un blog reporta 73.4% en SWE-bench Verified y otro ~21 GB a Q4: ambos son fuentes secundarias sin verificar.",
+      "why_for_the_lab": "Cambio de menor riesgo frente al Qwen3 actual: mismo tipo de modelo, mas nuevo, y entra con holgura en 64 GB (alrededor de 21 GB a 4 bits segun un blog).",
+      "caveats": "El estimate_weights_gb es BF16 (parametros por 2 bytes); el archivo cuantizado pesa bastante menos. Hay que elegir un GGUF de tercero: revisar quien lo publica y fijar la revision antes de bajarlo; evitar las variantes 'abliterated' o 'uncensored' para el agente de trabajo. Las cifras de benchmarks vienen de blogs.",
+      "to_test": [
+        "probar unsloth/Qwen3.6-35B-A3B-GGUF Q4_K_M con --cpu-moe y comparar con Qwen3-30B-A3B en las mismas tareas",
+        "anotar tokens por segundo, RAM y VRAM"
+      ]
+    },
+    {
+      "name": "Qwen3.8-27B",
+      "repo": "https://huggingface.co/Qwen/Qwen3.8-27B",
+      "family": "Qwen3.8 (Alibaba)",
+      "modality": "texto + imagen y video",
+      "status": "to_research",
+      "verified": {
+        "params": "27 B densos (27.8 B en safetensors), 64 capas, contexto 262,144 nativo",
+        "license": "Apache-2.0",
+        "downloads": 7232703,
+        "published": "2026-08-05",
+        "gguf": "unsloth/Qwen3.8-27B-GGUF (5.9 M de descargas, de terceros)",
+        "checked_at": "2026-11-11"
+      },
+      "runs_with": "llama.cpp con GGUF de terceros; al ser denso, no se puede mandar parte a la RAM como en los MoE: lo que no entra en los 12 GB de VRAM se calcula en la CPU y la velocidad cae mucho.",
+      "estimate_weights_gb": 55.6,
+      "what_it_does": "Modelo denso nuevo de Alibaba orientado a tareas largas de agente y programacion, con pensamiento ajustable. Es el que los blogs ponen como el mejor de un solo GPU, pensando en tarjetas de 24 GB.",
+      "why_for_the_lab": "Un denso de 27 B suele razonar mejor por parametro activo que un MoE de 3 B activos, asi que puede dar mas calidad por respuesta. A cambio, en una 3060 de 12 GB iria lento.",
+      "caveats": "A 4 bits pesa unos 17 GB (estimacion): no entra en 12 GB de VRAM, y con parte en CPU la velocidad sera de un solo digito de tokens por segundo (sin medir). Un blog dice que con IQ3_XXS ocupa 9.4 GiB y da 60 tok/s en una 3060: es una cifra autoinformada, no verificada, y a 3 bits se pierde calidad.",
+      "to_test": [
+        "medir tokens por segundo con Q4_K_M parcialmente en CPU; si es muy lento, descartar frente a los MoE",
+        "solo despues de haber medido Qwen3.6-35B-A3B y Qwen3-Coder-Next"
+      ]
     }
   ]
 }
