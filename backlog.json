@@ -343,6 +343,24 @@
       "summary": "Servidor MCP que reimplementa la capa semantica de NVIDIA Auto Ontology sin su pila alojada: todos los pasos de lenguaje (leer, extraer, nombrar, juzgar, escribir SQL) los hace el modelo del cliente MCP, asi que no necesita clave ni endpoint de NIM; lo determinista (extraccion de esquema, perfilado, validacion, ejecucion de solo lectura) corre en archivos SQLite locales. Sirve para preguntar a una base de datos con SQL validado contra la ontologia, y como base de conocimiento personal con registros tipados (fecha, comercio, total y la fuente).",
       "caution": "Repo de 5 dias: muy inmaduro. Bases soportadas: SQLite, PostgreSQL, MySQL y DuckDB; las pruebas corren solo contra SQLite y PostgreSQL 17, y no menciona Databricks. La calidad depende del modelo del cliente: con un Qwen local chico no se sabe. El post es de un autor que difunde proyectos nuevos y la comparacion con LLM Wiki es del propio README. Algunas funciones abren un tunel para ChatGPT: no usarlas.",
       "promote_when": "probarlo en el lab con una base SQLite o DuckDB de prueba y el Qwen local como cliente, para ver si registra y consulta datos tipados sin alucinar. Si anda, evaluarlo como memoria estructurada del agente (registros que se suman con SQL en lugar de releer prosa)."
+    },
+    {
+      "name": "openbot",
+      "repo": "https://github.com/CopilotKit/openbot",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": {
+        "stars": 10964,
+        "forks": 1362,
+        "license": "MIT (la plantilla); CopilotKit Intelligence con licencia aparte",
+        "created": "2026-08-17",
+        "last_push": "2026-11-11",
+        "version": "v1.0.2 (2026-11-11)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Aplicacion de escritorio y plantilla web de un 'companero de trabajo' con IA: varios bots con su propio navegador, archivos y herramientas, subagentes, aprendizaje de tareas como skills, interfaz generativa y MCP. Acepta modelos de OpenAI, Claude, Gemini o modelos abiertos por un endpoint compatible con OpenAI. Hay instalador firmado para Windows y una version 'for Business' de pago.",
+      "caution": "La plantilla es MIT pero depende de CopilotKit Intelligence (memoria, conversaciones y aprendizaje automatico), que tiene licencia aparte: incluso en la laptop pide una licencia local gratuita, y el propio README dice que bajar los componentes, iniciar sesion y renovar la licencia local necesitan internet. El backend usa Docker y PostgreSQL. Su configuracion de ejemplo usa un modelo de OpenAI por defecto. Es un producto para usuarios finales, no una pieza que un agente de programacion use como herramienta: no cubre ningun hueco del lab. Misma familia que openduet. Las cifras del post ('mato a todos los companeros de IA') son marketing; un comentario ya lo cuestiona.",
+      "promote_when": "no se promueve. Revisar solo si el lab necesita una interfaz tipo asistente con varios bots y la licencia local de Intelligence funciona sin conexion a su nube."
     }
   ]
 }
