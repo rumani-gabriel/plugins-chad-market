@@ -53,6 +53,14 @@ Si el catálogo no cubre la necesidad, seguí `blueprints/BUILDING.md`: elegís 
 - Un modelo de voz es la pieza que falta para que el agente hable y escuche: mirá también la app `voicestudio` y `kittentts` del catálogo.
 - El **cerebro local** del agente es la app `llama-cpp`: un servidor compatible con OpenAI en `127.0.0.1` que corre un modelo MoE con los expertos en la RAM, y el plano `blueprints/provider/provider-local.json` lo conecta a OpenCode como proveedor. Medí VRAM, RAM y tokens por segundo con el modelo cargado y anotalo en su entrada de `models.json`: ese dato decide si entra la voz al mismo tiempo.
 
+## Pi: otro arnés para el mismo modelo local
+
+La app `pi` (`apps/pi/recipe.json`) instala Pi, un arnés de agente de programación que es una **alternativa a OpenCode**, no un complemento, y lo conecta al servidor de la app `llama-cpp`. Sirve para correr las mismas tareas con el mismo modelo en los dos arneses y comparar. Leé primero `when_to_use` y `comparison_with_opencode` de la receta.
+- **Pi no pide aprobación antes de cada herramienta.** Usalo solo en una carpeta de prueba, sin credenciales a mano, idealmente en una VM, contenedor o cuenta aparte. Los pasos `needs_human` esperan a una persona.
+- Los plugins de este repo se instalan en `.opencode/` y Pi no lee esa carpeta: la receta describe cómo llevar las skills a `.agents/skills/` (sin probar). Los comandos no se traducen.
+- Para decidir entre Pi y OpenCode usá el apartado `measure`: mismas tareas, mismo modelo, mismo contexto, y anotá cuántas termina cada uno.
+- El plano `blueprints/provider/pi-models-local.json` es el `models.json` de Pi para un modelo local.
+
 ## Backlog — lo que todavía no se puede tomar
 `backlog.json` guarda herramientas investigadas que **hoy están bloqueadas** por un motivo concreto. Cada entrada trae `repo`, `status`, `verified` (estrellas/forks/licencia **con fecha de chequeo**), `summary`, `caution` y `promote_when` (qué tiene que pasar para desbloquearla). `status_values` en el propio archivo explica cada estado.
 

@@ -1,0 +1,18 @@
+{
+  "$comment": "Plano: un modelo local como proveedor de Pi (arnes alternativo a OpenCode, ver apps/pi). Copiar la clave 'providers' a %USERPROFILE%\\.pi\\agent\\models.json (en Linux o macOS, ~/.pi/agent/models.json). Cambiar el nombre del proveedor, el puerto por el del servidor y el id del modelo por el que devuelve GET /v1/models (con llama-server, el valor de --alias). contextWindow tiene que coincidir con el contexto con que se levanto el servidor (-c). apiKey es un valor cualquiera: el servidor local no la pide. Pi recarga el archivo al abrir /model.",
+  "$schema": "https://pi.dev/schemas/models.schema.json",
+  "providers": {
+    "llama-local": {
+      "baseUrl": "http://127.0.0.1:8080/v1",
+      "api": "openai-completions",
+      "apiKey": "local",
+      "models": [
+        {
+          "id": "qwen3-30b-a3b",
+          "contextWindow": 32768,
+          "maxTokens": 8192
+        }
+      ]
+    }
+  }
+}

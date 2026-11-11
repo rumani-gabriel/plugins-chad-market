@@ -112,6 +112,20 @@
       "summary": "El cerebro local del agente: servidor con API compatible con OpenAI (llama.cpp) que corre un modelo MoE mediano (Qwen3-30B-A3B) dejando los expertos en la RAM y poco en la GPU. Binarios de Windows con CUDA fijados por build y modelo verificado por hash, todo local. Incluye el proveedor para OpenCode.",
       "tags": ["llm", "local-ai", "opencode-provider", "moe", "gpu"],
       "verified": "docs"
+    },
+    {
+      "name": "pi",
+      "kind": "app",
+      "path": "apps/pi",
+      "summary": "Pi: arnes de agente de programacion en la terminal, alternativa a OpenCode, ya conectado al servidor local de llama-cpp. Trae modelos virtuales (un solo modelo que elige entre el local y uno remoto), MCP y skills. No pide aprobacion antes de cada herramienta: probar en carpeta de prueba. Incluye comparacion con OpenCode y como medir cual rinde mas con Qwen local.",
+      "tags": [
+        "agent-harness",
+        "opencode-alternative",
+        "local-ai",
+        "llama-cpp",
+        "mcp"
+      ],
+      "verified": "docs"
     }
   ]
 }

@@ -327,25 +327,6 @@
       "promote_when": "solo si el lab necesita un modelo mas fuerte que el local para trabajo sin datos sensibles. Probar en una carpeta de pruebas con un proveedor elegido a mano (no el router completo), fijando la version y desactivando la sincronizacion del catalogo si el proyecto lo permite, y medir cuantas tareas de OpenCode termina contra Qwen3.6-35B-A3B local."
     },
     {
-      "name": "pi-coding-agent",
-      "repo": "https://github.com/earendil-works/pi",
-      "lens": "b",
-      "status": "needs_review",
-      "verified": {
-        "stars": 121410,
-        "forks": 15645,
-        "license": "MIT",
-        "created": "2025-08-09",
-        "last_push": "2026-11-11",
-        "npm": "@earendil-works/pi-coding-agent 1.5.2 (2026-11-10)",
-        "nota": "el repo se mudo de badlogic/pi-mono a earendil-works/pi",
-        "checked_at": "2026-11-11"
-      },
-      "summary": "Arnes de agente de programacion minimalista y extensible (alternativa a OpenCode). Segun su documentacion: se conecta de forma directa al servidor router de llama.cpp (comando /llama para cargar, descargar y elegir modelos GGUF), soporta servidores compatibles como Ollama, LM Studio y vLLM por models.json, MCP por stdio o HTTP, skills (incluye ~/.agents/skills) y extensiones. Sus 'modelos virtuales' permiten registrar un modelo unico (por ejemplo hybrid/auto) cuyo router elige para cada peticion un modelo fisico: uno local para lo simple y uno remoto para lo dificil, con un clasificador que puede ser el propio Qwen via llama.cpp.",
-      "caution": "No probado. Es un cambio de arnes, no un complemento: el lab hoy usa OpenCode y habria que migrar o convivir con los dos. Trae sin subagentes ni modo plan por defecto. El instalador oficial es 'curl | sh' / 'irm | iex'; la alternativa con npm no fija dependencias transitivas (usar --ignore-scripts y version fija). El router local es mas util cuanto mas rapido responda el modelo; en una 3060 con el modelo en la RAM la clasificacion podria sumar latencia (un comentario del post pregunta si cambiar de modelo a mitad de tarea tira por tierra el cache KV: sin respuesta). Mandar tareas a modelos alojados saca el codigo de la maquina: solo con codigo sin datos sensibles.",
-      "promote_when": "en la PC del lab: instalar con npm fijando la version, conectarlo al llama-server o router de la receta apps/llama-cpp, correr las mismas tareas que en OpenCode con Qwen local y contar cuantas termina. Despues probar un modelo virtual local/remoto. Si rinde mejor con Qwen local que OpenCode, escribir apps/pi."
-    },
-    {
       "name": "auto-ontology-mcp",
       "repo": "https://github.com/gogoymh/auto-ontology-mcp",
       "lens": "b",

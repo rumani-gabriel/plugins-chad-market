@@ -1,0 +1,111 @@
+{
+  "name": "pi",
+  "source": {
+    "official": "paquete npm @earendil-works/pi-coding-agent (repo oficial earendil-works/pi, antes badlogic/pi-mono) y documentacion en pi.dev",
+    "repo": "https://github.com/earendil-works/pi",
+    "license": "MIT"
+  },
+  "version_pin": "1.5.2",
+  "target_environment": "Windows 10/11 x64 (el lab: RTX 3060 de 12 GB, 64 GB de RAM, Ryzen 9). Pi corre como proceso nativo de Windows usando Git Bash para sus comandos, o dentro de WSL.",
+  "purpose": "Pi es un arnes de agente de programacion en la terminal, una ALTERNATIVA a OpenCode (no un complemento). Esta receta lo instala y lo conecta al servidor local de la receta apps/llama-cpp, para correr las mismas tareas que en OpenCode con el mismo modelo Qwen y comparar. No reemplaza a OpenCode: conviven en la misma maquina.",
+  "when_to_use": {
+    "usar_pi_si": [
+      "queres que un solo modelo 'virtual' (por ejemplo hybrid/auto) elija solo, por peticion, entre el Qwen local para lo simple y un modelo remoto mas fuerte para lo dificil (ver next_steps)",
+      "queres administrar los modelos GGUF desde el propio agente (/llama carga, descarga y elige modelos de un router de llama.cpp)",
+      "OpenCode con el Qwen local rinde mal y queres probar otro arnes con el mismo modelo antes de cambiar de modelo"
+    ],
+    "seguir_con_opencode_si": [
+      "dependes de los plugins, comandos y subagentes de este repo (install.py los copia a .opencode/ y Pi no lee esa carpeta)",
+      "necesitas que el agente pida aprobacion antes de ejecutar comandos: Pi NO pregunta antes de cada llamada a herramienta"
+    ],
+    "no_se_sabe": "cual rinde mejor con Qwen local. No esta medido: hay que correr las mismas tareas en los dos y contar cuantas termina cada uno (ver measure)."
+  },
+  "comparison_with_opencode": {
+    "nota": "Tomado de la documentacion de Pi y de este repo. Nada se ejecuto.",
+    "servidor_local": "Pi: integracion directa con el router de llama.cpp (comando /llama) y modo 'endpoint compatible' en models.json (el que usa esta receta). OpenCode: proveedor @ai-sdk/openai-compatible en opencode.json (blueprints/provider/provider-local.json).",
+    "elegir_modelo_por_tarea": "Pi: modelos virtuales, un modelo seleccionable cuyo router elige el modelo real en cada peticion, incluso con un clasificador local. OpenCode: se cambia a mano.",
+    "skills": "Los dos implementan la especificacion Agent Skills (carpeta con SKILL.md). Pi las busca en ~/.agents/skills/ y .agents/skills/; OpenCode en .opencode/skills/. Los plugins de este repo se instalan en .opencode/ y para Pi hay que copiarlos (ver step de skills; sin probar).",
+    "comandos_y_subagentes": "Pi no trae subagentes ni modo plan por defecto (se agregan con extensiones o paquetes). OpenCode tiene comandos y subagentes que usan los plugins de este repo.",
+    "mcp": "Los dos hablan MCP. Pi: 'pi mcp add' (stdio o HTTP streamable; no acepta SSE).",
+    "permisos": "OpenCode tiene sistema de permisos por herramienta. Pi no pregunta antes de cada llamada y su documentacion pide aislar la ejecucion (contenedor, VM o cuenta aparte). Es la diferencia mas importante para trabajar sin supervision.",
+    "windows": "Pi usa Git Bash para el tool bash y, opcionalmente, expone PowerShell al modelo (setting defaultTools). OpenCode en esta maquina se usa desde PowerShell."
+  },
+  "prereqs": [
+    "Node.js 22.19 o superior (node --version)",
+    "Git para Windows instalado (Pi usa su Bash). Si esta en otro lugar, setear shellPath en settings.json",
+    "Windows Terminal recomendada por la documentacion de Pi (la consola vieja de Windows tiene errores que afectan a Pi)",
+    "Para correr con el modelo local: el servidor de apps/llama-cpp levantado en http://127.0.0.1:8080 (verificar con curl.exe -s http://127.0.0.1:8080/v1/models)",
+    "Una carpeta de PRUEBA (por ejemplo %USERPROFILE%\\pi-test): no abrir Pi dentro de un proyecto importante hasta haber medido (Pi ejecuta y edita sin preguntar)"
+  ],
+  "steps": [
+    {
+      "why": "Solo lectura: confirma versiones de Node y Git y que el servidor local de llama.cpp responde y con que id de modelo",
+      "run_windows": "node --version; git --version; curl.exe -s http://127.0.0.1:8080/v1/models",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Instala Pi desde npm con la version fijada y SIN scripts de ciclo de vida (la documentacion dice que no los necesita). Ojo: npm no fija las dependencias transitivas; el instalador oficial de pi.dev si las fija pero es un 'irm | iex' (ver alternatives)",
+      "run_windows": "npm install -g --ignore-scripts @earendil-works/pi-coding-agent@1.5.2",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Verifica la instalacion",
+      "run_windows": "pi --version",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Conecta Pi al servidor local: crea %USERPROFILE%\\.pi\\agent\\models.json con el contenido de blueprints/provider/pi-models-local.json (cambiar el id del modelo por el que devuelve /v1/models; con la receta llama-cpp es el alias qwen3-30b-a3b). Si ya existe un models.json, fusionar la clave 'providers' en vez de reemplazarlo",
+      "edit_config": "blueprints/provider/pi-models-local.json",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Opcional: que el modelo use PowerShell en vez de Bash en Windows. Agregar a %USERPROFILE%\\.pi\\agent\\settings.json la clave defaultTools con read, powershell, edit, write. Sin esto, Pi usa Git Bash",
+      "edit_config": "{ \"defaultTools\": [\"read\", \"powershell\", \"edit\", \"write\"] }",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Primera prueba en una carpeta descartable: entrar y arrancar Pi. Dentro, /model y elegir llama-local / qwen3-30b-a3b; pedir una tarea corta que use una herramienta (por ejemplo 'lee el archivo hola.txt y resumilo'). Si Pi pregunta por confianza del proyecto, decir que no salvo que sepas que hay en .pi",
+      "run_windows": "New-Item -ItemType Directory -Force $env:USERPROFILE\\pi-test | Out-Null; Set-Location $env:USERPROFILE\\pi-test; Set-Content -Path hola.txt -Value 'prueba de Pi con modelo local' -Encoding ascii; pi",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Opcional: conectar un servidor MCP local que ya tengas (ejemplo con voicestudio, apps/voicestudio, que sirve MCP en http://localhost:3900/mcp/). Pi acepta stdio y HTTP streamable. 'pi mcp list' muestra lo configurado. En Pi las herramientas MCP se exponen distinto que en OpenCode (via codemode o directas, segun la configuracion): leer docs/mcp.md antes",
+      "run_windows": "pi mcp add voicestudio --url http://localhost:3900/mcp/; pi mcp list",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Opcional y sin probar: llevar las skills de este repo a Pi. Instalarlas en una carpeta temporal con install.py (reemplaza los tokens ${CLAUDE_PLUGIN_ROOT} y ${SKILL_ROOT}), y copiar las carpetas de skills a %USERPROFILE%\\.agents\\skills\\ (global) o a .agents\\skills\\ del proyecto. Los comandos de OpenCode (.opencode/commands) NO se traducen; en Pi serian plantillas de prompt (docs/prompt-templates.md)",
+      "run_windows": "python install.py NOMBRE-DEL-PLUGIN --project $env:TEMP\\pi-skills-tmp; Copy-Item -Recurse $env:TEMP\\pi-skills-tmp\\.opencode\\skills\\* $env:USERPROFILE\\.agents\\skills\\",
+      "needs_human": true,
+      "network": false
+    }
+  ],
+  "verify": "pi --version devuelve 1.5.2. Dentro de Pi, /model lista llama-local/qwen3-30b-a3b y una tarea corta (leer hola.txt) termina mostrando la llamada a la herramienta read y la respuesta. En el log de llama-server (apps/llama-cpp) aparece la peticion y la linea 'Chat format' dice que formato de herramientas usa el modelo.",
+  "measure": "Para decidir entre Pi y OpenCode: elegir 5 tareas reales y chicas (leer y resumir, editar un archivo, correr un comando y arreglar el error, buscar con grep, escribir una prueba). Correr cada una en OpenCode y en Pi con el MISMO modelo y el MISMO contexto (-c del servidor) y anotar: cuantas termina sin ayuda, cuantas llamadas a herramientas falla, tokens por segundo (log del servidor) y tokens de contexto consumidos al final (pie de pantalla de Pi y /session; en OpenCode, el contador de la sesion). Anotar el resultado con fecha aca y en backlog/models.",
+  "next_steps": [
+    "Modelo virtual local/remoto: escribir una extension que registre pi.registerVirtualModel con un route() que decida entre el modelo local y uno remoto (docs/virtual-models.md, y el ejemplo jev-router.ts que cita su documentacion de modelos). La clasificacion puede hacerla el propio Qwen local por el modo clasificador de llama.cpp. Mandar tareas a un modelo alojado saca el codigo de la maquina: usarlo solo con codigo sin datos sensibles.",
+    "Duda sin resolver (la planteo un comentario del post): cambiar de modelo a mitad de una tarea obliga a reprocesar el contexto en el modelo nuevo y puede anular el beneficio. La documentacion de Pi dice que las respuestas de seguimiento a herramientas se quedan en el modelo que atendio el turno (ejemplo con 'sticky'), lo cual lo mitiga; falta medirlo.",
+    "Router de llama.cpp: la documentacion de Pi usa 'llama serve' (instalador de llama.app), no el llama-server.exe fijado por build de apps/llama-cpp. No se verifico si son intercambiables; por eso esta receta usa el modo 'endpoint compatible'."
+  ],
+  "rollback": "npm uninstall -g @earendil-works/pi-coding-agent; borrar %USERPROFILE%\\.pi (configuracion y sesiones guardadas) y %USERPROFILE%\\pi-test; si se copiaron skills, borrar las carpetas agregadas de %USERPROFILE%\\.agents\\skills; quitar el servidor MCP con 'pi mcp remove voicestudio' antes de borrar .pi.",
+  "alternatives": {
+    "instalador_oficial": "powershell -c \"irm https://pi.dev/install.ps1 | iex\" fija todas las dependencias y se actualiza con 'pi update', pero es el patron 'descargar y ejecutar'. Si se usa, bajar el script primero y leerlo, y nunca correrlo a ciegas.",
+    "wsl": "Correr Pi dentro de WSL da un aislamiento mayor (otro sistema de archivos) y un entorno Linux para sus comandos; el servidor de llama.cpp seguiria en Windows y WSL lo alcanzaria por red local (no verificado)."
+  },
+  "permissions": [
+    "powershell: node --version",
+    "powershell: git --version",
+    "powershell: curl.exe *",
+    "powershell: npm install -g --ignore-scripts @earendil-works/pi-coding-agent@1.5.2",
+    "powershell: pi *"
+  ],
+  "caution": "PI NO PIDE APROBACION ANTES DE CADA LLAMADA A HERRAMIENTA: lee, edita y ejecuta comandos con los permisos de tu cuenta de Windows, y su propia documentacion de seguridad dice que ver la transcripcion o la confianza de proyecto no son una barrera de seguridad. Por eso: probar solo en una carpeta de prueba, sin credenciales ni datos del trabajo a mano, idealmente dentro de una VM, un contenedor o una cuenta de usuario aparte. Los archivos AGENTS.md y CLAUDE.md de cualquier carpeta se cargan aunque rechaces la confianza de proyecto: un README o un AGENTS.md ajeno puede inducir al modelo a ejecutar cosas (inyeccion de instrucciones). Si Pi pregunta por confianza de proyecto, es por .pi/settings.json, .pi/mcp.json, extensiones, skills o prompts de esa carpeta: decir que no a menos que los hayas escrito vos. Las extensiones y paquetes de Pi corren con tus mismos permisos: instalar solo los que revisaste, con version fija. El modelo local escucha en 127.0.0.1 sin autenticacion: no exponerlo. Los modelos virtuales con modelo remoto sacan el codigo de la maquina. Los pasos estan armados desde la documentacion y no se ejecutaron.",
+  "verified_against": "Documentacion oficial de earendil-works/pi en la rama principal al 2026-11-11 (quickstart, windows, models, llama-cpp, virtual-models, mcp, skills, configuration, security y usage), la ficha del paquete npm @earendil-works/pi-coding-agent 1.5.2 (publicado el 2026-11-10, licencia MIT) y la API de GitHub (121.410 estrellas, licencia MIT, creado el 2025-08-09). Los comandos NO se ejecutaron: la PC del lab es otra."
+}
