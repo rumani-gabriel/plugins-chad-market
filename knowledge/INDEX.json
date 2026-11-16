@@ -65,6 +65,14 @@
       "tags": ["mcp", "fastmcp", "skills", "python", "tools", "context"],
       "file": "knowledge/mcp-servidor-y-skills.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "memoria-de-agentes",
+      "title": "Memoria persistente de agentes: opciones evaluadas y como elegir",
+      "kind": "estrategia",
+      "tags": ["memory", "agents", "graph", "sqlite", "mcp", "context"],
+      "file": "knowledge/memoria-de-agentes.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }

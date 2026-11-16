@@ -378,6 +378,24 @@
       "summary": "Recuperacion de paginas y documentos como imagenes en vez de texto: renderiza a mosaicos de captura, los embebe con Qwen3-VL-Embedding, arma un indice FAISS y un lector con vision responde mirando los pixeles. Trae ademas 'pixelshot' (captura una URL, HTML local o PDF con Playwright/Chromium en la propia maquina) y un plugin de OpenCode (@startrail/pixelbrowse) y una skill de Claude Code que le dan al agente una herramienta 'screenshot'.",
       "caution": "Las cifras del post (un parser pierde mas de 40% de la pagina, +18,1% sobre el mejor RAG de texto sobre Wikipedia) son de los autores y un comentario cuestiona la base de comparacion; no lei el paper (arXiv 2606.28344). Para que el agente lea los mosaicos hace falta un modelo con vision: el Qwen3-30B-A3B de apps/llama-cpp es solo de texto; Qwen3.8-27B es vision-lenguaje pero no entra comodo en 12 GB (ver models.json) y con llama.cpp requiere ademas su archivo de proyeccion de imagen, sin verificar. Una imagen consume tokens de contexto: puede costar mas que el texto extraido, sin medir. El indice completo menciona Linux con CUDA y macOS; Windows no figura. Existe una API alojada (api.pixelrag.ai) con un indice de Wikipedia: es de terceros, no usarla con datos propios. Instalar Chromium de Playwright baja un navegador de internet. Skill y plugin tienen un aviso propio contra la inyeccion de instrucciones desde las capturas, pero igual el contenido de la pagina es dato.",
       "promote_when": "probar solo pixelshot (no el indice) en la PC del lab: instalar pixelrag 0.4.0 con uv tool o pipx, bajar Chromium, capturar una pagina local o un PDF con tablas y ver si un modelo con vision (Qwen3.8-27B local con su proyeccion, o un modelo remoto en una prueba sin datos sensibles) responde mejor que leyendo el texto extraido, midiendo tokens por mosaico. Si aporta, escribir apps/pixelrag con el plugin de OpenCode fijado. Ver knowledge/rag-visual-vs-texto.md."
+    },
+    {
+      "name": "relate",
+      "repo": "https://github.com/relatedb/relate",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "stars": 292,
+        "forks": 24,
+        "license": "Apache-2.0",
+        "created": "2026-11-04",
+        "last_push": "2026-11-16",
+        "version": "v1.0.2 (2026-11-16); binarios para Windows, macOS y Linux; paquete Python relate-db 1.0.2 (Python 3.9+)",
+        "checked_at": "2026-11-16"
+      },
+      "summary": "Base de datos de grafos embebida y en memoria, escrita en Rust (proyecto de Neo4j Labs), con consultas en Cypher 25. Un grafo es un archivo .rl, durable por un registro con fsync, sin servidor; el mismo motor sirve como CLI, paquete Python, Rust, Node o WASM, y opcionalmente como servidor local con Bolt, HTTP y MCP (relate serve --mcp). Pensado como memoria de agentes en un solo archivo.",
+      "caution": "Proyecto de 12 dias: inmaduro. Segun su propia documentacion de limitaciones: todo el grafo debe caber en memoria, un solo proceso es dueno del almacen, un solo usuario o agente por proceso y bases fijas (no hay varias bases ni federacion). Un comentario del post (de alguien que contribuye a un competidor, lo declara) reporta consultas de varios saltos de 1,3 s contra 2 a 3 ms de dos rivales, de 4 a 6 veces mas memoria y fallas por memoria en conjuntos grandes; no es una medicion independiente. El agente tendria que escribir Cypher, fuente de errores con un modelo local chico (sin medir). Instalador oficial de tipo 'curl | bash' o 'irm | iex', con firma verificada y la alternativa documentada de bajar y leer el script antes. Los motores de grafo embebidos pueden abandonarse: Kuzu aparece archivado en GitHub desde 2025-10-10.",
+      "promote_when": "no se promueve por ahora. Solo si un caso concreto del lab necesita memoria con relaciones entre cosas y las opciones mas simples (markdown con busqueda, SQLite con registros tipados) no alcanzan, y despues de unos meses de vida del proyecto. Ver knowledge/memoria-de-agentes.md."
     }
   ]
 }
