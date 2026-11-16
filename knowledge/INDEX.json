@@ -49,6 +49,14 @@
       "tags": ["local-models", "agents", "offline", "evaluation"],
       "file": "knowledge/simulacro-sin-nube.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "rag-recuperacion-hibrida",
+      "title": "RAG: recuperacion hibrida (palabras clave + significado + fusion de rankings)",
+      "kind": "estrategia",
+      "tags": ["rag", "retrieval", "bm25", "vector-search", "rrf", "reranker"],
+      "file": "knowledge/rag-recuperacion-hibrida.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }
