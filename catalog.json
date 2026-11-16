@@ -139,6 +139,20 @@
         "web"
       ],
       "verified": "docs"
+    },
+    {
+      "name": "concat",
+      "kind": "app",
+      "path": "apps/concat",
+      "summary": "Concat: editor de video local (alternativa a CapCut) con servidor MCP integrado de 45 herramientas, para que OpenCode, Pi, Claude o Codex monten videos: cortar, unir, titulos, subtitulos con texto del agente, keyframes, efectos y exportar. Instalador con hash fijado y copia exacta del codigo (AGPL) en vendor/concat. No transcribe, no genera voz ni quita fondo por MCP: se cubre con voicestudio u otro transcriptor.",
+      "tags": [
+        "video",
+        "mcp",
+        "local-app",
+        "agent-tools",
+        "editing"
+      ],
+      "verified": "docs"
     }
   ]
 }
