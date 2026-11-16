@@ -195,6 +195,31 @@
         "medir tokens por segundo con Q4_K_M parcialmente en CPU; si es muy lento, descartar frente a los MoE",
         "solo despues de haber medido Qwen3.6-35B-A3B y Qwen3-Coder-Next"
       ]
+    },
+    {
+      "name": "Qwen3.8-Flash-Next",
+      "repo": "https://huggingface.co/Qwen/Qwen3.8-Flash-Next",
+      "family": "Qwen3.8 (Alibaba)",
+      "modality": "texto (codigo y agentes)",
+      "status": "to_research",
+      "verified": {
+        "params": "125 B con 6 B activos, mas 51 B de tablas n-gram (Engram) y 4 B de MTP: 180 B en total (safetensors)",
+        "license": "Qwen Community License 1.0 (texto leido): uso, copia, modificacion y despliegue libres; condiciones solo para productos comerciales con mas de 100 M de usuarios activos o 20 M de USD de ingresos mensuales, y para quien ofrezca un servicio de modelos o un asistente de IA de programacion u oficina como negocio, con excepcion para uso interno",
+        "context": "256K",
+        "published": "2026-08-24",
+        "gguf": "unsloth/Qwen3.8-Flash-Next-GGUF (de terceros). Tamanos segun Unsloth: IQ1_S 72.5 GB, Q2_K_XL 78.9 GB, IQ3_XXS 82.0 GB, Q3_K_XL 90.0 GB, Q4_K_XL 111.3 GB; la tabla Engram aparte pesa de 28.8 GB (IQ4_NL) a 102.4 GB (BF16)",
+        "checked_at": "2026-11-16"
+      },
+      "runs_with": "llama.cpp build b12233 o posterior (PR 31185) con --ple y el archivo de la tabla Engram; segun Unsloth la tabla puede quedar en el SSD con mmap. La receta apps/llama-cpp fija b12040, anterior: habria que subir el build y verificar hashes.",
+      "estimate_weights_gb": 360,
+      "what_it_does": "Modelo MoE grande de Alibaba para agentes de programacion, con parte de sus parametros en tablas de busqueda que pueden vivir en disco.",
+      "why_for_the_lab": "Es la forma de intentar un modelo mas grande que lo que entra en 12 GB + 64 GB, aprovechando el SSD para las tablas.",
+      "caveats": "Las cifras de memoria de la guia de Unsloth se contradicen (tabla de 4 bits en 64 GB frente a un archivo Q4_K_XL de 111.3 GB): no esta probado que algun cuantizado entre en 64 GB de RAM mas 12 GB de VRAM. A 1 o 2 bits se pierde calidad. La velocidad publicada (MTP, 170 tok/s) es de una RTX 6000 PRO, no dice nada de una 3060. El esfuerzo de razonamiento por defecto es xhigh (trazas largas). La guia no describe el formato de llamadas a herramientas. Dato corregido: en una respuesta anterior se dijo que la licencia era restrictiva; leida la licencia completa, no lo es para uso personal o interno.",
+      "to_test": [
+        "probar primero Qwen3.6-35B-A3B y Qwen3-Coder-Next",
+        "solo despues, confirmar el peso real del fragmento de Engram del cuantizado elegido y medir RAM, VRAM y velocidad con contexto chico",
+        "usar un NVMe para la tabla en mmap"
+      ]
     }
   ]
 }

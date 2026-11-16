@@ -33,6 +33,22 @@
       "tags": ["llm", "serving", "llama-cpp", "vllm", "sglang", "kv-cache", "windows"],
       "file": "knowledge/servir-modelos-locales.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "modelos-flash-engram",
+      "title": "Modelos Flash con Engram: tablas en SSD en vez de RAM",
+      "kind": "referencia",
+      "tags": ["llm", "local-models", "engram", "ssd", "qwen", "deepseek"],
+      "file": "knowledge/modelos-flash-engram.md",
+      "checked_at": "2026-11-16"
+    },
+    {
+      "id": "simulacro-sin-nube",
+      "title": "Simulacro sin nube: cuanto puede hacer el agente local sin internet",
+      "kind": "guia",
+      "tags": ["local-models", "agents", "offline", "evaluation"],
+      "file": "knowledge/simulacro-sin-nube.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }
