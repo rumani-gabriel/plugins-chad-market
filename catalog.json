@@ -126,6 +126,19 @@
         "mcp"
       ],
       "verified": "docs"
+    },
+    {
+      "name": "keenable-search",
+      "kind": "app",
+      "path": "apps/keenable-search",
+      "summary": "Busqueda web y lectura de paginas para el agente por MCP remoto (Keenable), sin instalar nada y sin clave. Servicio de terceros: cada consulta sale de la maquina, usar solo consultas sin datos sensibles. Incluye como medir si de verdad ahorra tokens frente a leer paginas enteras.",
+      "tags": [
+        "search",
+        "mcp",
+        "context",
+        "web"
+      ],
+      "verified": "docs"
     }
   ]
 }

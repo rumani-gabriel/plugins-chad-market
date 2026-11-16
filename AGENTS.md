@@ -53,6 +53,10 @@ Si el catálogo no cubre la necesidad, seguí `blueprints/BUILDING.md`: elegís 
 - Un modelo de voz es la pieza que falta para que el agente hable y escuche: mirá también la app `voicestudio` y `kittentts` del catálogo.
 - El **cerebro local** del agente es la app `llama-cpp`: un servidor compatible con OpenAI en `127.0.0.1` que corre un modelo MoE con los expertos en la RAM, y el plano `blueprints/provider/provider-local.json` lo conecta a OpenCode como proveedor. Medí VRAM, RAM y tokens por segundo con el modelo cargado y anotalo en su entrada de `models.json`: ese dato decide si entra la voz al mismo tiempo.
 
+## Baúl de conocimiento
+
+`knowledge/` guarda notas que no son una herramienta: estrategias (por ejemplo, cómo gestionar el contexto), criterios para evaluar algo y hallazgos. Empezá por `knowledge/INDEX.json`, elegí por `tags` y leé **solo** las notas que apliquen: no cargues todo el baúl en el contexto. Cada nota separa lo verificado de lo que afirma el autor y lleva su fecha. El formato y las reglas están en `knowledge/README.md`. Para sumar una nota nueva, seguí ese formato y agregá su entrada al índice; si el tema ya tiene nota, editala y subí su fecha.
+
 ## Pi: otro arnés para el mismo modelo local
 
 La app `pi` (`apps/pi/recipe.json`) instala Pi, un arnés de agente de programación que es una **alternativa a OpenCode**, no un complemento, y lo conecta al servidor de la app `llama-cpp`. Sirve para correr las mismas tareas con el mismo modelo en los dos arneses y comparar. Leé primero `when_to_use` y `comparison_with_opencode` de la receta.

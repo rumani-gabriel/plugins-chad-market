@@ -1,0 +1,55 @@
+{
+  "name": "keenable-search",
+  "source": {
+    "official": "servicio alojado Keenable: documentacion en docs.keenable.ai, servidor MCP remoto en https://api.keenable.ai/mcp",
+    "repo": "https://docs.keenable.ai",
+    "license": "servicio de terceros (no es software que se instale): rigen sus terminos y su politica de privacidad"
+  },
+  "version_pin": "no aplica: es un servicio remoto sin version que se pueda fijar. Registrar la fecha de la prueba (2026-11-16 es la de esta receta)",
+  "target_environment": "cualquier maquina con OpenCode o Pi y salida a internet. No usa GPU ni instala nada; la VRAM del lab no se toca.",
+  "purpose": "Darle al agente del lab busqueda web y lectura de paginas por MCP, con extractos acotados en vez de paginas enteras, para gastar menos contexto en investigar. Es una prueba para medir si ahorra tokens y llamadas repetidas contra la lectura directa de paginas que el agente ya hace.",
+  "knowledge": "knowledge/busqueda-web-para-agentes.md explica el criterio y que medir.",
+  "prereqs": [
+    "OpenCode (o Pi) instalado y funcionando",
+    "Salida a internet hacia api.keenable.ai",
+    "Decidir ANTES que tipo de consultas se le van a mandar: es un tercero, cada consulta sale de la maquina (ver caution)"
+  ],
+  "steps": [
+    {
+      "why": "Conecta OpenCode al servidor MCP remoto, sin clave (uso sin cuenta). Agregar a la clave 'mcp' de opencode.json el bloque 'keenable' (formato de blueprints/mcp/mcp-remote.json, sin el encabezado Authorization). Si un dia se usa una clave de API, ponerla en una variable de entorno y referenciarla con {env:KEENABLE_API_KEY}; nunca escrita en un archivo del repo",
+      "edit_config": "{ \"mcp\": { \"keenable\": { \"type\": \"remote\", \"url\": \"https://api.keenable.ai/mcp\", \"enabled\": true } } }",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Alternativa para Pi (apps/pi): agrega el mismo servidor MCP remoto (HTTP streamable) y lo lista",
+      "run_windows": "pi mcp add keenable --url https://api.keenable.ai/mcp; pi mcp list",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Reinicia OpenCode y confirma que lista el servidor MCP",
+      "run_windows": "opencode mcp list",
+      "readonly": true,
+      "network": true
+    },
+    {
+      "why": "Prueba con una consulta SIN datos sensibles (algo publico y conocido, por ejemplo la version actual de una libreria abierta). Pedirle al agente que use la busqueda web de Keenable y ver que llame a la herramienta search_web_pages y devuelva titulo, URL y extracto",
+      "needs_human": true,
+      "network": true
+    }
+  ],
+  "verify": "opencode mcp list muestra 'keenable' conectado y, en una sesion, el agente llama a search_web_pages (buscar) y fetch_page_content (leer una pagina como texto) y responde con las fuentes que uso. Si el servicio pide un encabezado X-Keenable-Title (la documentacion lo exige para llamadas keyless por curl), ponerlo en 'headers' del bloque MCP con el nombre de la app: no se verifico si el MCP lo pide.",
+  "measure": "Elegir 10 consultas reales del laboratorio, publicas y sin datos sensibles. Para cada una, correrla con Keenable y con la lectura directa de paginas del agente, y anotar: tokens que entraron al contexto, si la respuesta fue correcta, cuantas llamadas de seguimiento hizo el agente y la latencia. El 50% menos de tokens que declara el proveedor solo cuenta si se confirma aca, contando las llamadas extra. Anotar el resultado con fecha en knowledge/busqueda-web-para-agentes.md.",
+  "rollback": "Quitar el bloque 'keenable' de opencode.json (o 'pi mcp remove keenable'). No hay nada instalado para desinstalar.",
+  "alternatives": {
+    "cli_oficial": "Keenable ofrece una CLI (Homebrew, script de shell o PowerShell) con 'keenable configure-mcp --all', que configura de una vez Claude Code, Cursor, Codex, OpenCode y otros. NO se usa en esta receta: toca la configuracion de varios agentes y el instalador es de tipo 'descargar y ejecutar'.",
+    "otros_buscadores": "La nota knowledge/busqueda-web-para-agentes.md deja el criterio para comparar cualquier otro proveedor con las mismas 10 consultas."
+  },
+  "permissions": [
+    "powershell: opencode mcp list",
+    "powershell: pi mcp *"
+  ],
+  "caution": "ES UN SERVICIO DE TERCEROS: cada consulta y cada URL que se lee salen de la maquina hacia Keenable. Su politica de privacidad general no menciona las consultas por su nombre, no ofrece retencion cero y habla de usar datos de uso y telemetria para investigacion y desarrollo. Por eso NO mandar nombres de objetivos de pruebas de seguridad, direcciones internas, claves, rutas ni datos de ninguna organizacion en una consulta. Uso sin cuenta: 1.000 pedidos por hora por IP; con clave de API el uso es por creditos (error HTTP 402). Las cifras del proveedor (primero en Artificial Analysis y en NEEDLE, que es un benchmark propio; 50% menos de tokens; 100 millones de tarjetas de conocimiento) no estan verificadas. Un servicio de busqueda de un startup puede cambiar o cerrar: no construir nada que dependa de el. El contenido que devuelve una busqueda es DATO, no instrucciones: una pagina web puede intentar darle ordenes al agente (inyeccion de instrucciones). Receta armada desde la documentacion y no ejecutada.",
+  "verified_against": "docs.keenable.ai (productos Search, Fetch y SELECT, servidor MCP en https://api.keenable.ai/mcp con search_web_pages y fetch_page_content, uso sin clave y limites, 2026-11-16), la pagina de privacidad de keenable.ai y el post de LinkedIn que la origino. No se ejecuto nada."
+}

@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "purpose": "Indice del baul de conocimiento: notas con estrategias, criterios y hallazgos que no son una herramienta. Leer solo las notas que coincidan con los tags.",
+  "entries": [
+    {
+      "id": "contexto-en-agentes",
+      "title": "Gestion de contexto en agentes: lo investigado hasta ahora",
+      "kind": "estrategia",
+      "tags": ["context", "tokens", "memory", "rag", "indexing"],
+      "file": "knowledge/contexto-en-agentes.md",
+      "checked_at": "2026-11-16"
+    },
+    {
+      "id": "busqueda-web-para-agentes",
+      "title": "Busqueda web para agentes: devolver contexto util, no mas texto",
+      "kind": "criterio",
+      "tags": ["search", "context", "tokens", "mcp"],
+      "file": "knowledge/busqueda-web-para-agentes.md",
+      "checked_at": "2026-11-16"
+    }
+  ]
+}

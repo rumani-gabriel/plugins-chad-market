@@ -5,8 +5,9 @@ Caja de herramientas para un agente en **OpenCode** (modelos locales o remotos).
 | Tipo | Qué es | Cuántas |
 |---|---|---|
 | `plugin` | skills y comandos listos para instalar | 4 |
-| `app` | herramienta externa (MCP, librería, CLI) con una receta paso a paso | 7 |
+| `app` | herramienta externa (MCP, librería, CLI) con una receta paso a paso | 8 |
 | plano | esqueletos para armar skills, comandos, subagentes, tools y MCP | `blueprints/` |
+| nota | estrategias, criterios y hallazgos que no son una herramienta | `knowledge/` |
 
 Todo está en [`catalog.json`](catalog.json), con tags por capacidad y un nivel de verificación honesto (`executed`, `discovery` o `docs`).
 
@@ -19,7 +20,7 @@ Todo está en [`catalog.json`](catalog.json), con tags por capacidad y un nivel 
 | `fast-grep` | Búsqueda de texto/regex indexada, hasta 50x más rápida que grep (`/tgrep-index`) |
 
 ## Apps
-`rea` (ingeniería inversa por MCP), `cocoindex` (indexado incremental para RAG), `kittentts` (texto a voz local), `open-code-review` (code review con IA y plugin nativo para OpenCode), `voicestudio` (voz local: sintetizar, clonar y transcribir, con servidor MCP; junto con `kittentts` forma la parte de voz del agente), `llama-cpp` (el modelo de lenguaje local que usa OpenCode como cerebro). `pi` (arnés de agente alternativo a OpenCode, conectado al mismo modelo local y con comparación para decidir cuál rinde mejor). Cada una tiene su receta en `apps/<nombre>/recipe.json`.
+`rea` (ingeniería inversa por MCP), `cocoindex` (indexado incremental para RAG), `kittentts` (texto a voz local), `open-code-review` (code review con IA y plugin nativo para OpenCode), `voicestudio` (voz local: sintetizar, clonar y transcribir, con servidor MCP; junto con `kittentts` forma la parte de voz del agente), `llama-cpp` (el modelo de lenguaje local que usa OpenCode como cerebro). `pi` (arnés de agente alternativo a OpenCode, conectado al mismo modelo local y con comparación para decidir cuál rinde mejor). `keenable-search` (búsqueda web para el agente por MCP remoto; servicio de terceros). Cada una tiene su receta en `apps/<nombre>/recipe.json`.
 
 ## Instalar un plugin
 Requiere Python 3 (solo stdlib).
