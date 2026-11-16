@@ -25,4 +25,4 @@ Por familia, con el estado real de cada hallazgo:
 ## Cómo usarlo
 - **Qué medir:** tokens totales por tarea *terminada* y la calidad del resultado, con y sin la herramienta, con la versión fijada y las mismas tareas. Contar también las llamadas repetidas.
 - **Orden sugerido para el lab:** primero lo que no agrega piezas (acotar lecturas, `fast-grep`, `graph-explorer`), después un índice (`txtai`), y solo al final recortar salidas (`context-mode`), porque es la familia con peor evidencia independiente.
-- **Contexto corto:** con un modelo local, cada herramienta nueva suma descripciones al contexto; preferir pocas herramientas simples.
+- **Contexto corto:** con un modelo local, cada herramienta nueva suma descripciones al contexto; preferir pocas herramientas simples. Si un servidor MCP trae muchas (Concat: 45), ver `mcp-servidor-y-skills` por la idea de un proxy que oculte las que no se usan (sin probar).

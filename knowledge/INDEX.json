@@ -57,6 +57,14 @@
       "tags": ["rag", "retrieval", "bm25", "vector-search", "rrf", "reranker"],
       "file": "knowledge/rag-recuperacion-hibrida.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "mcp-servidor-y-skills",
+      "title": "Servidores MCP propios y skills servidas por el servidor (FastMCP)",
+      "kind": "criterio",
+      "tags": ["mcp", "fastmcp", "skills", "python", "tools", "context"],
+      "file": "knowledge/mcp-servidor-y-skills.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }

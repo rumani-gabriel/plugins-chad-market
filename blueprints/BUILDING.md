@@ -16,6 +16,7 @@ Leé `catalog.json`: cada entrada tiene `tags` por capacidad (por ejemplo `searc
 | Una herramienta externa que habla MCP | mcp | `blueprints/mcp/mcp-local.json` o `mcp-remote.json` | clave `mcp` de `opencode.json` |
 | Una herramienta externa sin MCP (CLI, librería, servicio) | app | copiá una receta de `apps/*/recipe.json` | no se copia: se ejecuta paso a paso |
 | Un modelo local (servidor con API compatible con OpenAI) como cerebro del agente | proveedor | `blueprints/provider/provider-local.json` | clave `provider` de `opencode.json` (receta completa en `apps/llama-cpp`); para Pi, `blueprints/provider/pi-models-local.json` (receta en `apps/pi`) |
+| Un servidor MCP propio (una herramienta tuya que el agente llame) | servidor MCP en Python | `blueprints/mcp-server/server.py` (FastMCP) | un archivo propio; se conecta con `blueprints/mcp/mcp-local.json` |
 
 Para instrucciones de proyecto (el `AGENTS.md` de un repo) usá la skill `harness-creator` de este market.
 
