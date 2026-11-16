@@ -167,6 +167,20 @@
         "gguf"
       ],
       "verified": "docs"
+    },
+    {
+      "name": "opensandbox",
+      "kind": "app",
+      "path": "apps/opensandbox",
+      "summary": "OpenSandbox: entornos aislados donde el agente ejecuta comandos y codigo en vez de hacerlo en tu cuenta de Windows (Docker local, servidor MCP y CLI, con ejemplos oficiales de OpenCode y Claude Code dentro del sandbox). En Windows el aislamiento es el de un contenedor comun: no es una barrera contra codigo hostil. Incluye politicas de red y como medir.",
+      "tags": [
+        "sandbox",
+        "security",
+        "mcp",
+        "agent-safety",
+        "docker"
+      ],
+      "verified": "docs"
     }
   ]
 }

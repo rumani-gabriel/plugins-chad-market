@@ -81,6 +81,14 @@
       "tags": ["fine-tuning", "training", "lora", "unsloth", "local-models", "qwen", "evaluation"],
       "file": "knowledge/afinar-modelos-locales.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "sandbox-para-agentes",
+      "title": "Aislar lo que ejecuta un agente (sandbox)",
+      "kind": "criterio",
+      "tags": ["sandbox", "security", "isolation", "docker", "gvisor", "egress", "agents"],
+      "file": "knowledge/sandbox-para-agentes.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }
