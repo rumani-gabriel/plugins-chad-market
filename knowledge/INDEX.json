@@ -17,6 +17,14 @@
       "tags": ["search", "context", "tokens", "mcp"],
       "file": "knowledge/busqueda-web-para-agentes.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "rag-visual-vs-texto",
+      "title": "RAG visual o de texto: donde se pierde la informacion",
+      "kind": "estrategia",
+      "tags": ["rag", "vision", "parsing", "screenshots", "context"],
+      "file": "knowledge/rag-visual-vs-texto.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }

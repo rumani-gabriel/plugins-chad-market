@@ -361,6 +361,23 @@
       "summary": "Aplicacion de escritorio y plantilla web de un 'companero de trabajo' con IA: varios bots con su propio navegador, archivos y herramientas, subagentes, aprendizaje de tareas como skills, interfaz generativa y MCP. Acepta modelos de OpenAI, Claude, Gemini o modelos abiertos por un endpoint compatible con OpenAI. Hay instalador firmado para Windows y una version 'for Business' de pago.",
       "caution": "La plantilla es MIT pero depende de CopilotKit Intelligence (memoria, conversaciones y aprendizaje automatico), que tiene licencia aparte: incluso en la laptop pide una licencia local gratuita, y el propio README dice que bajar los componentes, iniciar sesion y renovar la licencia local necesitan internet. El backend usa Docker y PostgreSQL. Su configuracion de ejemplo usa un modelo de OpenAI por defecto. Es un producto para usuarios finales, no una pieza que un agente de programacion use como herramienta: no cubre ningun hueco del lab. Misma familia que openduet. Las cifras del post ('mato a todos los companeros de IA') son marketing; un comentario ya lo cuestiona.",
       "promote_when": "no se promueve. Revisar solo si el lab necesita una interfaz tipo asistente con varios bots y la licencia local de Intelligence funciona sin conexion a su nube."
+    },
+    {
+      "name": "pixelrag",
+      "repo": "https://github.com/StarTrail-org/PixelRAG",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 10950,
+        "license": "Apache-2.0",
+        "created": "2026-05-29",
+        "last_push": "2026-11-11",
+        "version": "v0.4.0 (2026-07-16); PyPI pixelrag 0.4.0 (Python 3.12+); npm @startrail/pixelbrowse 0.1.0 (2026-09-09, Apache-2.0)",
+        "checked_at": "2026-11-16"
+      },
+      "summary": "Recuperacion de paginas y documentos como imagenes en vez de texto: renderiza a mosaicos de captura, los embebe con Qwen3-VL-Embedding, arma un indice FAISS y un lector con vision responde mirando los pixeles. Trae ademas 'pixelshot' (captura una URL, HTML local o PDF con Playwright/Chromium en la propia maquina) y un plugin de OpenCode (@startrail/pixelbrowse) y una skill de Claude Code que le dan al agente una herramienta 'screenshot'.",
+      "caution": "Las cifras del post (un parser pierde mas de 40% de la pagina, +18,1% sobre el mejor RAG de texto sobre Wikipedia) son de los autores y un comentario cuestiona la base de comparacion; no lei el paper (arXiv 2606.28344). Para que el agente lea los mosaicos hace falta un modelo con vision: el Qwen3-30B-A3B de apps/llama-cpp es solo de texto; Qwen3.8-27B es vision-lenguaje pero no entra comodo en 12 GB (ver models.json) y con llama.cpp requiere ademas su archivo de proyeccion de imagen, sin verificar. Una imagen consume tokens de contexto: puede costar mas que el texto extraido, sin medir. El indice completo menciona Linux con CUDA y macOS; Windows no figura. Existe una API alojada (api.pixelrag.ai) con un indice de Wikipedia: es de terceros, no usarla con datos propios. Instalar Chromium de Playwright baja un navegador de internet. Skill y plugin tienen un aviso propio contra la inyeccion de instrucciones desde las capturas, pero igual el contenido de la pagina es dato.",
+      "promote_when": "probar solo pixelshot (no el indice) en la PC del lab: instalar pixelrag 0.4.0 con uv tool o pipx, bajar Chromium, capturar una pagina local o un PDF con tablas y ver si un modelo con vision (Qwen3.8-27B local con su proyeccion, o un modelo remoto en una prueba sin datos sensibles) responde mejor que leyendo el texto extraido, midiendo tokens por mosaico. Si aporta, escribir apps/pixelrag con el plugin de OpenCode fijado. Ver knowledge/rag-visual-vs-texto.md."
     }
   ]
 }
