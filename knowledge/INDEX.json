@@ -73,6 +73,14 @@
       "tags": ["memory", "agents", "graph", "sqlite", "mcp", "context"],
       "file": "knowledge/memoria-de-agentes.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "afinar-modelos-locales",
+      "title": "Afinar (fine-tuning) modelos locales para tareas propias",
+      "kind": "guia",
+      "tags": ["fine-tuning", "training", "lora", "unsloth", "local-models", "qwen", "evaluation"],
+      "file": "knowledge/afinar-modelos-locales.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }

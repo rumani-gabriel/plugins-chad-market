@@ -153,6 +153,20 @@
         "editing"
       ],
       "verified": "docs"
+    },
+    {
+      "name": "unsloth",
+      "kind": "app",
+      "path": "apps/unsloth",
+      "summary": "Unsloth: afinar (LoRA/QLoRA) modelos locales densos de 8 a 14 B en la RTX 3060 de 12 GB, compararlos con el base y exportarlos a GGUF para llama.cpp. Aplicacion de escritorio para Windows con instalador fijado por hash. Los MoE grandes no entran. Incluye cuando conviene afinar y como medir si mejoro.",
+      "tags": [
+        "fine-tuning",
+        "training",
+        "local-ai",
+        "qwen",
+        "gguf"
+      ],
+      "verified": "docs"
     }
   ]
 }

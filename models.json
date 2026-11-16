@@ -220,6 +220,53 @@
         "solo despues, confirmar el peso real del fragmento de Engram del cuantizado elegido y medir RAM, VRAM y velocidad con contexto chico",
         "usar un NVMe para la tabla en mmap"
       ]
+    },
+    {
+      "name": "Qwen3.5-9B (base para afinar)",
+      "repo": "https://huggingface.co/Qwen/Qwen3.5-9B",
+      "family": "Qwen3.5 (Alibaba)",
+      "modality": "texto",
+      "status": "to_test",
+      "verified": {
+        "params": "9.65 B (safetensors)",
+        "license": "Apache-2.0",
+        "downloads": 6080782,
+        "published": "2026-02-27",
+        "unsloth_minimum_qlora": "6 GB para la clase 8 B; 9 B figura en su tabla de requisitos sin cifra propia leida",
+        "checked_at": "2026-11-16"
+      },
+      "runs_with": "Afinado: Unsloth (apps/unsloth) con QLoRA de 4 bits. Servicio: llama.cpp con un GGUF (de Unsloth, de terceros, o el propio exportado).",
+      "estimate_weights_gb": 19.3,
+      "what_it_does": "Modelo denso mediano de la familia Qwen3.5, candidato a base para especializarlo en una tarea propia.",
+      "why_for_the_lab": "Entra en 12 GB para entrenar con QLoRA y, cuantizado, tambien para servir entero en la GPU (sin repartir expertos con la RAM).",
+      "caveats": "No se midio memoria, velocidad ni calidad. El estimate_weights_gb es BF16 (parametros por 2). Afinar un modelo de este tamano no alcanza el razonamiento de Sonnet u Opus: ver knowledge/afinar-modelos-locales.md.",
+      "to_test": [
+        "medir la base con 20 tareas propias antes de afinar",
+        "afinar con 100 a 500 ejemplos propios y comparar con las 20 tareas apartadas"
+      ]
+    },
+    {
+      "name": "Qwen3-14B (base para afinar)",
+      "repo": "https://huggingface.co/Qwen/Qwen3-14B",
+      "family": "Qwen3 (Alibaba)",
+      "modality": "texto",
+      "status": "to_research",
+      "verified": {
+        "params": "14.77 B (safetensors)",
+        "license": "Apache-2.0",
+        "downloads": 13082898,
+        "published": "2025-04-27",
+        "unsloth_minimum_qlora": "8.5 GB (minimo absoluto publicado para 14 B)",
+        "checked_at": "2026-11-16"
+      },
+      "runs_with": "Afinado: Unsloth con QLoRA de 4 bits, al limite de 12 GB. Servicio: llama.cpp con GGUF.",
+      "estimate_weights_gb": 29.5,
+      "what_it_does": "Modelo denso de 14 B de la generacion Qwen3 de abril de 2025.",
+      "why_for_the_lab": "Es el mayor denso que Unsloth documenta que entra en 12 GB para QLoRA; mas capacidad que un 8-9 B si la memoria alcanza.",
+      "caveats": "8.5 GB es un minimo absoluto: con contexto largo puede no entrar en la 3060 mientras otro proceso use VRAM. Es de 2025: hay modelos mas nuevos de 9 B (Qwen3.5-9B). No medido.",
+      "to_test": [
+        "probar primero con Qwen3.5-9B; subir a 14 B solo si la memoria y el tiempo lo permiten"
+      ]
     }
   ]
 }

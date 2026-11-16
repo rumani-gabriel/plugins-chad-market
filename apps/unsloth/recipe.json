@@ -1,0 +1,95 @@
+{
+  "name": "unsloth",
+  "source": {
+    "official": "release oficial de GitHub de unslothai/unsloth (aplicacion de escritorio para Windows) y documentacion en unsloth.ai/docs",
+    "repo": "https://github.com/unslothai/unsloth",
+    "license": "Apache-2.0 el paquete base; los componentes opcionales, como la interfaz Studio, son AGPL-3.0 (segun su documentacion)"
+  },
+  "version_pin": "v0.1.918-beta (release del 2026-11-16, instalador de Windows de 22 MB). El proyecto publica versiones casi a diario: el hash de abajo es solo de ESTE tag",
+  "target_environment": "Windows 10/11 x64 con NVIDIA RTX 3060 de 12 GB (capacidad de calculo 8.6; Unsloth pide 7.0 o mas), 64 GB de RAM. Windows nativo esta soportado, sin WSL (documentacion de Unsloth, requisitos).",
+  "purpose": "Afinar (fine-tuning) un modelo local denso de 8 a 14 B con LoRA o QLoRA para una tarea propia y repetida, compararlo con el modelo base y exportarlo a GGUF para servirlo con apps/llama-cpp. Es la herramienta real para 'entrenar mis modelos locales'; MiniMind no lo es (ver knowledge/afinar-modelos-locales.md).",
+  "when_to_use": "Leer primero knowledge/afinar-modelos-locales.md: afinar solo si el modelo falla siempre igual en una tarea repetida, hay cientos de ejemplos buenos propios y existe un conjunto aparte para medir. Para que el modelo 'sepa mas', usar recuperacion de datos, no afinado.",
+  "limits": {
+    "entra": "Modelos densos: Qwen3.5-9B (9.65 B), Qwen3-8B, Qwen3-14B (QLoRA de 4 bits: minimos publicados de 6 GB para 8B y 8.5 GB para 14B; el contexto largo y los lotes grandes piden mas) y Qwen3-4B.",
+    "no_entra": "Los MoE grandes (Qwen3-30B-A3B de apps/llama-cpp, Qwen3.6-35B-A3B, Qwen3-Coder-Next): un articulo de terceros cita ~74 GB para el 35B, sin confirmar en la fuente oficial. Tampoco un denso de 27 B (22 GB minimos de QLoRA).",
+    "expectativa": "Un modelo afinado de 8 a 14 B aprende formato, estilo y patrones de tu trabajo; no alcanza el razonamiento general de Sonnet u Opus."
+  },
+  "prereqs": [
+    "Windows 10/11 x64, controlador NVIDIA al dia (nvidia-smi)",
+    "Espacio en disco para modelos base y exportaciones (decenas de GB; no medido)",
+    "Acceso a github.com y a huggingface.co para bajar el instalador y los modelos base",
+    "Apagar el servidor de apps/llama-cpp y cualquier otro proceso que use VRAM antes de entrenar: la VRAM es de uno u otro",
+    "Un conjunto de datos propio (cientos de ejemplos revisados a mano) y 20 ejemplos de evaluacion APARTE del entrenamiento (ver knowledge/afinar-modelos-locales.md)",
+    "Sin datos sensibles de ninguna organizacion ni de terceros en el conjunto de datos"
+  ],
+  "steps": [
+    {
+      "why": "Solo lectura: GPU, VRAM libre y espacio libre en disco",
+      "run_windows": "nvidia-smi --query-gpu=name,driver_version,memory.total,memory.used --format=csv; Get-PSDrive -PSProvider FileSystem | Select-Object Name,@{n='LibreGB';e={[math]::Round($_.Free/1GB)}}",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Mide la base ANTES de entrenar: correr las 20 tareas de evaluacion con el modelo actual (apps/llama-cpp) y anotar cuantas resuelve. Sin este numero no se puede saber si el afinado mejoro",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Baja el instalador de escritorio de Windows del release v0.1.918-beta (22 MB) a una carpeta nueva, sin ejecutarlo",
+      "run_windows": "New-Item -ItemType Directory -Force \"$env:USERPROFILE\\Downloads\\unsloth\" | Out-Null; curl.exe -L -o \"$env:USERPROFILE\\Downloads\\unsloth\\Unsloth-Desktop-Windows.exe\" https://github.com/unslothai/unsloth/releases/download/v0.1.918-beta/Unsloth-Desktop-Windows.exe",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Verifica la integridad: el hash tiene que ser 5036f847383d62901d8f22f8b5f59325bfa2f942fd25b2cd5a8aeed0a78772e3 (el digest que publica GitHub para ese archivo). Si no coincide, borrar y no seguir",
+      "run_windows": "(Get-FileHash \"$env:USERPROFILE\\Downloads\\unsloth\\Unsloth-Desktop-Windows.exe\" -Algorithm SHA256).Hash.ToLower()",
+      "readonly": true,
+      "network": false
+    },
+    {
+      "why": "Instalar: ejecutar el instalador. Al primer arranque la aplicacion baja sus componentes (tamano no medido) y los modelos que se elijan; leer lo que pide antes de aceptar. No se usa el instalador 'irm | iex' ni el de curl",
+      "run_windows": "Start-Process \"$env:USERPROFILE\\Downloads\\unsloth\\Unsloth-Desktop-Windows.exe\"",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Afinar: en la aplicacion, cargar un modelo base denso (por ejemplo Qwen3.5-9B o Qwen3-8B, Apache-2.0), importar los datos (JSONL, CSV o PDF segun la documentacion), elegir LoRA o QLoRA de 4 bits con los valores recomendados y bajar el lote a 1 si falta memoria. Mirar la pantalla de perdida y VRAM. Los pasos exactos de la interfaz no estan verificados: seguir lo que muestre la aplicacion",
+      "needs_human": true,
+      "network": true
+    },
+    {
+      "why": "Comparar: con la funcion de chat de la aplicacion, probar el modelo afinado contra el base con los 20 ejemplos APARTADOS y anotar cuantos resuelve cada uno. Si no mejora, o empeora otras tareas, descartarlo",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Exportar a GGUF desde la aplicacion (opciones documentadas: modelo fusionado de 16 bits o solo el adaptador LoRA; destino local o Hugging Face: elegir LOCAL, sin subir nada). Las cuantizaciones disponibles y si el GGUF sirve directo con llama-server no estan verificadas",
+      "needs_human": true,
+      "network": false
+    },
+    {
+      "why": "Servir el modelo afinado con apps/llama-cpp (cambiar la ruta del modelo y el alias) y repetir las 20 tareas por OpenCode o Pi; anotar el resultado con fecha en models.json",
+      "needs_human": true,
+      "network": false
+    }
+  ],
+  "verify": "La aplicacion abre y detecta la RTX 3060. Un entrenamiento corto de prueba (unos pocos pasos) termina sin errores de memoria. El modelo afinado responde en el chat de la aplicacion y, exportado, llama-server lo carga y responde por /v1/chat/completions.",
+  "measure": "Para cada afinado, anotar: modelo base, cantidad de ejemplos de entrenamiento, tiempo de entrenamiento y VRAM pico (nvidia-smi), tareas resueltas de los 20 apartados antes y despues, y si otras tareas empeoraron. Probar tambien si la mejora permite acortar el prompt de sistema o la skill (menos contexto por tarea): es una hipotesis, no una cifra.",
+  "rollback": "Desinstalar desde Configuracion > Aplicaciones de Windows. Borrar %USERPROFILE%\\Downloads\\unsloth y las carpetas de modelos y exportaciones que la aplicacion haya creado (mirar su configuracion para ver donde estan). El modelo base original no se modifica.",
+  "alternatives": {
+    "winget": "winget install --id UnslothAI.Unsloth -e (lo documenta su README): mas comodo, pero instala la ultima version sin fijarla.",
+    "instaladores_de_script": "irm https://unsloth.ai/install.ps1 | iex y curl https://unsloth.ai/install.sh | sh: tipo 'descargar y ejecutar'; si se usan, bajar el script y leerlo primero.",
+    "docker": "imagen oficial unsloth/unsloth en Docker Hub (la documentacion enlaza una guia aparte; no se reviso).",
+    "otros_entrenadores": "LLaMA-Factory, Axolotl y TRL de Hugging Face son alternativas conocidas; no se revisaron aca.",
+    "aprender_como_funciona": "MiniMind (backlog) para entender SFT, LoRA, DPO y GRPO con un modelo de 64 millones de parametros; es didactico, no sirve para afinar Qwen."
+  },
+  "permissions": [
+    "powershell: nvidia-smi *",
+    "powershell: Get-PSDrive *",
+    "powershell: curl.exe -L -o * https://github.com/unslothai/unsloth/releases/download/v0.1.918-beta/*",
+    "powershell: Get-FileHash *",
+    "powershell: Start-Process *Unsloth-Desktop-Windows.exe"
+  ],
+  "caution": "Es software beta con versiones casi diarias: fijar el tag y no actualizar sin releer. Afinar con datos propios: nada sensible ni de terceros en el conjunto de entrenamiento, y no usar salidas de modelos alojados como datos sin leer sus terminos de uso (varios proveedores limitan entrenar modelos que compitan con ellos). Un afinado puede empeorar el modelo en otras tareas: se guarda el base y se mide fuera del entrenamiento. La documentacion dice que corre sin conexion y sin telemetria de uso, pero no aclara que descargas necesita: es una declaracion del proyecto, no se audito. La interfaz Studio es AGPL-3.0; usarla en tu maquina sin distribuirla no activa obligaciones. Un modelo exportado hereda la licencia del modelo base (Apache-2.0 en los Qwen sugeridos). Receta armada desde la documentacion; no se ejecuto nada y los pasos de la interfaz no estan verificados.",
+  "verified_against": "README de unslothai/unsloth (79.611 estrellas, Apache-2.0, release v0.1.918-beta del 2026-11-16 con su digest), documentacion de requisitos, de Studio y de exportacion en unsloth.ai/docs, y las fichas de Hugging Face de Qwen3.5-9B, Qwen3-8B, Qwen3-14B y Qwen3-4B (todas Apache-2.0). Los comandos NO se ejecutaron: la maquina del lab es otra."
+}

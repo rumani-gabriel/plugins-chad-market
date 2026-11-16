@@ -396,6 +396,23 @@
       "summary": "Base de datos de grafos embebida y en memoria, escrita en Rust (proyecto de Neo4j Labs), con consultas en Cypher 25. Un grafo es un archivo .rl, durable por un registro con fsync, sin servidor; el mismo motor sirve como CLI, paquete Python, Rust, Node o WASM, y opcionalmente como servidor local con Bolt, HTTP y MCP (relate serve --mcp). Pensado como memoria de agentes en un solo archivo.",
       "caution": "Proyecto de 12 dias: inmaduro. Segun su propia documentacion de limitaciones: todo el grafo debe caber en memoria, un solo proceso es dueno del almacen, un solo usuario o agente por proceso y bases fijas (no hay varias bases ni federacion). Un comentario del post (de alguien que contribuye a un competidor, lo declara) reporta consultas de varios saltos de 1,3 s contra 2 a 3 ms de dos rivales, de 4 a 6 veces mas memoria y fallas por memoria en conjuntos grandes; no es una medicion independiente. El agente tendria que escribir Cypher, fuente de errores con un modelo local chico (sin medir). Instalador oficial de tipo 'curl | bash' o 'irm | iex', con firma verificada y la alternativa documentada de bajar y leer el script antes. Los motores de grafo embebidos pueden abandonarse: Kuzu aparece archivado en GitHub desde 2025-10-10.",
       "promote_when": "no se promueve por ahora. Solo si un caso concreto del lab necesita memoria con relaciones entre cosas y las opciones mas simples (markdown con busqueda, SQLite con registros tipados) no alcanzan, y despues de unos meses de vida del proyecto. Ver knowledge/memoria-de-agentes.md."
+    },
+    {
+      "name": "minimind",
+      "repo": "https://github.com/jingyaogong/minimind",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "stars": 65550,
+        "forks": 8591,
+        "license": "Apache-2.0",
+        "created": "2024-07-27",
+        "last_push": "2026-10-27",
+        "checked_at": "2026-11-16"
+      },
+      "summary": "Proyecto didactico: entrena desde cero un modelo de lenguaje diminuto (~64 millones de parametros) con todo el recorrido en PyTorch puro: limpieza de datos, preentrenamiento, SFT, LoRA, DPO, PPO, GRPO, uso de herramientas, RL de agentes y destilacion; con variantes de vision, multimodal y difusion.",
+      "caution": "No sirve para afinar Qwen ni modelos ya existentes y el modelo resultante no sirve como agente. Las '2 horas' del post son una epoca de la etapa de SFT en una RTX 3090 (aclaracion del propio README), no todo el recorrido. Un comentario advierte que en GRPO un modelo tan chico aprende rapido atajos (respuestas largas para puntuar mas): sin verificar.",
+      "promote_when": "no se promueve como herramienta. Util solo para aprender como funcionan SFT, LoRA, DPO y GRPO antes de afinar en serio. Para afinar los modelos locales, ver apps/unsloth y knowledge/afinar-modelos-locales.md."
     }
   ]
 }
