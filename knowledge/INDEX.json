@@ -25,6 +25,14 @@
       "tags": ["rag", "vision", "parsing", "screenshots", "context"],
       "file": "knowledge/rag-visual-vs-texto.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "servir-modelos-locales",
+      "title": "Servir modelos locales: llama.cpp, vLLM o SGLang",
+      "kind": "criterio",
+      "tags": ["llm", "serving", "llama-cpp", "vllm", "sglang", "kv-cache", "windows"],
+      "file": "knowledge/servir-modelos-locales.md",
+      "checked_at": "2026-11-16"
     }
   ]
 }
