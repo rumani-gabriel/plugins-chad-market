@@ -27,3 +27,11 @@ Cuando un RAG devuelve documentos «relevantes» pero la respuesta sale mal, el 
 2. **Si solo vectores falla en identificadores exactos,** agregar BM25 y fusionar con RRF. Si solo BM25 falla en preguntas de significado, agregar vectores.
 3. **Agregar un reranker solo si** el híbrido deja la evidencia buena pero mal ordenada, y medir cuánta latencia suma.
 4. **Con un modelo local de contexto corto,** pasar pocos fragmentos buenos: devolver 3 bien rankeados cuesta menos contexto que 10 mediocres.
+
+## RAG sin vectores (por razonamiento sobre un árbol de secciones)
+Fuente: post de un tercero y README de `VectifyAI/PageIndex` (MIT, 40.455 estrellas, 2026-11-17). En vez de trozos y embeddings, se arma un árbol de secciones del documento (como un índice) y el modelo lo recorre, elige una sección y baja. Es el mismo tema de esta nota visto desde otro lado: la recuperación por similitud pierde la estructura.
+- **Cuándo conviene:** documentos largos y jerárquicos con referencias cruzadas (informes, contratos, normas), y cuando importa ver qué secciones eligió el modelo.
+- **Cuándo no:** texto plano sin secciones, corpus grandes (el árbol tiene que caber en contexto) y cuando pesan la velocidad y el costo (varias llamadas al modelo por pregunta).
+- **Un límite que señalan los comentarios:** el árbol puede llevar al modelo a una sola sección y perder una excepción o definición en otra; la ruta clara no garantiza evidencia completa. Probar con preguntas que combinan varias secciones.
+- **No verificado:** el 98,7 % en FinanceBench es de su propia corrida y solo en finanzas; con un modelo local no hay medición.
+- **Uso razonable:** combinar ambos (palabras clave o vectores para encontrar el documento, árbol para navegar dentro del que importa). Ver `backlog.json`: `pageindex`.

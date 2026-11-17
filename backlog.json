@@ -413,6 +413,16 @@
       "summary": "Proyecto didactico: entrena desde cero un modelo de lenguaje diminuto (~64 millones de parametros) con todo el recorrido en PyTorch puro: limpieza de datos, preentrenamiento, SFT, LoRA, DPO, PPO, GRPO, uso de herramientas, RL de agentes y destilacion; con variantes de vision, multimodal y difusion.",
       "caution": "No sirve para afinar Qwen ni modelos ya existentes y el modelo resultante no sirve como agente. Las '2 horas' del post son una epoca de la etapa de SFT en una RTX 3090 (aclaracion del propio README), no todo el recorrido. Un comentario advierte que en GRPO un modelo tan chico aprende rapido atajos (respuestas largas para puntuar mas): sin verificar.",
       "promote_when": "no se promueve como herramienta. Util solo para aprender como funcionan SFT, LoRA, DPO y GRPO antes de afinar en serio. Para afinar los modelos locales, ver apps/unsloth y knowledge/afinar-modelos-locales.md."
+    },
+    {
+      "name": "pageindex",
+      "repo": "https://github.com/VectifyAI/PageIndex",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": { "stars": 40455, "forks": 3474, "license": "MIT", "language": "Python", "checked_at": "2026-11-17" },
+      "summary": "RAG sin vectores: construye un arbol de secciones del documento (como un indice) y el modelo lo recorre razonando, sin trozos ni embeddings. Modo local (con tu propia clave de modelo) y modo nube. Pensado para documentos largos y estructurados (informes, contratos).",
+      "caution": "El 98,7 % en FinanceBench es una corrida del propio proyecto, solo en finanzas. La calidad depende del modelo que busca en el arbol (el README recomienda el mejor que puedas pagar): con un Qwen local no esta medido. Varias llamadas al modelo por pregunta; el arbol debe caber en contexto. El servidor MCP y el indice de varios documentos son solo de la nube. El README usa claves de OpenAI o suscripcion Claude; que funcione con un servidor llama.cpp local (usa litellm) no se verifico. Su pyproject deja litellm limitado a <1.106 y anota que la 1.107.0 fue malware: fijar versiones. Publica versiones casi a diario.",
+      "promote_when": "probarlo en el lab con un PDF largo y estructurado y un Qwen local como modelo de busqueda, contra un RAG de palabras clave; solo si acierta y el costo en tokens se sostiene."
     }
   ]
 }
