@@ -36,3 +36,5 @@ Niveles de aislamiento (según su guía de runtimes seguros):
 4. **Nada de claves reales dentro del sandbox**; usar Credential Vault solo si se cumplen sus requisitos, o no darle credenciales.
 5. **Fijar la versión** de los paquetes y de las imágenes (la guía del propio proyecto pide fijar por digest y avisa que la firma de sus lanzamientos agrupados todavía está en seguimiento).
 6. **Medir el costo:** tiempo de creación en esta máquina y cuánta RAM y VRAM deja libres para el modelo.
+
+7. **Ocultar una herramienta no es denegarla.** Omnigraph (fuente: notas de cambios de su version 0.15, 2026-11-09) tenia un flag que escondia las herramientas MCP de escritura mientras la misma credencial podia escribir por HTTP; lo quitaron y ahora decide solo la politica Cedar del lado del servidor. Criterio para el lab: el permiso se aplica donde esta el dato (politica de la credencial), no en la lista de herramientas que ve el modelo; al actualizar una herramienta con permisos, comparar lo que cada agente podia hacer antes y despues.

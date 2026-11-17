@@ -34,9 +34,9 @@
       "repo": "https://github.com/ModernRelay/omnigraph",
       "lens": "b",
       "status": "needs_review",
-      "verified": { "stars": 1387, "forks": 259, "license": "MIT", "language": "Rust", "checked_at": "2026-10-19" },
+      "verified": { "stars": 2908, "forks": 330, "license": "MIT", "language": "Rust", "checked_at": "2026-11-17" },
       "summary": "Base de datos grafo para memoria compartida entre agentes: ramas, merges de tres vias, deteccion de conflictos tipados, retrieval hibrido (grafo + vectores + BM25). MCP server + SDK TypeScript.",
-      "caution": "Un caso reportado por un usuario real muestra dos ramas con datos contradictorios en la misma entidad auto-mergeandose sin revision humana, y un permiso 'Allow Always' aplicandose mas alla de lo esperado.",
+      "caution": "Desde la 0.15 (2026-11-09) quitaron los flags --mcp-allow-writes y --mcp-allow-adhoc (el servidor ya no arranca con ellos): que un agente pueda escribir lo decide solo la politica Cedar de su credencial; para dejarlo de solo lectura hay que acotar su politica. Actualizar desde una version anterior puede ampliar lo que los agentes escriben. Binario para Windows disponible (zip x86_64); proyecto pre-1.0. Un caso reportado por un usuario real muestra dos ramas con datos contradictorios en la misma entidad auto-mergeandose sin revision humana, y un permiso 'Allow Always' aplicandose mas alla de lo esperado.",
       "promote_when": "revisar el modelo de permisos/merge antes de instalar; solo tiene sentido si el lab corre varios agentes en paralelo sobre el mismo conocimiento."
     },
     {
