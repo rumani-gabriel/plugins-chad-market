@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: vigente (se actualiza cada vez que se evalúa algo del tema)
-- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json`: `context-mode`, `rtk`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
+- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json`: `context-mode`, `rtk`, `headroom`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
 
 ## En una línea
 El contexto es el recurso escaso de un agente, sobre todo con un modelo local de contexto corto. El gasto grande no es una sola lectura sino el agente que **relee** y repite; hay siete familias de soluciones y ninguna tiene todavía una medición propia en este laboratorio.
@@ -11,7 +11,7 @@ El contexto es el recurso escaso de un agente, sobre todo con un modelo local de
 ## Qué sabemos (verificado, con fuente)
 Por familia, con el estado real de cada hallazgo:
 
-1. **Recortar la salida de las herramientas antes de que entre al modelo.** `context-mode` (licencia Elastic 2.0) y `rtk`. Un benchmark independiente de JetBrains sobre `rtk` 0.43 encontró 7,6% *más* costo a esfuerzo de razonamiento bajo y casi ningún ahorro a esfuerzo alto: no asumir ahorro. Estado: backlog, sin medir.
+1. **Recortar la salida de las herramientas antes de que entre al modelo.** `context-mode` (licencia Elastic 2.0) y `rtk`. Un benchmark independiente de JetBrains sobre `rtk` 0.43 encontró 7,6% *más* costo a esfuerzo de razonamiento bajo y casi ningún ahorro a esfuerzo alto: no asumir ahorro. Estado: backlog, sin medir. Variante más amplia: `headroom` (proxy que comprime todo lo que llega al modelo: salidas de herramientas, logs, JSON, código). Su propio README mide 21 a 57% de ahorro en cuatro escenarios; un análisis independiente (25 tareas, Claude por API) halló 39% menos tokens de entrada pero costo igual o mayor, porque reescribir el historial rompe el cache de prompt del proveedor. Criterio: **un ahorro de tokens se mide en tokens totales por tarea terminada y en cache, no en tokens de entrada**; con un modelo local la factura no existe, pero el cache de prefijo de llama-server sí importa (no medido).
 2. **Consultar un índice en vez de releer archivos.** `fast-grep` (búsqueda indexada, en el catálogo), `cocoindex` (indexado incremental, receta) y `txtai` (base de embeddings con servidor MCP, en backlog para probar).
 3. **Un mapa del código en vez de leerlo entero.** `graph-explorer` (grafo local del repo, en el catálogo) y `floorplan` (mapa con nombres en lenguaje llano, en backlog; ojo: su descripción puede quedar vieja si solo cambia el cuerpo de una función).
 4. **Memoria que no ocupa el contexto.** `memorilla` (Stanford) comprime documentos en 16 embeddings que entran al modelo; es investigación, está entrenada para un Qwen3-8B concreto y no funciona detrás de `llama-server` ni de OpenCode. Referencia, no herramienta. Comparativa de opciones de memoria en `memoria-de-agentes`.
