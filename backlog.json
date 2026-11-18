@@ -443,6 +443,16 @@
       "summary": "Optimizador de Windows de codigo abierto: 42 ajustes en 7 categorias (rendimiento, privacidad, GPU, energia, servicios, experiencia, IA), 44 opciones de personalizacion, gestor de inicio, tareas programadas, limpieza de disco y remocion de apps preinstaladas. Cada cambio guarda un archivo para revertirlo.",
       "caution": "Pensado sobre todo para juegos. Cambia servicios, registro, telemetria, hibernacion y plan de energia con permisos de administrador, y el ejecutable NO esta firmado (SmartScreen lo marca). El post dice que lo hizo Claude; el README afirma lo contrario (ajustes tomados de herramientas conocidas, nada generado por IA): no verificado. Para correr modelos locales la ganancia es marginal: el cuello de botella es VRAM y RAM, no los servicios de Windows.",
       "promote_when": "no se promueve. Si algun dia hace falta liberar RAM en el lab, medir primero (linea base) y quitar a mano lo puntual en vez de aplicar ajustes en bloque."
+    },
+    {
+      "name": "ai-engineering-hub",
+      "repo": "https://github.com/patchy631/ai-engineering-hub",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 42000, "forks": 6700, "license": "MIT", "language": "Python (coleccion de proyectos)", "checked_at": "2026-11-18" },
+      "summary": "Coleccion de 93 proyectos de ejemplo con codigo (22 principiantes, 48 intermedios, 23 avanzados): RAG, agentes, MCP, memoria, evaluacion y fine-tuning. Material de estudio, no una herramienta instalable. El post recomienda 5 para armar un portafolio (GitHub RAG, Agentic RAG, evaluacion con Opik, despliegue con LitServe, fine-tuning de DeepSeek con Unsloth y Ollama).",
+      "caution": "Es un indice de tutoriales de una newsletter de ciencia de datos, no un conjunto mantenido como producto: muchos proyectos dependen de servicios de terceros (Firecrawl, AssemblyAI, CrewAI, Groq, Zep) y usan modelos viejos (Llama 3.2, DeepSeek-R1); el propio post lo advierte. El enlace corto del post no se pudo resolver por redireccion: se identifico el repositorio por la cantidad (93 proyectos) y por los 5 proyectos nombrados.",
+      "promote_when": "no se promueve como herramienta. Util como fuente de ejemplos puntuales cuando el lab necesite uno: eval-and-observability (para medir RAG antes y despues) y DeepSeek-finetuning (comparar con apps/unsloth). Leer el codigo antes de copiar nada."
     }
   ]
 }
