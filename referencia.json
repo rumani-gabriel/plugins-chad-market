@@ -1,0 +1,188 @@
+{
+  "purpose": "Referencias y descartes: herramientas e ideas investigadas que NO hay que probar en la otra maquina. Quedan registradas para no volver a evaluarlas desde cero. Lo que si hay que revisar vive en backlog.json. Mismos campos que backlog.json.",
+  "schema": 1,
+  "status_values": {
+    "reference_only": "no es una herramienta para instalar; es material de estudio o referencia de arquitectura",
+    "not_recommended": "investigado y descartado a proposito: el motivo esta en 'caution'. Queda registrado para no volver a evaluarlo desde cero"
+  },
+  "entries": [
+    {
+      "name": "train-llm-from-scratch",
+      "repo": "https://github.com/FareedKhan-dev/train-llm-from-scratch",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "license": null, "language": "Jupyter Notebook", "checked_at": "2026-10-19" },
+      "summary": "Construye un transformer GPT-style desde cero (sin librerias de alto nivel) y lo entrena en Colab/Kaggle gratis. Material de estudio, no una herramienta.",
+      "caution": "Ninguna. No es instalable como plugin ni skill: se clona y se corre como proyecto aparte cuando alguien quiera aprender el tema.",
+      "promote_when": "nunca se promueve a plugins/; queda como bookmark de referencia para la pata Python/ML del lab."
+    },
+    {
+      "name": "free-claude-code",
+      "repo": "https://github.com/Alishahryar1/free-claude-code",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 71600, "forks": 11100, "license": "AGPL-3.0-only (segun su archivo LICENSE; la API de GitHub lo muestra como NOASSERTION)", "language": "Python", "checked_at": "2026-11-18" },
+      "summary": "Proxy local que hace correr Claude Code, Codex y otros 9 agentes contra hasta 61 proveedores de modelos gratuitos o locales, con fallback automatico entre ellos.",
+      "caution": "Redundante: OpenCode ya trabaja de forma nativa con multiples proveedores y modelos locales. Ademas manda los prompts (y el codigo que contengan) a proveedores de terceros gratuitos, y un request fallido puede pasar por mas de un proveedor antes de resolverse. El '90% menos de tokens' y lo de 'ToS-friendly' son afirmaciones del propio proyecto, no verificadas. Licencia AGPL-3.0. Revisado de nuevo 2026-11-18 (71,6 mil estrellas): sigue igual; ahora lista 12 agentes (incluye Pi y OpenCode) y se instala con un script que se baja y ejecuta (irm en PowerShell o curl | sh): leerlo antes. Soporta llama.cpp local, pero para eso Pi y OpenCode ya apuntan directo a llama-server (ver apps/pi y apps/llama-cpp). La combinacion con rtk y Headroom para ahorrar tokens es una afirmacion del proyecto (hasta 90 %) sin medir.",
+      "promote_when": "no se promueve. Si algun dia hiciera falta un ruteador de proveedores con fallback, ver primero la configuracion de proveedores de OpenCode."
+    },
+    {
+      "name": "wshobson-agents",
+      "repo": "https://github.com/wshobson/agents",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 41552, "forks": 4406, "license": "MIT", "language": "Python", "checked_at": "2026-10-22" },
+      "summary": "Coleccion de 94 plugins (202 agentes, 185 skills, 105 comandos) para varias herramientas; para OpenCode genera agentes, skills y comandos traduciendo los permisos (make install-opencode).",
+      "caution": "Instalarlo entero le suma muchisimo contexto a un modelo local chico. Su valor para este repo es como fuente de ideas y de como traducir permisos entre herramientas.",
+      "promote_when": "no se instala completo. Si el lab necesita un agente puntual (por ejemplo de un lenguaje o de seguridad), tomarlo de ahi como base y empaquetarlo como plugin propio."
+    },
+    {
+      "name": "cubeloop",
+      "repo": "https://github.com/cubeplexai/cubeloop",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 85, "forks": 18, "license": "MIT", "language": "Python", "checked_at": "2026-10-30" },
+      "summary": "Framework de agentes en Python, async, con un bucle lineal facil de seguir en vez de grafos; herramientas como funciones tipadas, checkpoints en SQLite/Postgres/MySQL, un proveedor falso para tests sin llamar a la API y trazas OpenTelemetry. Trae proveedores de Anthropic y OpenAI y un protocolo para sumar otros.",
+      "caution": "85 estrellas y pocos meses de vida. No trae proveedor para modelos locales (habria que escribirlo). Un comentario publico advierte que un fallo entre un efecto de una herramienta y el guardado del checkpoint podria repetir la llamada al reanudar; no verificado.",
+      "promote_when": "no se promueve. Sirve de referencia si se arma un agente propio de voz (escuchar, pensar, hablar) con un bucle legible; en ese caso leer su codigo y escribir el proveedor local."
+    },
+    {
+      "name": "call-md",
+      "repo": "https://github.com/video-db/call.md",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 1988, "forks": 239, "license": null, "language": "TypeScript", "checked_at": "2026-10-30" },
+      "summary": "Asistente de reuniones de IA (aplicacion de escritorio): transcripcion en vivo, sugerencias, metricas de conversacion, resumenes y webhooks. Integracion con MCP.",
+      "caution": "El repositorio no tiene archivo de licencia (la API de GitHub no detecta ninguna), asi que no hay derecho de uso claro. El propio autor del post aclara que el audio se envia a VideoDB para transcribir en tiempo real y para las funciones de IA: no es local. No sirve para un lab aislado.",
+      "promote_when": "no se promueve. Para transcribir localmente en el lab, ver la receta voicestudio del catalogo."
+    },
+    {
+      "name": "skill-recorder",
+      "repo": "https://github.com/microsoft/skill-recorder",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 5571, "license": "MIT", "language": "TypeScript", "checked_at": "2026-10-30" },
+      "summary": "Aplicacion de escritorio que graba tu sesion de trabajo en pantalla y, con el SDK de GitHub Copilot, la convierte en una skill o automatizacion reutilizable (intencion y pasos ordenados). Prefiere herramientas nativas como la CLI de gh en vez de repetir clics.",
+      "caution": "La grabacion queda local, pero segun el post que la difundio Copilot lee cuadros de la pantalla en la nube de GitHub: capturas de pantalla fuera de la maquina. Para un laboratorio aislado no sirve, y una pantalla puede mostrar datos de pruebas.",
+      "promote_when": "no se promueve. Si algun dia hiciera falta aprender una tarea a partir de una grabacion, la alternativa es escribir la skill a mano con los planos de blueprints/."
+    },
+    {
+      "name": "nvidia-auto-ontology",
+      "repo": "https://github.com/NVIDIA/auto-ontology",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 8517, "forks": 689, "license": "Apache-2.0", "language": "Python", "created": "2026-04-27", "checked_at": "2026-11-06" },
+      "summary": "Capa semantica sobre bases relacionales (terminos, metricas, joins) construida desde metadata e historial de consultas, expuesta por MCP, CLI y API; valida los joins de una consulta generada por IA contra esa capa antes de ejecutarla. Se conecta a Databricks, Postgres, Snowflake o DuckDB.",
+      "caution": "No es local por defecto: usa endpoints NVIDIA NIM (el catalogo alojado de NVIDIA con clave de API o NIMs propios) para el modelo, los embeddings y el reranker. Es una pila pesada (Next.js, FastAPI, Postgres con pgvector, opcional Vault). Cuando no hay claves foraneas declaradas, un modelo las infiere, asi que el chequeo descansa en suposiciones; segun el post las respuestas tardan decenas de segundos. El proyecto no acepta contribuciones externas.",
+      "promote_when": "no se promueve para el lab (no hay un hueco real). Queda como referencia de la idea 'validar un join contra una capa de significado antes de ejecutarlo'. Si algun dia se probara, confirmar antes si los endpoints configurables aceptan un servidor local compatible con OpenAI en lugar de NIM."
+    },
+    {
+      "name": "helix-foundry",
+      "repo": "https://github.com/HelixDB/helix-foundry",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 1990, "license": "Apache-2.0", "language": "Go", "checked_at": "2026-11-02" },
+      "summary": "Espacio de trabajo para armar una ontologia de la empresa: conecta bases de datos, herramientas y documentos, un agente propone los tipos y los carga en HelixDB como un grafo que se explora con respuestas citadas; los tipos solo cambian al aprobar una version. Se levanta con docker compose, alojado o local, con modelos de Anthropic u OpenAI, u Ollama local.",
+      "caution": "No es una herramienta del lab: resuelve ontologias de datos de una empresa. Su README menciona Postgres y MySQL como fuentes; no menciona Databricks. En modo local con Ollama depende de un modelo que llame herramientas bien. Ver tambien nvidia-auto-ontology y open-ontologies: la misma familia.",
+      "promote_when": "no se promueve para el lab. Queda como referencia del patron 'los datos sincronizan siempre y el significado cambia solo con una aprobacion'."
+    },
+    {
+      "name": "memorilla",
+      "repo": "https://github.com/snap-stanford/memorilla",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "license": "Apache-2.0 (modelo en Hugging Face)",
+        "paper": "arXiv 2610.21375 (CC BY 4.0), taller COLM 2026",
+        "model": "memorilla/Memorilla-Qwen3-8B (109 descargas, 18 likes, 2026-10-08; modulo de memoria de 194 M de parametros, ~0.39 GB por punto de control)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Investigacion de Stanford: un codificador congelado (Qwen3-Embedding-4B) guarda cada documento una vez y 16 ranuras de memoria lo leen y entregan 16 embeddings que entran al modelo de lenguaje congelado (Qwen3-8B) como si fueran una imagen. Solo se entrena el modulo de memoria.",
+      "caution": "Es investigacion temprana, no una herramienta: sus cifras (hasta 4.212 veces menos tokens, 27 veces mas rapido, 44.6% contra 30.9% en PersonaMem-v2, 18.6% a 24.2% en TextWorld) son de los autores y los propios autores reconocen que falla con detalles finos y que no generaliza a otros dominios ni a otros modelos. El modulo esta entrenado para un Qwen3-8B especifico y mete embeddings directamente en el modelo: no funciona detras de llama-server ni de OpenCode, hay que usar su codigo en PyTorch. No sirve con modelos alojados como Claude. Comentarios del post piden pruebas de borrado y correccion de memoria, que no vi publicadas.",
+      "promote_when": "no se promueve. Queda como referencia de la idea 'memoria como embeddings que el modelo lee directamente'. Revisar si una version posterior se integra en llama.cpp o acepta otros modelos."
+    },
+    {
+      "name": "openbot",
+      "repo": "https://github.com/CopilotKit/openbot",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": {
+        "stars": 10964,
+        "forks": 1362,
+        "license": "MIT (la plantilla); CopilotKit Intelligence con licencia aparte",
+        "created": "2026-08-17",
+        "last_push": "2026-11-11",
+        "version": "v1.0.2 (2026-11-11)",
+        "checked_at": "2026-11-11"
+      },
+      "summary": "Aplicacion de escritorio y plantilla web de un 'companero de trabajo' con IA: varios bots con su propio navegador, archivos y herramientas, subagentes, aprendizaje de tareas como skills, interfaz generativa y MCP. Acepta modelos de OpenAI, Claude, Gemini o modelos abiertos por un endpoint compatible con OpenAI. Hay instalador firmado para Windows y una version 'for Business' de pago.",
+      "caution": "La plantilla es MIT pero depende de CopilotKit Intelligence (memoria, conversaciones y aprendizaje automatico), que tiene licencia aparte: incluso en la laptop pide una licencia local gratuita, y el propio README dice que bajar los componentes, iniciar sesion y renovar la licencia local necesitan internet. El backend usa Docker y PostgreSQL. Su configuracion de ejemplo usa un modelo de OpenAI por defecto. Es un producto para usuarios finales, no una pieza que un agente de programacion use como herramienta: no cubre ningun hueco del lab. Misma familia que openduet. Las cifras del post ('mato a todos los companeros de IA') son marketing; un comentario ya lo cuestiona.",
+      "promote_when": "no se promueve. Revisar solo si el lab necesita una interfaz tipo asistente con varios bots y la licencia local de Intelligence funciona sin conexion a su nube."
+    },
+    {
+      "name": "relate",
+      "repo": "https://github.com/relatedb/relate",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "stars": 292,
+        "forks": 24,
+        "license": "Apache-2.0",
+        "created": "2026-11-04",
+        "last_push": "2026-11-16",
+        "version": "v1.0.2 (2026-11-16); binarios para Windows, macOS y Linux; paquete Python relate-db 1.0.2 (Python 3.9+)",
+        "checked_at": "2026-11-16"
+      },
+      "summary": "Base de datos de grafos embebida y en memoria, escrita en Rust (proyecto de Neo4j Labs), con consultas en Cypher 25. Un grafo es un archivo .rl, durable por un registro con fsync, sin servidor; el mismo motor sirve como CLI, paquete Python, Rust, Node o WASM, y opcionalmente como servidor local con Bolt, HTTP y MCP (relate serve --mcp). Pensado como memoria de agentes en un solo archivo.",
+      "caution": "Proyecto de 12 dias: inmaduro. Segun su propia documentacion de limitaciones: todo el grafo debe caber en memoria, un solo proceso es dueno del almacen, un solo usuario o agente por proceso y bases fijas (no hay varias bases ni federacion). Un comentario del post (de alguien que contribuye a un competidor, lo declara) reporta consultas de varios saltos de 1,3 s contra 2 a 3 ms de dos rivales, de 4 a 6 veces mas memoria y fallas por memoria en conjuntos grandes; no es una medicion independiente. El agente tendria que escribir Cypher, fuente de errores con un modelo local chico (sin medir). Instalador oficial de tipo 'curl | bash' o 'irm | iex', con firma verificada y la alternativa documentada de bajar y leer el script antes. Los motores de grafo embebidos pueden abandonarse: Kuzu aparece archivado en GitHub desde 2025-10-10.",
+      "promote_when": "no se promueve por ahora. Solo si un caso concreto del lab necesita memoria con relaciones entre cosas y las opciones mas simples (markdown con busqueda, SQLite con registros tipados) no alcanzan, y despues de unos meses de vida del proyecto. Ver knowledge/memoria-de-agentes.md."
+    },
+    {
+      "name": "minimind",
+      "repo": "https://github.com/jingyaogong/minimind",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": {
+        "stars": 65550,
+        "forks": 8591,
+        "license": "Apache-2.0",
+        "created": "2024-07-27",
+        "last_push": "2026-10-27",
+        "checked_at": "2026-11-16"
+      },
+      "summary": "Proyecto didactico: entrena desde cero un modelo de lenguaje diminuto (~64 millones de parametros) con todo el recorrido en PyTorch puro: limpieza de datos, preentrenamiento, SFT, LoRA, DPO, PPO, GRPO, uso de herramientas, RL de agentes y destilacion; con variantes de vision, multimodal y difusion.",
+      "caution": "No sirve para afinar Qwen ni modelos ya existentes y el modelo resultante no sirve como agente. Las '2 horas' del post son una epoca de la etapa de SFT en una RTX 3090 (aclaracion del propio README), no todo el recorrido. Un comentario advierte que en GRPO un modelo tan chico aprende rapido atajos (respuestas largas para puntuar mas): sin verificar.",
+      "promote_when": "no se promueve como herramienta. Util solo para aprender como funcionan SFT, LoRA, DPO y GRPO antes de afinar en serio. Para afinar los modelos locales, ver apps/unsloth y knowledge/afinar-modelos-locales.md."
+    },
+    {
+      "name": "rust-anything",
+      "repo": "https://github.com/erkamyaman/rust-anything",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 3097, "forks": 247, "license": "MIT", "language": "Rust", "checked_at": "2026-11-18" },
+      "summary": "Migra una app (CLI, servidor o libreria en TypeScript, Python, C, Go, Ruby o Java) a Rust pieza por pieza: graba lo que hace el original con muchas entradas, y cada pieza pasa a Rust solo cuando reproduce todos los resultados grabados. El agente de codigo escribe el Rust; se registra como servidor MCP y skill en Claude Code, Codex, Cursor y Gemini CLI.",
+      "caution": "Repo de 2 dias de vida (creado 2026-11-16) con versiones cada pocas horas y 3.097 estrellas: muy nuevo, nada probado en el tiempo. Las cifras de velocidad (hasta 20x) son del propio proyecto sobre casos que eligio. Solo atrapa lo que la grabacion cubre (el propio README lo dice: entradas no grabadas, regex con diferencias entre lenguajes, cosas que cambian entre corridas). Ejecuta el codigo original muchas veces: hacerlo en una copia, con base de pruebas y sin credenciales reales. Sin uso en el lab hoy: no hay codigo que migrar.",
+      "promote_when": "solo si el lab tiene un script propio de Python o Node que sea cuello de botella real; hasta entonces sirve como criterio: cambiar una implementacion solo cuando reproduce todo lo grabado, y guardar cada diferencia como prueba permanente."
+    },
+    {
+      "name": "optimizerduck",
+      "repo": "https://github.com/itsfatduck/optimizerDuck",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 12600, "forks": 561, "license": "GPL-3.0", "language": "C# (.NET 10)", "checked_at": "2026-11-18" },
+      "summary": "Optimizador de Windows de codigo abierto: 42 ajustes en 7 categorias (rendimiento, privacidad, GPU, energia, servicios, experiencia, IA), 44 opciones de personalizacion, gestor de inicio, tareas programadas, limpieza de disco y remocion de apps preinstaladas. Cada cambio guarda un archivo para revertirlo.",
+      "caution": "Pensado sobre todo para juegos. Cambia servicios, registro, telemetria, hibernacion y plan de energia con permisos de administrador, y el ejecutable NO esta firmado (SmartScreen lo marca). El post dice que lo hizo Claude; el README afirma lo contrario (ajustes tomados de herramientas conocidas, nada generado por IA): no verificado. Para correr modelos locales la ganancia es marginal: el cuello de botella es VRAM y RAM, no los servicios de Windows.",
+      "promote_when": "no se promueve. Si algun dia hace falta liberar RAM en el lab, medir primero (linea base) y quitar a mano lo puntual en vez de aplicar ajustes en bloque."
+    },
+    {
+      "name": "ai-engineering-hub",
+      "repo": "https://github.com/patchy631/ai-engineering-hub",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 42000, "forks": 6700, "license": "MIT", "language": "Python (coleccion de proyectos)", "checked_at": "2026-11-18" },
+      "summary": "Coleccion de 93 proyectos de ejemplo con codigo (22 principiantes, 48 intermedios, 23 avanzados): RAG, agentes, MCP, memoria, evaluacion y fine-tuning. Material de estudio, no una herramienta instalable. El post recomienda 5 para armar un portafolio (GitHub RAG, Agentic RAG, evaluacion con Opik, despliegue con LitServe, fine-tuning de DeepSeek con Unsloth y Ollama).",
+      "caution": "Es un indice de tutoriales de una newsletter de ciencia de datos, no un conjunto mantenido como producto: muchos proyectos dependen de servicios de terceros (Firecrawl, AssemblyAI, CrewAI, Groq, Zep) y usan modelos viejos (Llama 3.2, DeepSeek-R1); el propio post lo advierte. El enlace corto del post no se pudo resolver por redireccion: se identifico el repositorio por la cantidad (93 proyectos) y por los 5 proyectos nombrados.",
+      "promote_when": "no se promueve como herramienta. Util como fuente de ejemplos puntuales cuando el lab necesite uno: eval-and-observability (para medir RAG antes y despues) y DeepSeek-finetuning (comparar con apps/unsloth). Leer el codigo antes de copiar nada."
+    }
+  ]
+}

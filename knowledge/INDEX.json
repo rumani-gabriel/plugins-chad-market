@@ -89,6 +89,14 @@
       "tags": ["sandbox", "security", "isolation", "docker", "gvisor", "egress", "agents"],
       "file": "knowledge/sandbox-para-agentes.md",
       "checked_at": "2026-11-16"
+    },
+    {
+      "id": "tipos-de-modelos",
+      "title": "Tipos de modelos de IA: que es cada sigla y cual sirve en el lab",
+      "kind": "referencia",
+      "tags": ["llm", "moe", "vlm", "slm", "lcm", "local-models", "architectures"],
+      "file": "knowledge/tipos-de-modelos.md",
+      "checked_at": "2026-11-18"
     }
   ]
 }

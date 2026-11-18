@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: a revisar (idea con respaldo de un solo grupo y sin prueba propia)
-- Relacionadas: `contexto-en-agentes`, `busqueda-web-para-agentes`; `backlog.json`: `pixelrag`; `models.json`: `Qwen3.8-27B` (el candidato con visión)
+- Relacionadas: `contexto-en-agentes`, `busqueda-web-para-agentes`; `backlog.json` o `referencia.json`: `pixelrag`; `models.json`: `Qwen3.8-27B` (el candidato con visión)
 
 ## En una línea
 En un RAG de páginas web o de documentos, el punto donde más se pierde información suele ser el *parser* que convierte HTML o PDF en texto (tablas, gráficos y diseño se aplanan o se descartan). PixelRAG propone indexar la página como imagen (capturas en mosaicos) y que un modelo con visión la lea.

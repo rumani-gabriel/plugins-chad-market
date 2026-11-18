@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: vigente
-- Relacionadas: `rag-visual-vs-texto`, `contexto-en-agentes`; `backlog.json`: `txtai`; `catalog.json`: `fast-grep`, `cocoindex`
+- Relacionadas: `rag-visual-vs-texto`, `contexto-en-agentes`; `backlog.json` o `referencia.json`: `txtai`; `catalog.json`: `fast-grep`, `cocoindex`
 
 ## En una línea
 Cuando un RAG devuelve documentos «relevantes» pero la respuesta sale mal, el problema suele estar en cómo se recupera, no en el modelo. Combinar búsqueda por palabras clave (BM25) y búsqueda por significado (vectores) y fusionar sus rankings (RRF) cubre lo que cada una pierde por separado.
@@ -34,4 +34,4 @@ Fuente: post de un tercero y README de `VectifyAI/PageIndex` (MIT, 40.455 estrel
 - **Cuándo no:** texto plano sin secciones, corpus grandes (el árbol tiene que caber en contexto) y cuando pesan la velocidad y el costo (varias llamadas al modelo por pregunta).
 - **Un límite que señalan los comentarios:** el árbol puede llevar al modelo a una sola sección y perder una excepción o definición en otra; la ruta clara no garantiza evidencia completa. Probar con preguntas que combinan varias secciones.
 - **No verificado:** el 98,7 % en FinanceBench es de su propia corrida y solo en finanzas; con un modelo local no hay medición.
-- **Uso razonable:** combinar ambos (palabras clave o vectores para encontrar el documento, árbol para navegar dentro del que importa). Ver `backlog.json`: `pageindex`.
+- **Uso razonable:** combinar ambos (palabras clave o vectores para encontrar el documento, árbol para navegar dentro del que importa). Ver `backlog.json` o `referencia.json`: `pageindex`.

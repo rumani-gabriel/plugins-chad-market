@@ -81,7 +81,7 @@
     "instaladores_de_script": "irm https://unsloth.ai/install.ps1 | iex y curl https://unsloth.ai/install.sh | sh: tipo 'descargar y ejecutar'; si se usan, bajar el script y leerlo primero.",
     "docker": "imagen oficial unsloth/unsloth en Docker Hub (la documentacion enlaza una guia aparte; no se reviso).",
     "otros_entrenadores": "LLaMA-Factory, Axolotl y TRL de Hugging Face son alternativas conocidas; no se revisaron aca.",
-    "aprender_como_funciona": "MiniMind (backlog) para entender SFT, LoRA, DPO y GRPO con un modelo de 64 millones de parametros; es didactico, no sirve para afinar Qwen."
+    "aprender_como_funciona": "MiniMind (referencia.json) para entender SFT, LoRA, DPO y GRPO con un modelo de 64 millones de parametros; es didactico, no sirve para afinar Qwen."
   },
   "permissions": [
     "powershell: nvidia-smi *",

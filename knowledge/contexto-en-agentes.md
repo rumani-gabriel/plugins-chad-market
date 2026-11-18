@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: vigente (se actualiza cada vez que se evalúa algo del tema)
-- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json`: `context-mode`, `rtk`, `headroom`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
+- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json` o `referencia.json`: `context-mode`, `rtk`, `headroom`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
 
 ## En una línea
 El contexto es el recurso escaso de un agente, sobre todo con un modelo local de contexto corto. El gasto grande no es una sola lectura sino el agente que **relee** y repite; hay siete familias de soluciones y ninguna tiene todavía una medición propia en este laboratorio.

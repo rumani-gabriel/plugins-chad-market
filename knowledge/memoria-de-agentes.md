@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: vigente (se actualiza con cada opción nueva)
-- Relacionadas: `contexto-en-agentes`, `rag-recuperacion-hibrida`, `mcp-servidor-y-skills`; `backlog.json`: `relate`, `auto-ontology-mcp`, `okf-agent-memory`, `omnigraph`, `txtai`, `memorilla`, `context-mode`, `llm-wiki`
+- Relacionadas: `contexto-en-agentes`, `rag-recuperacion-hibrida`, `mcp-servidor-y-skills`; `backlog.json` o `referencia.json`: `relate`, `auto-ontology-mcp`, `okf-agent-memory`, `omnigraph`, `txtai`, `memorilla`, `context-mode`, `llm-wiki`
 
 ## En una línea
 La memoria de un agente es lo que sobrevive entre sesiones y le evita releer y repetir. Todas las opciones evaluadas hasta ahora son jóvenes y ninguna tiene una prueba propia; con un modelo local chico importa más que la interfaz sea simple (pocas herramientas, ninguna consulta escrita a mano) que el motor que haya debajo.

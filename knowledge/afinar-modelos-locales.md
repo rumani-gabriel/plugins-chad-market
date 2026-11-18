@@ -3,7 +3,7 @@
 - Tipo: guía
 - Revisada: 2026-11-16
 - Estado: a revisar (nada se ejecutó; las cifras de memoria son mínimos publicados por Unsloth)
-- Relacionadas: `servir-modelos-locales`, `contexto-en-agentes`, `simulacro-sin-nube`; `apps/unsloth`; `apps/llama-cpp`; `models.json`; `backlog.json`: `minimind`, `train-llm-from-scratch`
+- Relacionadas: `servir-modelos-locales`, `contexto-en-agentes`, `simulacro-sin-nube`; `apps/unsloth`; `apps/llama-cpp`; `models.json`; `backlog.json` o `referencia.json`: `minimind`, `train-llm-from-scratch`
 
 ## En una línea
 **MiniMind no es el entrenador que buscás:** entrena un modelo propio diminuto (64 millones de parámetros) desde cero con fines didácticos; no afina Qwen ni ningún modelo que ya uses. Lo que sí sirve para afinar tus modelos locales en una RTX 3060 de 12 GB es **Unsloth** (receta `apps/unsloth`), con límites claros de tamaño y una condición previa: tener datos y una forma de medir si mejoró.

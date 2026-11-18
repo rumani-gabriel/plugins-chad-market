@@ -32,7 +32,7 @@ opencode debug skill                                    # verificar
 
 Los **modelos locales** marcados para probar en el laboratorio (voz, visión, OCR, texto) están en [`models.json`](models.json), con licencia, formatos y una estimación de memoria para la GPU del lab.
 
-Cómo tomar una app, cómo armar lo que falta y las reglas del repo: [`AGENTS.md`](AGENTS.md) y [`blueprints/BUILDING.md`](blueprints/BUILDING.md). Lo que está bloqueado por ahora vive en [`backlog.json`](backlog.json).
+Cómo tomar una app, cómo armar lo que falta y las reglas del repo: [`AGENTS.md`](AGENTS.md) y [`blueprints/BUILDING.md`](blueprints/BUILDING.md). Lo que hay que probar o revisar vive en [`backlog.json`](backlog.json); las referencias y los descartes, en [`referencia.json`](referencia.json).
 
 ## Probado con
 OpenCode 1.18.33 en Windows: instalación limpia e idempotente de los 4 plugins, y descubrimiento por `opencode debug skill` / `opencode debug config`. `fast-grep` y `harness-creator` se ejecutaron de punta a punta. Las recetas de apps están armadas desde la documentación de cada proyecto y no se ejecutaron.

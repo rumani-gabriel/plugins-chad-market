@@ -12,7 +12,7 @@ Archivo `knowledge/<id>.md`, con un encabezado fijo y secciones cortas:
 - Tipo: estrategia | criterio | referencia | guía
 - Revisada: AAAA-MM-DD
 - Estado: vigente | a revisar | superada
-- Relacionadas: ids de otras notas, y entradas de catalog.json o backlog.json
+- Relacionadas: ids de otras notas, y entradas de catalog.json, backlog.json o referencia.json
 
 ## En una línea
 ## Qué sabemos (verificado, con fuente)
