@@ -423,6 +423,16 @@
       "summary": "RAG sin vectores: construye un arbol de secciones del documento (como un indice) y el modelo lo recorre razonando, sin trozos ni embeddings. Modo local (con tu propia clave de modelo) y modo nube. Pensado para documentos largos y estructurados (informes, contratos).",
       "caution": "El 98,7 % en FinanceBench es una corrida del propio proyecto, solo en finanzas. La calidad depende del modelo que busca en el arbol (el README recomienda el mejor que puedas pagar): con un Qwen local no esta medido. Varias llamadas al modelo por pregunta; el arbol debe caber en contexto. El servidor MCP y el indice de varios documentos son solo de la nube. El README usa claves de OpenAI o suscripcion Claude; que funcione con un servidor llama.cpp local (usa litellm) no se verifico. Su pyproject deja litellm limitado a <1.106 y anota que la 1.107.0 fue malware: fijar versiones. Publica versiones casi a diario.",
       "promote_when": "probarlo en el lab con un PDF largo y estructurado y un Qwen local como modelo de busqueda, contra un RAG de palabras clave; solo si acierta y el costo en tokens se sostiene."
+    },
+    {
+      "name": "rust-anything",
+      "repo": "https://github.com/erkamyaman/rust-anything",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 3097, "forks": 247, "license": "MIT", "language": "Rust", "checked_at": "2026-11-18" },
+      "summary": "Migra una app (CLI, servidor o libreria en TypeScript, Python, C, Go, Ruby o Java) a Rust pieza por pieza: graba lo que hace el original con muchas entradas, y cada pieza pasa a Rust solo cuando reproduce todos los resultados grabados. El agente de codigo escribe el Rust; se registra como servidor MCP y skill en Claude Code, Codex, Cursor y Gemini CLI.",
+      "caution": "Repo de 2 dias de vida (creado 2026-11-16) con versiones cada pocas horas y 3.097 estrellas: muy nuevo, nada probado en el tiempo. Las cifras de velocidad (hasta 20x) son del propio proyecto sobre casos que eligio. Solo atrapa lo que la grabacion cubre (el propio README lo dice: entradas no grabadas, regex con diferencias entre lenguajes, cosas que cambian entre corridas). Ejecuta el codigo original muchas veces: hacerlo en una copia, con base de pruebas y sin credenciales reales. Sin uso en el lab hoy: no hay codigo que migrar.",
+      "promote_when": "solo si el lab tiene un script propio de Python o Node que sea cuello de botella real; hasta entonces sirve como criterio: cambiar una implementacion solo cuando reproduce todo lo grabado, y guardar cada diferencia como prueba permanente."
     }
   ]
 }
