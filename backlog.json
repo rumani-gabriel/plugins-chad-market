@@ -74,9 +74,9 @@
       "repo": "https://github.com/Alishahryar1/free-claude-code",
       "lens": "b",
       "status": "not_recommended",
-      "verified": { "stars": 62620, "forks": 9793, "license": "AGPL-3.0-only (segun su archivo LICENSE; la API de GitHub lo muestra como NOASSERTION)", "language": "Python", "checked_at": "2026-10-22" },
+      "verified": { "stars": 71600, "forks": 11100, "license": "AGPL-3.0-only (segun su archivo LICENSE; la API de GitHub lo muestra como NOASSERTION)", "language": "Python", "checked_at": "2026-11-18" },
       "summary": "Proxy local que hace correr Claude Code, Codex y otros 9 agentes contra hasta 61 proveedores de modelos gratuitos o locales, con fallback automatico entre ellos.",
-      "caution": "Redundante: OpenCode ya trabaja de forma nativa con multiples proveedores y modelos locales. Ademas manda los prompts (y el codigo que contengan) a proveedores de terceros gratuitos, y un request fallido puede pasar por mas de un proveedor antes de resolverse. El '90% menos de tokens' y lo de 'ToS-friendly' son afirmaciones del propio proyecto, no verificadas. Licencia AGPL-3.0.",
+      "caution": "Redundante: OpenCode ya trabaja de forma nativa con multiples proveedores y modelos locales. Ademas manda los prompts (y el codigo que contengan) a proveedores de terceros gratuitos, y un request fallido puede pasar por mas de un proveedor antes de resolverse. El '90% menos de tokens' y lo de 'ToS-friendly' son afirmaciones del propio proyecto, no verificadas. Licencia AGPL-3.0. Revisado de nuevo 2026-11-18 (71,6 mil estrellas): sigue igual; ahora lista 12 agentes (incluye Pi y OpenCode) y se instala con un script que se baja y ejecuta (irm en PowerShell o curl | sh): leerlo antes. Soporta llama.cpp local, pero para eso Pi y OpenCode ya apuntan directo a llama-server (ver apps/pi y apps/llama-cpp). La combinacion con rtk y Headroom para ahorrar tokens es una afirmacion del proyecto (hasta 90 %) sin medir.",
       "promote_when": "no se promueve. Si algun dia hiciera falta un ruteador de proveedores con fallback, ver primero la configuracion de proveedores de OpenCode."
     },
     {
