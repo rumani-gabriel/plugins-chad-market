@@ -433,6 +433,16 @@
       "summary": "Migra una app (CLI, servidor o libreria en TypeScript, Python, C, Go, Ruby o Java) a Rust pieza por pieza: graba lo que hace el original con muchas entradas, y cada pieza pasa a Rust solo cuando reproduce todos los resultados grabados. El agente de codigo escribe el Rust; se registra como servidor MCP y skill en Claude Code, Codex, Cursor y Gemini CLI.",
       "caution": "Repo de 2 dias de vida (creado 2026-11-16) con versiones cada pocas horas y 3.097 estrellas: muy nuevo, nada probado en el tiempo. Las cifras de velocidad (hasta 20x) son del propio proyecto sobre casos que eligio. Solo atrapa lo que la grabacion cubre (el propio README lo dice: entradas no grabadas, regex con diferencias entre lenguajes, cosas que cambian entre corridas). Ejecuta el codigo original muchas veces: hacerlo en una copia, con base de pruebas y sin credenciales reales. Sin uso en el lab hoy: no hay codigo que migrar.",
       "promote_when": "solo si el lab tiene un script propio de Python o Node que sea cuello de botella real; hasta entonces sirve como criterio: cambiar una implementacion solo cuando reproduce todo lo grabado, y guardar cada diferencia como prueba permanente."
+    },
+    {
+      "name": "optimizerduck",
+      "repo": "https://github.com/itsfatduck/optimizerDuck",
+      "lens": "b",
+      "status": "not_recommended",
+      "verified": { "stars": 12600, "forks": 561, "license": "GPL-3.0", "language": "C# (.NET 10)", "checked_at": "2026-11-18" },
+      "summary": "Optimizador de Windows de codigo abierto: 42 ajustes en 7 categorias (rendimiento, privacidad, GPU, energia, servicios, experiencia, IA), 44 opciones de personalizacion, gestor de inicio, tareas programadas, limpieza de disco y remocion de apps preinstaladas. Cada cambio guarda un archivo para revertirlo.",
+      "caution": "Pensado sobre todo para juegos. Cambia servicios, registro, telemetria, hibernacion y plan de energia con permisos de administrador, y el ejecutable NO esta firmado (SmartScreen lo marca). El post dice que lo hizo Claude; el README afirma lo contrario (ajustes tomados de herramientas conocidas, nada generado por IA): no verificado. Para correr modelos locales la ganancia es marginal: el cuello de botella es VRAM y RAM, no los servicios de Windows.",
+      "promote_when": "no se promueve. Si algun dia hace falta liberar RAM en el lab, medir primero (linea base) y quitar a mano lo puntual en vez de aplicar ajustes en bloque."
     }
   ]
 }
