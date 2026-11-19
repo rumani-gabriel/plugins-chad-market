@@ -304,6 +304,26 @@
         "comparar contra un Qwen comun con n_probs sobre las mismas preguntas",
         "probar con texto en espanol antes de confiar"
       ]
+    },
+    {
+      "name": "SmolVLM2 (256M, 500M y 2.2B) - video e imagen",
+      "repo": "https://huggingface.co/HuggingFaceTB/SmolVLM2-256M-Video-Instruct",
+      "family": "SmolVLM2 de Hugging Face (SigLIP como codificador de imagen y SmolLM2 como decodificador). GGUF oficial del 256M: https://huggingface.co/ggml-org/SmolVLM2-256M-Video-Instruct-GGUF; el 2.2B tambien tiene GGUF en ggml-org",
+      "modality": "video, imagen(es) y texto de entrada; texto de salida",
+      "status": "to_test",
+      "verified": { "checked_at": "2026-11-19", "license": "Apache-2.0", "params": "256 M / 500 M / 2,2 B", "downloads": 44604, "created": "2025-02-11", "last_modified": "2026-11-13", "format": "safetensors y GGUF (256M: Q4_K_M 131 MB, Q8_0 175 MB, mmproj Q8_0 104 MB)", "memory_gpu_video_256m": "1,38 GB segun la ficha" },
+      "estimate_weights_gb": 0.3,
+      "what_it_does": "Modelo diminuto que mira un video o varias imagenes y describe lo que pasa, responde preguntas y transcribe texto en pantalla. Puntajes de la ficha (Video-MME / MLVU / MVBench): 256M 33,7 / 40,6 / 32,7; 500M 42,2 / 47,3 / 39,7; 2,2B 52,1 / 55,2 / 46,3. NO es una novedad: el modelo se publico en febrero de 2025.",
+      "why_for_the_lab": "Pieza barata para dos cosas del lab: (1) darle ojos al agente tipo Jarvis y a las capturas de pantalla sin gastar la GPU del modelo principal; (2) describir fotogramas de un clip para que un agente decida que cortar, util junto a la receta de Concat, cuyo MCP no mira el video. El que conviene probar es el 2,2B (entra de sobra en los 12 GB y rinde bastante mas); el 256M sirve como prueba de velocidad.",
+      "runs_with": "llama.cpp (llama-server con mmproj) o transformers. En llama.cpp el soporte es para imagenes: el video se manda como fotogramas sueltos (no verificado para este modelo).",
+      "caveats": "SOLO INGLES (la ficha dice language en): no hay cifras en espanol. El 256M saca 33,7 en Video-MME, un puntaje bajo: sirve para descripciones simples, no para razonar sobre un video largo ni para leer texto chico con fiabilidad. Los puntajes son los que publican los autores; no los medi. La ficha prohibe usarlo para evaluar o puntuar personas, tomar decisiones automaticas criticas o vigilancia no autorizada. El '1,38 GB' del post es de la ficha del 256M para video, con transformers; con GGUF y otro motor cambia. Compararlo contra Qwen3.8-27B (con vision, en este mismo archivo) antes de elegir.",
+      "to_test": [
+        "bajar ggml-org/SmolVLM2-2.2B-Instruct-GGUF con su mmproj y servirlo con llama-server (apps/llama-cpp); medir VRAM y segundos por imagen en la 3060",
+        "probar 10 capturas de pantalla y 5 clips cortos propios: que describe bien y que se equivoca",
+        "probar si llama-server acepta varios fotogramas por pedido y como se arma el video a mano",
+        "comparar el 256M, el 500M y el 2,2B con las mismas entradas; despues contra Qwen3.8-27B",
+        "con apps/concat: extraer fotogramas de un clip y ver si las descripciones alcanzan para decidir cortes"
+      ]
     }
   ]
 }
