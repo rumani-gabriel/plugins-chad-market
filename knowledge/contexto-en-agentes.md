@@ -3,7 +3,7 @@
 - Tipo: estrategia
 - Revisada: 2026-11-16
 - Estado: vigente (se actualiza cada vez que se evalúa algo del tema)
-- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json` o `referencia.json`: `context-mode`, `rtk`, `headroom`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
+- Relacionadas: `busqueda-web-para-agentes`, `rag-visual-vs-texto`, `memoria-de-agentes`; entradas de `backlog.json` o `referencia.json`: `context-mode`, `rtk`, `headroom`, `superpowers`, `txtai`, `floorplan`, `memorilla`, `pi-coding-agent` (ahora `apps/pi`); `catalog.json`: `graph-explorer`, `fast-grep`, `cocoindex`, `llama-cpp`
 
 ## En una línea
 El contexto es el recurso escaso de un agente, sobre todo con un modelo local de contexto corto. El gasto grande no es una sola lectura sino el agente que **relee** y repite; hay siete familias de soluciones y ninguna tiene todavía una medición propia en este laboratorio.
@@ -18,6 +18,7 @@ Por familia, con el estado real de cada hallazgo:
 5. **Enrutar por tarea.** Pi (`apps/pi`) permite un modelo virtual que manda lo simple al Qwen local y lo difícil a un modelo remoto; duda abierta: cambiar de modelo a mitad de una tarea obliga a reprocesar el contexto.
 6. **Búsqueda web que devuelve extractos.** Ver la nota `busqueda-web-para-agentes`.
 7. **Indexar páginas como imagen en vez de texto** (`pixelrag`, en backlog): evita la pérdida del parser, pero una imagen también gasta contexto y hace falta un modelo con visión. Ver la nota `rag-visual-vs-texto`.
+8. **Metodologías que cargan instrucciones en cada sesión** (`superpowers`, en backlog): ordenan el flujo (preguntar, planear, probar, revisar) con skills que se inyectan solas; ayudan a no empezar a programar sin un plan, pero cada sesión paga el texto de arranque y los skills largos, y el flujo por defecto lanza un subagente por tarea con revisión posterior. Criterio: **una metodología que agrega pasos de revisión hay que medirla en tokens totales por tarea terminada, no en cuántas buenas prácticas sigue.**
 
 ## Lo que dicen pero no verificamos
 - Todas las cifras de ahorro de los autores (98%, 84%, 50%, 4.212 veces menos tokens): son de quien vende o publica la herramienta, sobre sus propios casos.
