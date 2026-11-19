@@ -97,6 +97,14 @@
       "tags": ["llm", "moe", "vlm", "slm", "lcm", "local-models", "architectures"],
       "file": "knowledge/tipos-de-modelos.md",
       "checked_at": "2026-11-18"
+    },
+    {
+      "id": "modelos-de-decision",
+      "title": "Modelos de decision: clasificadores que devuelven probabilidades en vez de texto",
+      "kind": "criterio",
+      "tags": ["decision-models", "routing", "guardrails", "tool-gating", "evals", "local-models", "llama-cpp"],
+      "file": "knowledge/modelos-de-decision.md",
+      "checked_at": "2026-11-19"
     }
   ]
 }

@@ -284,6 +284,26 @@
         "medir el tiempo por turno en el Ryzen 9 con 1 hilo",
         "decidir si hace falta Pipecat entero o solo el modelo ONNX dentro del pipeline de Jarvis"
       ]
+    },
+    {
+      "name": "JevK5 (modelo de decision, 4B y 9B)",
+      "repo": "https://huggingface.co/alibiserikbay/JevK5",
+      "family": "Alternativa abierta e independiente a Jev de TypeSafe AI (no afiliada). Base Qwen3.5-4B con LoRA fusionado; tambien 2B y 9B (https://huggingface.co/alibiserikbay/JevK5-9B). GGUF: https://huggingface.co/alibiserikbay/JevK5-GGUF",
+      "modality": "texto de entrada (un documento o estado mas una pregunta de si/no, de opciones o de puntaje); salida: una probabilidad por opcion, sin generar texto",
+      "status": "to_test",
+      "verified": { "checked_at": "2026-11-19", "license": "Apache-2.0", "params": "4,2 B (tambien 2B y 9B)", "downloads": 42054, "last_modified": "2026-09-25", "format": "safetensors bf16 (8,4 GB) y GGUF para llama.cpp", "context": "no verificado" },
+      "estimate_weights_gb": 3.1,
+      "what_it_does": "Un 'modelo de decision': en vez de escribir una respuesta, lee un estado y una pregunta cerrada y devuelve la probabilidad de cada opcion en una sola pasada. Sirve para clasificaciones baratas y repetibles: enrutar a un modelo chico o grande, una guardia por riesgo, decidir si lo recuperado alcanza, filtrar pasajes, aprobar o pedir confirmacion antes de una herramienta, o decidir si una tarea cumplio sus criterios. La lectura es un softmax sobre las letras de respuesta con una temperatura de calibracion que viene en jevk5_config.json (1,22 el 4B).",
+      "why_for_the_lab": "Responde al pedido de 'modelos de decision' para el lab y a un riesgo concreto: darle a Pi u OpenCode una compuerta barata antes de ejecutar un comando (esta intencionado, es irreversible). Ocupa poco (4B Q5_K_M son 3,07 GB, el 9B Q5_K_M 6,47 GB), asi que convive con el modelo principal en los 12 GB. Sirve tambien para el termino de bucles y para evaluar una tarea de a un criterio.",
+      "runs_with": "llama.cpp con los GGUF (cada modelo trae sus propias temperaturas, que hay que pasar al cliente; el runtime propio jevk5 usa CUDA y expone un endpoint estilo TypeSafe). Q8_0 del 4B (4,48 GB) coincide con bf16 en 229 de 231 items; Q4_K_M (2,71 GB) en 221 de 231.",
+      "caveats": "SOLO INGLES (la ficha dice language en): no hay cifras en espanol. Calibracion y precision son autoinformadas, medidas en sus propios conjuntos y en JevBench (4B v0.3: 0,784 en el nivel dificil; 0,944 en el estandar; en preguntas con muchas opciones 0,65 a 0,74). 'Fechas y numeros' y 'juzgar respuestas' son sus puntos flojos (0,47 y 0,65). Un trabajo academico reportado en buscadores (arXiv 2610.12292, no leido por mi) afirma que usar modelos de decision como guardias de agentes se puede burlar con texto controlado por un atacante: no son una barrera de seguridad. Usarlo como compuerta ANTES de una herramienta no reemplaza el aislamiento (ver apps/opensandbox). El mismo patron se puede imitar con un Qwen cualquiera pidiendo n_probs a llama-server sobre la letra de respuesta, pero sin la calibracion de este modelo. Parte de los datos de entrenamiento los genero una API de OpenAI bajo sus terminos (lo dice la ficha).",
+      "to_test": [
+        "bajar jevk5-4b-v0.3-Q5_K_M.gguf y verificar con SHA256SUMS",
+        "servirlo con llama-server (apps/llama-cpp) al lado del modelo principal y medir VRAM y milisegundos por decision en la 3060",
+        "armar 50 a 100 casos propios (comandos que Pi u OpenCode ejecutarian) y medir cuantas veces acierta 'esta intencionado' e 'irreversible' con umbrales fijados",
+        "comparar contra un Qwen comun con n_probs sobre las mismas preguntas",
+        "probar con texto en espanol antes de confiar"
+      ]
     }
   ]
 }
