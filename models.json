@@ -267,6 +267,23 @@
       "to_test": [
         "probar primero con Qwen3.5-9B; subir a 14 B solo si la memoria y el tiempo lo permiten"
       ]
+    },
+    {
+      "name": "Pipecat Voice Reader (rc6)",
+      "repo": "https://huggingface.co/pipecat-ai/voice-reader",
+      "family": "Pipecat (pipecat-ai); funciona junto a Pipecat Tone Reader (https://huggingface.co/pipecat-ai/tone-models), que lee el texto",
+      "modality": "audio de entrada; salida: etiquetas (tono, sarcasmo, risa, tristeza, energia, ritmo del habla), no texto ni voz",
+      "status": "to_research",
+      "verified": { "checked_at": "2026-11-19", "license": "BSD-2-Clause", "params": "base 26 M (28,6 MB int8) / tiny 12,5 M (14,2 MB int8)", "downloads": 1030, "last_modified": "2026-11-12", "format": "ONNX (int8 y fp32)" },
+      "what_it_does": "Modelo diminuto que corre en CPU y escucha COMO suena quien habla: tono (positivo, neutro, triste, frustrado), sarcasmo, risa, energia y velocidad. Pipecat lo corre sobre hasta los ultimos 8 s cada vez que el usuario deja de hablar y le pasa la lectura al modelo de lenguaje como un cue. Tiempos del propio modelo en 1 hilo de un servidor x86: base ~50 a 160 ms segun el largo del turno, tiny ~35 a 85 ms (el '25 ms' del post es el mejor caso).",
+      "why_for_the_lab": "Pieza para el lado 'escuchar' del agente tipo Jarvis: darle al Qwen local una pista del estado de animo sin gastar GPU (corre en CPU, deja libre la VRAM del modelo). Interesa tambien para probar si el agente baja el ritmo o cambia el tono cuando detecta frustracion.",
+      "caveats": "SOLO INGLES (dice la ficha): el lab habla espanol, asi que no se sabe como se comporta; no hay cifras en espanol. Es experimental (release candidate rc6) y la propia ficha dice que sus lecturas son pistas, no veredictos. Las etiquetas de evaluacion las pusieron dos modelos de audio (Gemini 3.1 Pro preview y gpt-audio-1.5), no personas: comparar contra Gemini en ese conjunto esta sesgado a favor de coincidir con Gemini, y la comparacion 'cabeza a cabeza' del post no esta en la ficha (no verificada). El sarcasmo es una senal debil (a 0,5 detecta menos de la mitad en turnos dificiles). Cuando se lo usa en una conversacion real que lee en cada pausa rinde peor que lo que muestra la tabla de la ficha; el ruido y los canales telefonicos tambien le restan. Pensado para usarse dentro del marco Pipecat 1.16 o superior (extra 'expressivity'); sin Pipecat hay que armar uno mismo la lectura del ONNX. Reconocer emociones de una persona es un uso sensible: solo con audio propio y con consentimiento; no usar para evaluar a terceros.",
+      "to_test": [
+        "bajar la variante tiny o base en ONNX y verificar con MANIFEST.json (SHA-256 de cada archivo)",
+        "probar con audio propio en espanol: cuantas lecturas de tono y sarcasmo coinciden con lo que uno percibe",
+        "medir el tiempo por turno en el Ryzen 9 con 1 hilo",
+        "decidir si hace falta Pipecat entero o solo el modelo ONNX dentro del pipeline de Jarvis"
+      ]
     }
   ]
 }
