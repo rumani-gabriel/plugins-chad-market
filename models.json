@@ -336,6 +336,18 @@
       "why_not": "No aporta al lab. (1) Su arquitectura es propia (atencion latente multi-cabeza) y la ficha dice que hace falta su codigo en Python: no hay GGUF ni soporte en llama.cpp, asi que no entra en el flujo del lab. (2) Es mucho mas debil que los Qwen que ya se usan: contra Qwen3-0.6B-Base pierde en todo (HumanEval 9,1 contra 29,3; GSM8K 4,0 contra 48,9). (3) Idiomas: ingles e idiomas de India; el espanol no esta en la lista. (4) Inventa contenido y no tiene entrenamiento de seguridad (lo dice su ficha). Para extraccion o clasificacion chica ya hay opciones mejores en el propio archivo (JevK5 para decisiones, Qwen3.5-9B para afinar).",
       "caveats": "Lo que el post muestra es cierto pero parcial: la ficha confirma HumanEval 9,1 contra 2,4 de Gemma-3-270M, pero ese conjunto es una muestra elegida; en ARC, BBH y MMLU-Pro queda igual o por debajo de Gemma, y 9,1 es un puntaje muy bajo en absoluto. La decontaminacion de benchmarks se aplico solo a las etapas 2 y 3 (la ficha lo dice), no a las 629 mil millones de tokens de la etapa 1. La tabla de la version Instruct tiene la fila de IFEval sin completar en la ficha ('rellenar despues de run_sft.sh eval'): no hay evaluacion publicada del modelo Instruct. Anuncian una version de 1B para mas adelante.",
       "to_test": []
+    },
+    {
+      "name": "Verba-TTS-Indic-Zero",
+      "repo": "https://suryatk.in/verba-tts (pagina de demostracion del autor; no se encontro repositorio ni modelo publicado)",
+      "family": "Surya TK (Verba TTS)",
+      "modality": "texto a voz",
+      "status": "not_for_lab",
+      "verified": { "checked_at": "2026-11-19", "license": "no encontrada", "params": "1,8 M (7,6 MB), segun el autor", "weights": "no publicados que se hayan podido encontrar" },
+      "what_it_does": "Sintetizador de voz minusculo: 1,8 millones de parametros, 7,6 MB, 12 idiomas (11 de India mas ingles) y 24 voces, que corre en CPU, en el navegador, en un worker de nube o en un chip ESP32-S3, con unos 100 ms hasta el primer audio (cifras del autor).",
+      "why_not": "No hay nada que descargar: en una busqueda no aparecio repositorio, pesos, ficha del modelo ni licencia (un tercero que lo evaluo para su proyecto dejo anotado lo mismo). Los idiomas son de India e ingles: NO incluye espanol. Un comentario del propio post dice que la calidad suena roboticamente, incluso en la demo. Las cifras (100 ms, 2.000 veces mas barato que ElevenLabs) son del autor y no se pueden verificar sin el modelo. Para el lab ya hay opciones con pesos y licencia verificables: apps/kittentts y apps/voicestudio.",
+      "caveats": "Si el autor publica pesos y licencia mas adelante, volver a mirar; el tamano y la idea de correr en CPU siguen siendo interesantes para un asistente de voz que deje libre la GPU, siempre que soporte espanol.",
+      "to_test": []
     }
   ]
 }
