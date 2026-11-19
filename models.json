@@ -324,6 +324,18 @@
         "comparar el 256M, el 500M y el 2,2B con las mismas entradas; despues contra Qwen3.8-27B",
         "con apps/concat: extraer fotogramas de un clip y ver si las descripciones alcanzan para decidir cortes"
       ]
+    },
+    {
+      "name": "NanoI1-155M (Base e Instruct)",
+      "repo": "https://huggingface.co/KiteFishAI/NanoI1-155M-Instruct",
+      "family": "KiteFish AI, India. Modelo de 155 M entrenado desde cero con ~1 billon (1T) de tokens; version Base: https://huggingface.co/KiteFishAI/NanoI1-155M-Base",
+      "modality": "texto",
+      "status": "not_for_lab",
+      "verified": { "checked_at": "2026-11-19", "license": "Apache-2.0", "params": "155,3 M", "downloads": 2219, "created": "2026-10-21", "context": "2.048 tokens (entrenado)", "format": "PyTorch y safetensors con codigo propio; sin GGUF ni clase de transformers" },
+      "what_it_does": "Modelo de lenguaje diminuto hecho para uso local en industrias reguladas de India (bancos, seguros). Sirve, segun su ficha, para extraccion estructurada, clasificacion, enrutado y preguntas cortas sobre un documento dado, idealmente despues de afinarlo con datos propios. Tambien como modelo borrador o experimento de investigacion.",
+      "why_not": "No aporta al lab. (1) Su arquitectura es propia (atencion latente multi-cabeza) y la ficha dice que hace falta su codigo en Python: no hay GGUF ni soporte en llama.cpp, asi que no entra en el flujo del lab. (2) Es mucho mas debil que los Qwen que ya se usan: contra Qwen3-0.6B-Base pierde en todo (HumanEval 9,1 contra 29,3; GSM8K 4,0 contra 48,9). (3) Idiomas: ingles e idiomas de India; el espanol no esta en la lista. (4) Inventa contenido y no tiene entrenamiento de seguridad (lo dice su ficha). Para extraccion o clasificacion chica ya hay opciones mejores en el propio archivo (JevK5 para decisiones, Qwen3.5-9B para afinar).",
+      "caveats": "Lo que el post muestra es cierto pero parcial: la ficha confirma HumanEval 9,1 contra 2,4 de Gemma-3-270M, pero ese conjunto es una muestra elegida; en ARC, BBH y MMLU-Pro queda igual o por debajo de Gemma, y 9,1 es un puntaje muy bajo en absoluto. La decontaminacion de benchmarks se aplico solo a las etapas 2 y 3 (la ficha lo dice), no a las 629 mil millones de tokens de la etapa 1. La tabla de la version Instruct tiene la fila de IFEval sin completar en la ficha ('rellenar despues de run_sft.sh eval'): no hay evaluacion publicada del modelo Instruct. Anuncian una version de 1B para mas adelante.",
+      "to_test": []
     }
   ]
 }
