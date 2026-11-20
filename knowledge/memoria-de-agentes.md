@@ -18,6 +18,7 @@ Opciones revisadas, con lo que cada una guarda y cómo se consulta (todas siguen
 | `txtai` | base de embeddings (denso, disperso, grafo y SQL) | API web con MCP opcional | madura (2020), hay que escribir la configuración |
 | `relate` | un grafo en un archivo `.rl`, en memoria con registro durable | lenguaje Cypher 25, por CLI, Python o servidor MCP opcional | proyecto de 12 días (versión 1.0.2): ver más abajo |
 | `omnigraph` | grafo compartido entre agentes con ramas y fusiones | MCP | para varios agentes |
+| `semantica` | grafo de contexto con decisiones como nodos, procedencia PROV-O y razonamiento por reglas | MCP, REST, CLI | para equipos de datos con auditoría; pesado, no para un agente local |
 | `context-mode` | SQLite con búsqueda de texto | resume lo que guardó | licencia Elastic 2.0; cifras de ahorro del propio autor |
 | `memorilla` | embeddings latentes entrenados para un Qwen3-8B | no accesible desde `llama-server` | investigación, no herramienta |
 
