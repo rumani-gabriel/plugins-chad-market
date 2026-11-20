@@ -352,6 +352,16 @@
       "summary": "Herramienta de Microsoft que convierte PDF, Word, Excel y otros formatos de oficina a Markdown, para dar texto limpio a un modelo en vez de binarios o formatos pesados.",
       "caution": "Solo se verifico la ficha del repositorio, la licencia y que esta activo (ultimo push 2026-11-07); no lei el README en detalle ni lo ejecute. No revise si alguna extension manda contenido a un servicio externo (por ejemplo para describir imagenes con un modelo): confirmar antes de usar con documentos propios. Un PDF escaneado sigue necesitando OCR.",
       "promote_when": "probarlo con 5 documentos reales del lab (PDF, Word y Excel): comparar tokens y fidelidad del Markdown contra lo que el agente leeria sin convertir; confirmar que corre sin red."
+    },
+    {
+      "name": "ai-engineering-coach",
+      "repo": "https://github.com/microsoft/ai-engineering-coach",
+      "lens": "both",
+      "status": "needs_review",
+      "verified": { "stars": 4418, "forks": 620, "license": "MIT", "language": "TypeScript", "created": "2026-05-06", "checked_at": "2026-11-20" },
+      "summary": "Extension de VS Code (tambien corre como panel en la app de GitHub Copilot) que lee tus registros locales de sesiones de agentes de codigo y los puntua contra 45 reglas de malas practicas en cinco areas: calidad del prompt, higiene de sesion, revision de codigo, uso de herramientas y gestion de contexto. Cada regla es un archivo Markdown con umbrales editables. Tambien audita archivos de instrucciones (CLAUDE.md, AGENTS.md), explica por que se rompe el cache de prompt y detecta prompts repetidos que conviene volver skills.",
+      "caution": "Es un esfuerzo comunitario de empleados de Microsoft; su README dice que NO es un producto oficial de Microsoft, sin garantias. No esta publicado en ninguna tienda de extensiones: hay que compilar el .vsix uno mismo (Node y npm, o un contenedor de desarrollo) e instalarlo. El analisis es local y no tiene telemetria propia segun su README; las funciones opcionales de IA (explicaciones, buscador de skills, revision del contexto) usan el modelo de GitHub Copilot a traves de VS Code solo cuando se invocan. En el codigo hay lectores de registros para Claude Code, Codex, OpenCode, VS Code Copilot y Xcode (no los probe); Pi no aparece. La pagina de consumo de tokens figura como 'temporalmente oculta' y el 'burndown' como 'temporalmente desactivado', justo lo que mas serviria para medir. Que los registros de OpenCode sobre un llama-server local traigan los datos de cache que las reglas necesitan no esta verificado. Las reglas son criterios del autor (50 mensajes por sesion, 15 segundos para aceptar 20 lineas): un comentario del post nota que un largo de prompt corto no implica pereza.",
+      "promote_when": "compilarlo en una PC de prueba, correr el panel sobre 2 semanas de registros propios de OpenCode y de Claude Code, y ver si las reglas de contexto (sesiones largas, cache de prompt) sirven o dan ruido. Si sirve, la parte reutilizable son las reglas Markdown, que se pueden adaptar a otros agentes."
     }
   ]
 }
