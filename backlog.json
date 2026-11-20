@@ -304,6 +304,54 @@
       "summary": "Metodologia completa de desarrollo para agentes de codigo, hecha de 15 skills que se activan solas: primero preguntar y escribir un diseno (brainstorming), despues plan en tareas de 2 a 5 minutos, trabajo en ramas aisladas (git worktrees), ejecucion con un subagente por tarea y revision despues de cada una (o todo en una sesion, la opcion mas barata), TDD obligatorio, revision de codigo, depuracion sistematica y verificacion antes de dar algo por terminado. Hay instalacion para 16 agentes: Claude Code, OpenCode, Pi, Codex, Gemini CLI, Cursor, Qwen Code, entre otros.",
       "caution": "COSTO DE CONTEXTO, que es lo que importa: un hook de inicio inyecta el skill using-superpowers (unos 3,2 KB de texto, del orden de 800 tokens, estimado) al arrancar, al limpiar y al compactar la sesion, y le ordena al agente revisar skills ANTES de cualquier respuesta, incluso con un 1 % de posibilidad de que apliquen. Los skills grandes pesan entre 3 KB y 20 KB cada uno (brainstorming 15 KB, subagent-driven-development 20 KB, executing-plans 18 KB) y se cargan al activarse. El flujo por defecto lanza un subagente fresco por tarea con revision despues de cada una: es exactamente el patron de agentes que revisan y revisan; su propio README llama a executing-plans la opcion mas barata. Incluye un skill para diagnosticar sesiones que gastaron mas tokens de lo esperado. El post dice '15 skills y 16 agentes': son 15 skills y 16 entornos de agente (no 16 agentes). El README no trae mediciones de ahorro ni de calidad. Con un Qwen local chico, que siga una metodologia obligatoria tan larga no esta probado. Telemetria: carga un logo desde el sitio de sus autores con la version (solo en un accesorio opcional de brainstorming); se apaga con SUPERPOWERS_DISABLE_TELEMETRY. Hay oferta comercial de los autores para empresas. Aceptan pocas contribuciones de skills nuevos.",
       "promote_when": "probarlo en el lab con OpenCode o Pi (pi install git:github.com/obra/superpowers) sobre un Qwen local, en 5 tareas reales con y sin el: medir tokens totales por tarea terminada, cuantas veces se rehizo trabajo y si el modelo local sigue el flujo. Empezar con executing-plans (la opcion barata) y sin subagentes por tarea; leer los skills antes de instalarlos."
+    },
+    {
+      "name": "claude-mem",
+      "repo": "https://github.com/thedotmack/claude-mem",
+      "lens": "b",
+      "status": "needs_review",
+      "verified": {
+        "stars": 118585,
+        "forks": 10316,
+        "license": "Apache-2.0",
+        "language": "TypeScript",
+        "checked_at": "2026-11-20"
+      },
+      "summary": "Memoria persistente entre sesiones: captura lo que hace el agente, lo comprime con IA y reinyecta un indice compacto al abrir la sesion siguiente, por capas para que el agente abra el detalle solo cuando lo necesita. Su README declara soporte para Claude Code, OpenCode, Pi, Codex, Gemini y otros; guarda todo en ~/.claude-mem.",
+      "caution": "Anuncia que compresion y reinyeccion ahorran contexto, pero no hay medicion independiente: tambien agrega texto al inicio de cada sesion y un servicio residente (worker). La compresion usa un proveedor de IA que se configura en la instalacion: si es externo, lo que hizo el agente sale de la maquina; con modelo local hay que ver si la calidad alcanza. La analitica anonima esta ACTIVADA por defecto (se apaga con 'npx claude-mem telemetry disable'). La sincronizacion en la nube es opcional. Se instala con 'npx claude-mem install', no con npm install -g. Solo leida la ficha y el README, sin ejecutar.",
+      "promote_when": "probarlo en el lab con OpenCode o Pi sobre un Qwen local, con la analitica apagada y el proveedor de compresion apuntando al llama-server local: 5 tareas que continuan entre sesiones, midiendo tokens totales por tarea y si el modelo recupera lo importante. Comparar contra las opciones de la nota memoria-de-agentes."
+    },
+    {
+      "name": "serena",
+      "repo": "https://github.com/oraios/serena",
+      "lens": "both",
+      "status": "needs_review",
+      "verified": {
+        "stars": 31554,
+        "forks": 2147,
+        "license": "GPL-3.0-or-later (la parte SolidLSP, MIT)",
+        "language": "Python",
+        "checked_at": "2026-11-20"
+      },
+      "summary": "Servidor MCP de busqueda y edicion de codigo por significado, como un IDE para el agente: usa servidores de lenguaje (LSP, mas de 40 lenguajes) para encontrar simbolos y referencias sin leer archivos enteros; existe tambien un plugin de pago de JetBrains. Funciona con Claude Code, Codex, OpenCode, Gemini CLI y editores.",
+      "caution": "El ahorro de contexto es esperable (leer simbolos en vez de archivos) pero no esta medido aqui. Cada servidor de lenguaje es otro proceso y hay que instalarlo; en Windows no se probo. Agrega herramientas MCP al contexto del agente. Licencia GPL-3.0-or-later: usarlo como proceso aparte no obliga a nada, pero no copiar su codigo a otros proyectos sin leerla. Se superpone con graph-explorer y fast-grep del catalogo, que ya cubren parte de esto.",
+      "promote_when": "probarlo con OpenCode sobre un Qwen local en un repositorio mediano: 5 tareas de busqueda y edicion con y sin Serena, midiendo tokens leidos, aciertos y cuanto contexto ocupan sus herramientas. Comparar contra fast-grep y graph-explorer antes de sumarlo."
+    },
+    {
+      "name": "markitdown",
+      "repo": "https://github.com/microsoft/markitdown",
+      "lens": "both",
+      "status": "needs_review",
+      "verified": {
+        "stars": 197217,
+        "forks": 14934,
+        "license": "MIT",
+        "language": "Python",
+        "checked_at": "2026-11-20"
+      },
+      "summary": "Herramienta de Microsoft que convierte PDF, Word, Excel y otros formatos de oficina a Markdown, para dar texto limpio a un modelo en vez de binarios o formatos pesados.",
+      "caution": "Solo se verifico la ficha del repositorio, la licencia y que esta activo (ultimo push 2026-11-07); no lei el README en detalle ni lo ejecute. No revise si alguna extension manda contenido a un servicio externo (por ejemplo para describir imagenes con un modelo): confirmar antes de usar con documentos propios. Un PDF escaneado sigue necesitando OCR.",
+      "promote_when": "probarlo con 5 documentos reales del lab (PDF, Word y Excel): comparar tokens y fidelidad del Markdown contra lo que el agente leeria sin convertir; confirmar que corre sin red."
     }
   ]
 }

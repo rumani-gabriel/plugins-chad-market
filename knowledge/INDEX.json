@@ -105,6 +105,14 @@
       "tags": ["decision-models", "routing", "guardrails", "tool-gating", "evals", "local-models", "llama-cpp"],
       "file": "knowledge/modelos-de-decision.md",
       "checked_at": "2026-11-19"
+    },
+    {
+      "id": "lista-20-repos-claude-code",
+      "title": "Lista de 20 repositorios para Claude Code: triaje para el lab",
+      "kind": "referencia",
+      "tags": ["claude-code", "tools", "context", "memory", "mcp", "triage"],
+      "file": "knowledge/lista-20-repos-claude-code.md",
+      "checked_at": "2026-11-20"
     }
   ]
 }
