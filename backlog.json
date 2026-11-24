@@ -220,13 +220,13 @@
       "lens": "b",
       "status": "needs_review",
       "verified": {
-        "stars": 50571,
+        "stars": 57683,
         "license": "MIT",
         "created": "2026-04-21",
-        "last_push": "2026-11-11",
-        "checked_at": "2026-11-11"
+        "last_push": "2026-11-24",
+        "checked_at": "2026-11-24"
       },
-      "summary": "Enrutador local con un solo endpoint /v1 compatible con OpenAI que reparte las peticiones entre los cupos gratuitos de 34 proveedores (635 endpoints segun su README) y salta al siguiente cuando uno se agota. Guarda las claves cifradas, soporta llamadas a herramientas y trae un servidor MCP en /mcp.",
+      "summary": "Enrutador local con un solo endpoint /v1 compatible con OpenAI que reparte las peticiones entre los cupos gratuitos de 87 proveedores (1.313 endpoints de modelo, ~10,1 mil millones de tokens/mes segun su propio catalogo) y salta al siguiente cuando uno se agota. Guarda las claves cifradas, soporta llamadas a herramientas y trae un servidor MCP en /mcp.",
       "caution": "No es local: cada prompt sale a proveedores externos de nivel gratuito, cuyos terminos sobre uso de datos no revise uno por uno; el propio repo dice 'personal experimentation only' y el post, que para produccion se use una API paga. Solo con codigo y datos sin ninguna sensibilidad. El router baja un catalogo firmado de freellmapi.co dos veces por dia (los instalados gratis reciben el snapshot mensual, 30 dias despues; hay version premium) y su instalacion recomendada es un script 'curl | bash' con Docker: usar la imagen con version fija o el instalador de Releases, y leer antes. Los modelos gratuitos varian mucho en capacidad y en soporte de herramientas: con failover automatico el mismo agente puede cambiar de modelo a mitad de una tarea. Un comentario estima que tras curar a mano quedan menos de mil millones de tokens utiles al mes.",
       "promote_when": "solo si el lab necesita un modelo mas fuerte que el local para trabajo sin datos sensibles. Probar en una carpeta de pruebas con un proveedor elegido a mano (no el router completo), fijando la version y desactivando la sincronizacion del catalogo si el proyecto lo permite, y medir cuantas tareas de OpenCode termina contra Qwen3.6-35B-A3B local."
     },
