@@ -253,6 +253,16 @@
       "summary": "Flujo de trabajo de GitHub Actions que prueba una aplicacion movil con agentes: cada 'persona' (por ejemplo un iPhone SE en sueco con el texto al maximo, o arabe de derecha a izquierda) corre en su propio trabajo con un simulador de iOS o un emulador de Android, y un Claude Code usa la aplicacion y reporta problemas con capturas. Tambien reproduce un reporte de error en cada telefono, compara dos versiones y puede usar modelos mas baratos.",
       "caution": "Es para equipos que desarrollan aplicaciones moviles y usan GitHub Actions: no tiene lugar en un laboratorio local de IA. Los 'iOS Simulator' exigen runners de macOS, que en repositorios privados GitHub cuenta diez veces. Cuesta modelo: el propio README estima de 0,15 a 0,55 dolares por telefono, con suscripcion o clave de Claude; un comentario del post lo resume como 'la mejor forma de quemar tokens'. El resultado estrella del post (29 de 46 errores aparecieron en una sola configuracion, sobre la aplicacion LocalSend) es una corrida del propio autor; uno de los comentarios pregunta cuantos de los 46 se confirmaron a mano y no hay respuesta. El README tambien dice que los hallazgos dependen de que tan bien el modelo lee capturas. Repositorio de 8 dias de vida.",
       "promote_when": "no se promueve para el lab. Como criterio: probar la misma aplicacion en muchas configuraciones (idioma, tamano de texto, dispositivo) encuentra errores que la prueba feliz no encuentra; si algun dia hay una app movil propia, evaluarlo con una muestra chica y confirmando a mano cada hallazgo."
+    },
+    {
+      "name": "freellmapi",
+      "repo": "https://github.com/tashfeenahmed/freellmapi",
+      "lens": "b",
+      "status": "reference_only",
+      "verified": { "stars": 57683, "license": "MIT", "created": "2026-04-21", "last_push": "2026-11-24", "checked_at": "2026-11-24" },
+      "summary": "No se usa como router (no instalarlo ni correrlo): el valor real para el lab es su catalogo publico en freellmapi.co/models, que lista 87 proveedores y 1.313 endpoints gratuitos de LLM con limite de tasa, contexto y presupuesto de tokens de cada uno, actualizado dos veces al dia. Sirve como radar manual: de vez en cuando revisar esa pagina para detectar si algun proveedor nuevo ofrece un nivel gratuito generoso, y recien ahi decidir si vale la pena abrir cuenta ahi puntualmente.",
+      "caution": "El router/servidor en si (Docker o instalador) exige dar de alta cuenta en cada proveedor que se quiera usar: no da acceso a los 87 de arranque. Es ademas 'personal experimentation only' segun su propio repo: los prompts salen a proveedores externos cuyas politicas de datos no se revisaron una por una (varios niveles gratuitos usan lo enviado para entrenar sus modelos). No corresponde instalarlo para el lab: alcanza con mirar el catalogo en la web.",
+      "promote_when": "no se promueve como herramienta para instalar. Revisitar la pagina del catalogo cada tanto (sin instalar nada) y, si aparece un proveedor con una cuota gratuita que valga la pena, anotarlo aparte (por ejemplo en models.json o una nota de knowledge/) con su limite real, para usarlo de forma manual y puntual, nunca con datos sensibles."
     }
   ]
 }
