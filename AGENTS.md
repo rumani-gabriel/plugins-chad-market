@@ -1,5 +1,7 @@
 # AGENTS.md — cómo usar esta caja de herramientas (para un agente en OpenCode)
 
+> **Si llegás a este repo por primera vez, leé primero [`INICIO.md`](INICIO.md):** cómo leer el repo sin gastar contexto, qué hay que probar primero en el laboratorio y dónde registrar los resultados (`resultados/`). Este archivo explica cómo tomar lo que ya está en el catálogo.
+
 Este repo es la base de herramientas de un laboratorio de desarrollo e investigación. Funciona así: **si necesitás algo, buscalo acá; si está, tomalo; si no está, armalo desde un plano de este mismo repo.**
 
 **Dónde correr los comandos:** todas las rutas y comandos de este archivo (`catalog.json`, `install.py`, `apps/`, `blueprints/`) son relativas a la carpeta de este repo, la que contiene este `AGENTS.md`. Si estás trabajando en otro proyecto, usá la ruta absoluta de esa carpeta (por ejemplo `python <ruta-del-repo>/install.py <plugin> --project .`) o hacé `cd` ahí primero.
