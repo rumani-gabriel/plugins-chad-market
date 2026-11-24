@@ -24,5 +24,6 @@
   "rollback": "npx -y rea-agents@6.7.0 uninstall",
   "permissions": ["bash: npx *"],
   "caution": "Solo para software propio o con permiso explicito de examinar (lo aclara el propio proyecto). Instalar solo desde el comando oficial: el proyecto advierte que un repo de nombre parecido o un README copiado no prueba que una descarga sea oficial.",
+  "lighter_alternative": "leanrea (backlog.json): un skill de 8 KB que usa las herramientas del sistema por Bash en vez del servidor MCP; segun su autor gasta bastante menos contexto, pero la cifra no esta verificada ni probada en Windows. Si el costo de contexto de las herramientas MCP de REA pesa, probar primero leanrea.",
   "verified_against": "docs/installation.md y docs/client-configuration.md de morluto/rea (2026-10-20). Los comandos NO se ejecutaron."
 }
