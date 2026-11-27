@@ -3,7 +3,7 @@
 - Tipo: criterio
 - Revisada: 2026-11-16
 - Estado: vigente
-- Relacionadas: `contexto-en-agentes`, `apps/keenable-search`
+- Relacionadas: `contexto-en-agentes`, `apps/keenable-search`; `backlog.json`: `trafilatura`
 
 ## En una línea
 Los resultados de una búsqueda entran directo al contexto del modelo: más texto no es mejor. Un buen buscador para agentes devuelve extractos acotados y datos estructurados; hay que medirlo por tokens totales por tarea terminada, no por tokens por llamada.
@@ -19,6 +19,7 @@ Los resultados de una búsqueda entran directo al contexto del modelo: más text
 - Precios de listados de terceros (100.000 pedidos gratis al mes, 1 USD por 1.000 pedidos): no están en la documentación oficial que leí.
 
 ## Cómo usarlo
+0. **Antes de pasarle a un agente el HTML crudo de una página o el resumen de un fetch genérico, limpiarlo local.** `trafilatura` (`backlog.json`, Apache-2.0, 7.230 estrellas, en desarrollo desde 2019) extrae texto principal y metadatos descartando cabeceras, pies y boilerplate, sin servicio externo ni clave. No reemplaza a un buscador (no indexa la web), pero sí evita mandar al modelo una página entera cuando ya se tiene la URL.
 1. **Pedir extractos, leer completo solo si hace falta.** Primero buscar; abrir una página entera solo cuando el extracto no alcanza.
 2. **Medir llamadas de seguimiento.** Los comentarios más sensatos del post original apuntan a esto: un extracto que descartó justo el dato importante hace que el agente repita búsquedas, y el fallo aparece después como un error del modelo. El ahorro por llamada puede perderse en llamadas extra.
 3. **Mirar la fecha de cada resultado** y desconfiar de los datos viejos.
