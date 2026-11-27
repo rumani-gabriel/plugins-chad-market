@@ -348,6 +348,25 @@
       "why_not": "No hay nada que descargar: en una busqueda no aparecio repositorio, pesos, ficha del modelo ni licencia (un tercero que lo evaluo para su proyecto dejo anotado lo mismo). Los idiomas son de India e ingles: NO incluye espanol. Un comentario del propio post dice que la calidad suena roboticamente, incluso en la demo. Las cifras (100 ms, 2.000 veces mas barato que ElevenLabs) son del autor y no se pueden verificar sin el modelo. Para el lab ya hay opciones con pesos y licencia verificables: apps/kittentts y apps/voicestudio.",
       "caveats": "Si el autor publica pesos y licencia mas adelante, volver a mirar; el tamano y la idea de correr en CPU siguen siendo interesantes para un asistente de voz que deje libre la GPU, siempre que soporte espanol.",
       "to_test": []
+    },
+    {
+      "name": "PersonaPlex-7B",
+      "repo": "https://github.com/NVIDIA/personaplex",
+      "family": "NVIDIA (basado en la arquitectura y pesos de Moshi, de Kyutai, con el codec Mimi a 24 kHz)",
+      "modality": "voz a voz, full-duplex (escucha y habla a la vez, en tiempo real)",
+      "status": "to_research",
+      "verified": { "checked_at": "2026-11-27", "license": "codigo MIT; los PESOS bajo NVIDIA Open Model License (hay que aceptarla en Hugging Face)", "params": "8,37 B segun safetensors de Hugging Face (el nombre lo llama '7B')", "created": "2026-01-05", "last_push": "2026-11-06", "format": "safetensors (~16,7 GB en fp16)" },
+      "what_it_does": "Modelo conversacional de voz full-duplex: controla una persona por un prompt de texto (rol) y un prompt de audio (timbre de voz), y los mantiene en el contexto durante toda la conversacion (novedad reciente del propio proyecto: antes el prompt se perdia del contexto). La memoria de la conversacion sigue limitada a una ventana deslizante de unos 2,5 minutos. Entrenado con conversaciones sinteticas de un rol de asistente fijo y conversaciones reales del Fisher English Corpus.",
+      "why_for_the_lab": "Pieza candidata para el lado de voz de un agente tipo Jarvis: full-duplex (no hay que esperar a que termine de hablar para escuchar) es justo lo que un asistente de voz en vivo necesita. Trae --cpu-offload para GPUs con poca memoria y tambien corre solo en CPU para evaluacion offline, asi que no queda descartado de entrada por los 12 GB de la 3060.",
+      "runs_with": "Codigo propio en Python (paquete moshi), no llama.cpp/GGUF: no hay conversion a un formato cuantizado conocido. Requiere la libreria Opus (libopus-dev/opus-devel) y, segun un issue abierto del propio repo, un paso extra de PyTorch para GPUs Blackwell.",
+      "caveats": "SOLO INGLES (no esta confirmado en las secciones del README que se leyeron; el post lo citaba, tratar como no verificado hasta probarlo). El post citaba cifras de latencia (0,17 s en cambio de turno, 0,24 s al interrumpir) y el uso de A100/H100: NO aparecen en las secciones del README que se leyeron, salen del benchmark FullDuplexBench que el README si menciona como referencia (arxiv.org/abs/2503.04721), pero el numero exacto no se confirmo en la fuente primaria. 8,37 B de parametros (~16,7 GB en fp16) no entra en 12 GB de VRAM sin --cpu-offload; con offload a CPU, la velocidad en la 3060 no esta medida. Sin binario ni receta de servidor local tipo llama-server: instalarlo significa clonar el repo y manejar el entorno Python a mano.",
+      "to_test": [
+        "clonar el repo, instalar moshi y bajar los pesos aceptando la licencia en Hugging Face",
+        "probar con --cpu-offload en la 3060 y medir latencia real de cambio de turno e interrupcion con audio propio",
+        "probar si entiende y responde en espanol, ya que no esta confirmado en el README",
+        "leer la NVIDIA Open Model License completa antes de cualquier uso mas alla de pruebas personales",
+        "comparar contra Pipecat Voice Reader (en este mismo archivo) y voicestudio/kittentts para el lado de voz de Jarvis"
+      ]
     }
   ]
 }
